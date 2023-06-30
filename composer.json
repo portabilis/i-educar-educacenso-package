@@ -1,0 +1,36 @@
+{
+    "name": "portabilis/i-educar-educacenso",
+    "authors": [
+        {
+            "name": "Portabilis Tecnologia",
+            "email": "contato@portabilis.com.br"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "iEducar\\Packages\\Educacenso\\": "src/"
+        },
+        "files": [
+            "src/Helpers/Util.php"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "EducacensoProvider"
+            ],
+            "providers": [
+                "iEducar\\Packages\\Educacenso\\Providers\\EducacensoProvider"
+            ]
+        }
+    },
+    "require": {
+        "maatwebsite/excel": "^3.1"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.10"
+    },
+    "scripts": {
+        "fixer": "vendor/bin/pint"
+    }
+}
