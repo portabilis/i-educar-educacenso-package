@@ -35,8 +35,6 @@ class IsNotEmptyInepNumberSchoolClass implements ValidationRule, DataAwareRule
                 continue;
             }
 
-            $fail('edinei');
-
             if (is_null($enrollment->registration->schoolClass->inep->cod_turma_inep)) {
                 $fail('A turma ' . $enrollment->registration->schoolClass->nm_turma . ' não possui um número INEP válido.');
                 continue;
