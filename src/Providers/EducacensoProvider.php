@@ -20,11 +20,17 @@ class EducacensoProvider extends ServiceProvider
                 paths: __DIR__ . '/../../database/migrations'
             );
         }
+
+        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'educacenso');
     }
 
     public function boot(): void
     {
-        Route::post('/educacenso/export-situation', ExportSituationController::class)
-            ->name('educacenso-export-situation');
+        Route::group(['middleware' => ['web', 'ieducar.navigation', 'ieducar.footer', 'ieducar.suspended', 'auth', 'ieducar.checkresetpassword']], function (): void {
+            Route::get('educacenso/export-situation', [ExportSituationController::class, 'create'])
+                ->name('educacenso-export-situation');
+            Route::post('/educacenso/export-situation', [ExportSituationController::class, 'store'])
+                ->name('educacenso-export-situation');
+        });
     }
 }
