@@ -10,6 +10,14 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class ExportSituationRequest extends FormRequest
 {
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'year' => $this->input('ano'),
+            'school_id' => $this->input('ref_cod_escola'),
+        ]);
+    }
+
     public function rules()
     {
         return [
