@@ -45,17 +45,17 @@ class Record89 extends Validation
     public function messages()
     {
         return [
-            '1.required' => 'O campo "Código da escola" é obrigatório.',
-            '1.digits' => 'O campo "Código da escola" deve conter 8 dígitos.',
-            '2.required' => 'O campo "CPF do diretor" é obrigatório.',
-            '2.digits' => 'O campo "CPF do diretor" deve conter 11 dígitos.',
-            '2.cpf' => 'O campo "CPF do diretor" deve ser um CPF válido.',
-            '3.required' => 'O campo "Nome do diretor" é obrigatório.',
-            '3.string' => 'O campo "Nome do diretor" deve ser uma string.',
-            '3.max' => 'O campo "Nome do diretor" deve conter no máximo 100 caracteres.',
-            '3.regex' => 'O campo "Nome do diretor" deve conter apenas letras e espaços.',
-            '5.required' => 'O campo "E-mail do diretor" é obrigatório.',
-            '5.email' => 'O campo "E-mail do diretor" deve ser um e-mail válido.',
+            'escola.2.required' => 'O campo "Código INEP da escola" é obrigatório.',
+            'escola.2.digits' => 'O campo "Código INEP da escola" deve conter 8 dígitos.',
+            'escola.3.required' => 'O campo "CPF do diretor" é obrigatório.',
+            'escola.3.digits' => 'O campo "CPF do diretor" deve conter 11 dígitos.',
+            'escola.3.cpf' => 'O campo "CPF do diretor" deve ser um CPF válido.',
+            'escola.4.required' => 'O campo "Nome do diretor" é obrigatório.',
+            'escola.4.string' => 'O campo "Nome do diretor" deve ser uma string.',
+            'escola.4.max' => 'O campo "Nome do diretor" deve conter no máximo 100 caracteres.',
+            'escola.4.regex' => 'O campo "Nome do diretor" deve conter apenas letras e espaços.',
+            'escola.6.required' => 'O campo "E-mail do diretor" é obrigatório.',
+            'escola.6.email' => 'O campo "E-mail do diretor" deve ser um e-mail válido.',
         ];
     }
 }
