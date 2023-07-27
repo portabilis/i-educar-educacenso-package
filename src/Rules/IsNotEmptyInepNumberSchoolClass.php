@@ -31,22 +31,22 @@ class IsNotEmptyInepNumberSchoolClass implements ValidationRule, DataAwareRule
 
         foreach ($enrollments as $enrollment) {
             if (is_null($enrollment->registration->schoolClass->inep)) {
-                $fail('A turma ' . $enrollment->registration->schoolClass->nm_turma . ' não possui um número INEP válido.');
+                $fail('A turma ' . $enrollment->registration->schoolClass->nm_turma . ' não possui um número INEP.');
                 continue;
             }
 
             if (is_null($enrollment->registration->schoolClass->inep->cod_turma_inep)) {
-                $fail('A turma ' . $enrollment->registration->schoolClass->nm_turma . ' não possui um número INEP válido.');
+                $fail('A turma ' . $enrollment->registration->schoolClass->nm_turma . ' não possui um número INEP.');
                 continue;
             }
 
             if (strlen($enrollment->registration->schoolClass->inep->cod_turma_inep) != 8) {
-                $fail('A turma ' . $enrollment->registration->student->person->nome . ' não possui um número INEP válido.');
+                $fail('A turma ' . $enrollment->registration->schoolClass->nm_turma . ' não possui um número INEP com 8 digitos.');
                 continue;
             }
 
             if (! is_numeric($enrollment->registration->schoolClass->inep->cod_turma_inep)) {
-                $fail('A Turma ' . $enrollment->registration->student->person->nome . ' não possui um número INEP válido.');
+                $fail('A Turma ' . $enrollment->registration->schoolClass->nm_turma . ' não possui um número INEP válido.');
             }
         }
     }
