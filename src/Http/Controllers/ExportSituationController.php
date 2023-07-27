@@ -4,17 +4,29 @@ namespace iEducar\Packages\Educacenso\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use iEducar\Packages\Educacenso\Http\Requests\ExportSituationRequest;
-use iEducar\Packages\Educacenso\Layout\Export\Situation\Layout2022\Record89;
-use iEducar\Packages\Educacenso\Layout\Export\Situation\Layout2022\Record90;
-use iEducar\Packages\Educacenso\Layout\Export\Situation\Layout2022\Record91;
-use iEducar\Packages\Educacenso\Layout\Export\Situation\Layout2022\SituationRepository;
+use iEducar\Packages\Educacenso\Layout\Export\Situation\Export;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ExportSituationController extends Controller
 {
-    public function __invoke(ExportSituationRequest $request)
+    public function create()
     {
-        $repository = new SituationRepository();
+        $this->breadcrumb('Nova Exportação', [
+            url('/intranet/educar_configuracoes_index.php') => 'Configurações',
+            route('export.index') => 'Exportações',
+        ]);
+
+        $this->menu(9998845);
+
+        return view('educacenso::export.situation');
+    }
+
+    public function store(ExportSituationRequest $request)
+    {
+        $classRepository = 'iEducar\Packages\Educacenso\Layout\Export\Situation\Layout' . $request->get('year') . '\SituationRepository';
+        $repository = new $classRepository();
+
 
         $array = [
             'escola' => $repository->getDataRecord89($request->get('year'), $request->get('school_id')),
@@ -22,10 +34,14 @@ class ExportSituationController extends Controller
             'turma_matriculas' => $repository->getDataRecord91($request->get('year'), $request->get('school_id'))
         ];
 
-        $rulesRecord89 = new Record89();
-        $rulesRecord90 = new Record90($array['matriculas']);
-        $rulesRecord91 = new Record91($array['matriculas']);
+        $classRulesRecord89 = 'iEducar\Packages\Educacenso\Layout\Export\Situation\Layout' . $request->get('year') . '\Record89';
+        $rulesRecord89 = new $classRulesRecord89();
 
+        $classRulesRecord90 = 'iEducar\Packages\Educacenso\Layout\Export\Situation\Layout' . $request->get('year') . '\Record90';
+        $rulesRecord90 = new $classRulesRecord90($array['matriculas']);
+
+        $classRulesRecord91 = 'iEducar\Packages\Educacenso\Layout\Export\Situation\Layout' . $request->get('year') . '\Record91';
+        $rulesRecord91 = new $classRulesRecord91($array['turma_matriculas']);
 
         $rules = array_merge($rulesRecord89->rules(), $rulesRecord90->rules(), $rulesRecord91->rules());
         $messages = array_merge($rulesRecord89->messages(), $rulesRecord90->messages(), $rulesRecord91->messages());
@@ -36,6 +52,6 @@ class ExportSituationController extends Controller
             return $validator->validate();
         }
 
-        // exportação em fase de construção
+        return Excel::download(new Export($array), 'situation.csv');
     }
 }
