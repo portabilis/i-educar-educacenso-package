@@ -103,7 +103,19 @@ class Record91 extends Validation
     public function messages()
     {
         return [
-
+            'turma_matriculas.*.2.required' => 'O campo "Código INEP da escola" é obrigatório.',
+            'turma_matriculas.*.2.integer' => 'O campo "Código INEP da escola" deve ser de apenas números.',
+            'turma_matriculas.*.2.digits' => 'O campo "Código INEP da escola" deve conter 8 dígitos.',
+            'turma_matriculas.*.3.max' => 'O campo "Código da Turma" deve conter no máximo 20 caracteres.',
+            'turma_matriculas.*.4.required' => 'O campo "Código INEP da Turma" é obrigatório.',
+            'turma_matriculas.*.4.integer' => 'O campo "Código INEP da Turma" deve ser de apenas números.',
+            'turma_matriculas.*.4.digits_between' => 'O campo "Código INEP da Turma" deve conter entre 0 e 10 dígitos.',
+            'turma_matriculas.*.5.integer' => 'O campo "Código INEP do Aluno" deve ser de apenas números.',
+            'turma_matriculas.*.5.digits' => 'O campo "Código INEP do Aluno" deve conter 12 dígitos.',
+            'turma_matriculas.*.6.max' => 'O campo "Código do Aluno" deve conter no máximo 20 caracteres.',
+            'turma_matriculas.*.11.required' => 'O campo "Situação da Matrícula" é obrigatório.',
+            'turma_matriculas.*.11.integer' => 'O campo "Situação de matrícula" deve ser de apenas números.',
+            'turma_matriculas.*.11.in' => 'O campo "Tipo de situação de matrícula" deve ser um dos seguintes valores: :values.',
         ];
     }
 }
