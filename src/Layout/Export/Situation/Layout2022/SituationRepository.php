@@ -29,7 +29,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 '1' => 89,
                 '2' => $school->inep->number,
                 '3' => clearInt($school->director->individual->cpf),
-                '4' => $school->director->nome,
+                '4' => mb_strtoupper($school->director->nome),
                 '5' => 1,
                 '6' => $school->director->email,
             ];
