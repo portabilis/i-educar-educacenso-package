@@ -42,10 +42,13 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
         int $year,
         int $schoolId
     ): array {
+        $dataBaseEducacenso = config('educacenso.data_base.' . $year);
+
         $enrollments = LegacyEnrollment::query()
             ->select([
                 'ref_cod_matricula',
                 'ref_cod_turma',
+                'data_enturmacao'
             ])
             ->with([
                 'registration:cod_matricula,ref_cod_aluno,ano',
@@ -57,6 +60,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 'schoolClass.school.inep:cod_escola,cod_escola_inep',
                 'schoolClass.inep:cod_turma,cod_turma_inep',
             ])
+            ->where('data_enturmacao', '<=', $dataBaseEducacenso)
             ->whereHas('registration', fn ($query) => $query->where('ano', $year))
             ->whereHas('schoolClass', fn ($query) => $query->where('ref_ref_cod_escola', $schoolId))
             ->active()
@@ -82,10 +86,13 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
         int $year,
         int $schoolId
     ): array {
+        $dataBaseEducacenso = config('educacenso.data_base.' . $year);
+
         $enrollments = LegacyEnrollment::query()
             ->select([
                 'ref_cod_matricula',
                 'ref_cod_turma',
+                'data_enturmacao'
             ])
             ->with([
                 'registration:cod_matricula,ref_cod_aluno,ano',
@@ -97,6 +104,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 'schoolClass.school.inep:cod_escola,cod_escola_inep',
                 'schoolClass.inep:cod_turma,cod_turma_inep',
             ])
+            ->where('data_enturmacao', '<=', $dataBaseEducacenso)
             ->whereHas('registration', fn ($query) => $query->where('ano', $year))
             ->whereHas('schoolClass', fn ($query) => $query->where('ref_ref_cod_escola', $schoolId))
             ->active()
