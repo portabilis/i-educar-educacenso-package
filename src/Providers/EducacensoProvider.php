@@ -29,8 +29,7 @@ class EducacensoProvider extends ServiceProvider
         Route::group(['middleware' => ['web', 'ieducar.navigation', 'ieducar.footer', 'ieducar.suspended', 'auth', 'ieducar.checkresetpassword']], function (): void {
             Route::get('educacenso/export-situation', [ExportSituationController::class, 'create'])
                 ->name('educacenso-export-situation');
-            Route::post('/educacenso/export-situation', [ExportSituationController::class, 'store'])
-                ->name('educacenso-export-situation');
+            Route::post('/educacenso/export-situation', [ExportSituationController::class, 'store']);
         });
     }
 }
