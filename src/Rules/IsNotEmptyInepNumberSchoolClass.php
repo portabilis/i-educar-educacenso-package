@@ -40,8 +40,8 @@ class IsNotEmptyInepNumberSchoolClass implements ValidationRule, DataAwareRule
                 continue;
             }
 
-            if (strlen($enrollment->registration->schoolClass->inep->cod_turma_inep) != 8) {
-                $fail('A turma ' . $enrollment->registration->schoolClass->nm_turma . ' não possui um número INEP com 8 digitos.');
+            if (strlen($enrollment->registration->schoolClass->inep->cod_turma_inep) != 10) {
+                $fail('A turma ' . $enrollment->registration->schoolClass->nm_turma . ' não possui um número INEP com 10 digitos.');
                 continue;
             }
 
