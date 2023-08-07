@@ -30,6 +30,8 @@ class EducacensoProvider extends ServiceProvider
             Route::get('educacenso/export-situation', [ExportSituationController::class, 'create'])
                 ->name('educacenso-export-situation');
             Route::post('/educacenso/export-situation', [ExportSituationController::class, 'store']);
+
+            Route::view('/impediments', 'educacenso::export.impediments')->name('export.impediments');
         });
     }
 }

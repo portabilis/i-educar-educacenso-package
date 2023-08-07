@@ -2,6 +2,7 @@
 
 namespace iEducar\Packages\Educacenso\Layout\Export\Situation\Layout2022;
 
+use iEducar\Packages\Educacenso\Helpers\ErrorMessage;
 use iEducar\Packages\Educacenso\Layout\Export\Contracts\Validation;
 use iEducar\Packages\Educacenso\Rules\CPF;
 
@@ -13,7 +14,7 @@ class Record89 extends Validation
             'escola.1' => [
                 'required',
                 'integer',
-                'in:89',
+                'in:90',
             ],
             'escola.2' => [
                 'required',
@@ -44,18 +45,51 @@ class Record89 extends Validation
 
     public function messages()
     {
+        $errorMessage = new ErrorMessage();
+
         return [
-            'escola.2.required' => 'O campo "Código INEP da escola" é obrigatório.',
-            'escola.2.digits' => 'O campo "Código INEP da escola" deve conter 8 dígitos.',
-            'escola.3.required' => 'O campo "CPF do diretor" é obrigatório.',
-            'escola.3.digits' => 'O campo "CPF do diretor" deve conter 11 dígitos.',
-            'escola.3.cpf' => 'O campo "CPF do diretor" deve ser um CPF válido.',
-            'escola.4.required' => 'O campo "Nome do diretor" é obrigatório.',
-            'escola.4.string' => 'O campo "Nome do diretor" deve ser uma string.',
-            'escola.4.max' => 'O campo "Nome do diretor" deve conter no máximo 100 caracteres.',
-            'escola.4.regex' => 'O campo "Nome do diretor" deve conter apenas letras e espaços.',
-            'escola.6.required' => 'O campo "E-mail do diretor" é obrigatório.',
-            'escola.6.email' => 'O campo "E-mail do diretor" deve ser um e-mail válido.',
+            'escola.2.required' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 89 inválidos. O campo "Código INEP da escola" é obrigatório.',
+            ]),
+            'escola.2.digits' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 89 inválidos. O campo "Código INEP da escola" deve conter 8 dígitos.',
+            ]),
+            'escola.3.required' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 89 inválidos. O campo "CPF do Gestor" é obrigatório.',
+            ]),
+            'escola.3.digits' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 89 inválidos. O campo "CPF do Gestor" deve conter 11 dígitos.',
+            ]),
+            'escola.3.cpf' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 89 inválidos. O campo "CPF do Gestor" deve ser um CPF válido.',
+            ]),
+            'escola.4.required' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 89 inválidos. O campo "Nome do Gestor" é obrigatório.',
+            ]),
+            'escola.4.string' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 89 inválidos. O campo "Nome do Gestor" deve conter apenas letras e espaços.',
+            ]),
+            'escola.4.max' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 89 inválidos. O campo "Nome do Gestor" deve conter no máximo 100 caracteres.',
+            ]),
+            'escola.4.regex' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 89 inválidos. O campo "Nome do Gestor" deve conter apenas letras e espaços.',
+            ]),
+            'escola.5.required' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 89 inválidos. O campo "Tipo de Gestor" é obrigatório.',
+            ]),
+            'escola.5.integer' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 89 inválidos. O campo "Tipo de Gestor" deve ser um número inteiro.',
+            ]),
+            'escola.5.in' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 89 inválidos. O campo "Tipo de Gestor" deve ser 1.',
+            ]),
+            'escola.6.required' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 89 inválidos. O campo "E-mail do Gestor" é obrigatório.',
+            ]),
+            'escola.6.email' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 89 inválidos. O campo "E-mail do Gestor" deve ser um e-mail válido.',
+            ]),
         ];
     }
 }

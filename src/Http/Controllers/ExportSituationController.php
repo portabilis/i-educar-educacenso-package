@@ -49,7 +49,9 @@ class ExportSituationController extends Controller
         $validator = Validator::make($array, $rules, $messages);
 
         if ($validator->fails()) {
-            return $validator->validate();
+            redirect('/impediments')
+                ->withErrors($validator)
+                ->withInput();
         }
 
         return Excel::download(new Export($array), 'situation.csv');

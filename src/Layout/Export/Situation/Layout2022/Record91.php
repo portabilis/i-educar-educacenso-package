@@ -2,6 +2,7 @@
 
 namespace iEducar\Packages\Educacenso\Layout\Export\Situation\Layout2022;
 
+use iEducar\Packages\Educacenso\Helpers\ErrorMessage;
 use iEducar\Packages\Educacenso\Layout\Export\Contracts\Validation;
 
 class Record91 extends Validation
@@ -35,19 +36,32 @@ class Record91 extends Validation
 
                     $schoolClassId = $data[$index]['3'];
 
+                    $errorMessage = new ErrorMessage($fail, [
+                        'key' => 'cod_turma',
+                        'breadcrumb' => 'Escolas -> Cadastros -> Turmas -> Dados Adicionais -> Código INEP',
+                        'value' => $schoolClassId,
+                        'url' => 'intranet/educar_turma_cad.php?cod_turma=' . $schoolClassId
+                    ]);
+
                     if (is_null($value) || $value == '') {
                         $schoolClass = LegacySchoolClass::find($schoolClassId);
-                        $fail('O campo Código INEP da Turma ' . $schoolClass->name . ' é obrigatório.');
+                        $errorMessage->toString([
+                            'message' => 'Dados para formular o registro 91 inválidos. O campo Código INEP da Turma ' . $schoolClass->name . ' é obrigatório.',
+                        ]);
                     }
 
                     if (strlen($value) > 10) {
                         $schoolClass = LegacySchoolClass::find($schoolClassId);
-                        $fail('O campo Código INEP da Turma ' . $schoolClass->name . ' deve possuir no máximo 10 caracteres.');
+                        $errorMessage->toString([
+                            'message' => 'Dados para formular o registro 91 inválidos. O campo Código INEP da Turma ' . $schoolClass->name . ' deve possuir no máximo 10 caracteres.',
+                        ]);
                     }
 
                     if (is_numeric($value) == false) {
                         $schoolClass = LegacySchoolClass::find($schoolClassId);
-                        $fail('O campo Código INEP da Turma ' . $schoolClass->name . ' deve conter apenas números.');
+                        $errorMessage->toString([
+                            'message' => 'Dados para formular o registro 91 inválidos. O campo Código INEP da Turma ' . $schoolClass->name . ' deve conter apenas números.',
+                        ]);
                     }
                 }
             ],
@@ -56,19 +70,32 @@ class Record91 extends Validation
                     $index = array_search($value, array_column($data, '5'), true);
                     $studentId = $data[$index]['6'];
 
+                    $errorMessage = new ErrorMessage($fail, [
+                        'key' => 'cod_aluno',
+                        'value' => $studentId,
+                        'breadcrumb' => 'Escolas -> Cadastros -> Alunos -> Código INEP',
+                        'url' => '/module/Cadastro/aluno?id=' . $studentId
+                    ]);
+
                     if (is_null($value) || $value == '') {
                         $student = LegacyStudent::find($studentId);
-                        $fail('O campo Código INEP do Aluno ' . $student->name . ' é obrigatório.');
+                        $errorMessage->toString([
+                            'message' => 'Dados para formular o registro 91 inválidos. O campo Código INEP do Aluno ' . $student->name . ' é obrigatório.',
+                        ]);
                     }
 
                     if (strlen($value) != 12) {
                         $student = LegacyStudent::find($studentId);
-                        $fail('O campo Código INEP do Aluno ' . $student->name . ' deve possuir 12 caracteres.');
+                        $errorMessage->toString([
+                            'message' => 'Dados para formular o registro 91 inválidos. O campo Código INEP do Aluno ' . $student->name . ' deve possuir 12 caracteres.',
+                        ]);
                     }
 
                     if (is_numeric($value) == false) {
                         $student = LegacyStudent::find($studentId);
-                        $fail('O campo Código INEP do Aluno ' . $student->name . ' deve conter apenas números.');
+                        $errorMessage->toString([
+                            'message' => 'Dados para formular o registro 91 inválidos. O campo Código INEP do Aluno ' . $student->name . ' deve conter apenas números.',
+                        ]);
                     }
                 }
             ],
@@ -102,20 +129,51 @@ class Record91 extends Validation
 
     public function messages()
     {
+        $errorMessage = new ErrorMessage();
+
         return [
-            'turma_matriculas.*.2.required' => 'O campo "Código INEP da escola" é obrigatório.',
-            'turma_matriculas.*.2.integer' => 'O campo "Código INEP da escola" deve ser de apenas números.',
-            'turma_matriculas.*.2.digits' => 'O campo "Código INEP da escola" deve conter 8 dígitos.',
-            'turma_matriculas.*.3.max' => 'O campo "Código da Turma" deve conter no máximo 20 caracteres.',
-            'turma_matriculas.*.4.required' => 'O campo "Código INEP da Turma" é obrigatório.',
-            'turma_matriculas.*.4.integer' => 'O campo "Código INEP da Turma" deve ser de apenas números.',
-            'turma_matriculas.*.4.digits_between' => 'O campo "Código INEP da Turma" deve conter entre 0 e 10 dígitos.',
-            'turma_matriculas.*.5.integer' => 'O campo "Código INEP do Aluno" deve ser de apenas números.',
-            'turma_matriculas.*.5.digits' => 'O campo "Código INEP do Aluno" deve conter 12 dígitos.',
-            'turma_matriculas.*.6.max' => 'O campo "Código do Aluno" deve conter no máximo 20 caracteres.',
-            'turma_matriculas.*.11.required' => 'O campo "Situação da Matrícula" é obrigatório.',
-            'turma_matriculas.*.11.integer' => 'O campo "Situação de matrícula" deve ser de apenas números.',
-            'turma_matriculas.*.11.in' => 'O campo "Tipo de situação de matrícula" deve ser um dos seguintes valores: :values.',
+            'turma_matriculas.*.2.required' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 91 inválidos. O campo "Código INEP da escola" é obrigatório.',
+            ]),
+            'turma_matriculas.*.2.integer' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 91 inválidos. O campo "Código INEP da escola" deve ser de apenas números.',
+            ]),
+            'turma_matriculas.*.2.digits' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 91 inválidos. O campo "Código INEP da escola" deve conter 8 dígitos.',
+            ]),
+            'turma_matriculas.*.3.max' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 91 inválidos. O campo "Código da Turma" deve conter no máximo 20 caracteres.',
+            ]),
+            'turma_matriculas.*.4.required' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 91 inválidos. O campo "Código INEP da Turma" é obrigatório.',
+            ]),
+            'turma_matriculas.*.4.integer' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 91 inválidos. O campo "Código INEP da Turma" deve ser de apenas números.',
+            ]),
+            'turma_matriculas.*.4.digits' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 91 inválidos. O campo "Código INEP da Turma" deve conter 10 dígitos.',
+            ]),
+            'turma_matriculas.*.5.required' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 91 inválidos. O campo "Código INEP do Aluno" é obrigatório.',
+            ]),
+            'turma_matriculas.*.5.integer' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 91 inválidos. O campo "Código INEP do Aluno" deve ser de apenas números.',
+            ]),
+            'turma_matriculas.*.5.digits' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 91 inválidos. O campo "Código INEP do Aluno" deve conter 12 dígitos.',
+            ]),
+            'turma_matriculas.*.6.max' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 91 inválidos. O campo "Código da Turma" deve conter no máximo 20 caracteres.',
+            ]),
+            'turma_matriculas.*.11.required' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 91 inválidos. O campo "Etapa de Ensino" é obrigatório.',
+            ]),
+            'turma_matriculas.*.11.integer' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 91 inválidos. O campo "Etapa de Ensino" deve ser de apenas números.',
+            ]),
+            'turma_matriculas.*.11.in' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 91 inválidos. O campo "Etapa de Ensino" deve ser um valor entre 1 e 7.',
+            ]),
         ];
     }
 }

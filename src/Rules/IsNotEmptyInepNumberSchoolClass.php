@@ -4,6 +4,7 @@ namespace iEducar\Packages\Educacenso\Rules;
 
 use App\Models\LegacyEnrollment;
 use Closure;
+use iEducar\Packages\Educacenso\Helpers\ErrorMessage;
 use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\ValidationRule;
 
@@ -30,23 +31,38 @@ class IsNotEmptyInepNumberSchoolClass implements ValidationRule, DataAwareRule
             ->get();
 
         foreach ($enrollments as $enrollment) {
+            $errorMessage = new ErrorMessage($fail, [
+                'key' => 'cod_turma',
+                'breadcrumb' => 'Escolas -> Cadastros -> Turmas -> Dados Adicionais -> Código INEP',
+                'value' => $enrollment->registration->schoolClass->getKey(),
+                'url' => 'intranet/educar_turma_cad.php?cod_turma=' . $enrollment->registration->schoolClass->getKey()
+            ]);
+
             if (is_null($enrollment->registration->schoolClass->inep)) {
-                $fail('A turma ' . $enrollment->registration->schoolClass->nm_turma . ' não possui um número INEP.');
+                $errorMessage->toString([
+                    'message' => 'Dados para formular o registro 90 inválidos. A turma ' . $enrollment->registration->schoolClass->nm_turma . ' não possui um número INEP.',
+                ]);
                 continue;
             }
 
             if (is_null($enrollment->registration->schoolClass->inep->cod_turma_inep)) {
-                $fail('A turma ' . $enrollment->registration->schoolClass->nm_turma . ' não possui um número INEP.');
+                $errorMessage->toString([
+                    'message' => 'Dados para formular o registro 90 inválidos. A turma ' . $enrollment->registration->schoolClass->nm_turma . ' não possui um número INEP.',
+                ]);
                 continue;
             }
 
             if (strlen($enrollment->registration->schoolClass->inep->cod_turma_inep) != 10) {
-                $fail('A turma ' . $enrollment->registration->schoolClass->nm_turma . ' não possui um número INEP com 10 digitos.');
+                $errorMessage->toString([
+                    'message' => 'Dados para formular o registro 90 inválidos. A turma ' . $enrollment->registration->schoolClass->nm_turma . ' não possui um número INEP com 10 digitos.',
+                ]);
                 continue;
             }
 
             if (! is_numeric($enrollment->registration->schoolClass->inep->cod_turma_inep)) {
-                $fail('A Turma ' . $enrollment->registration->schoolClass->nm_turma . ' não possui um número INEP válido.');
+                $errorMessage->toString([
+                    'message' => 'Dados para formular o registro 90 inválidos. A Turma ' . $enrollment->registration->schoolClass->nm_turma . ' não possui um número INEP válido.',
+                ]);
             }
         }
     }
