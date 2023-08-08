@@ -5,7 +5,7 @@
 @endpush
 
 @section('content')
-    <form id="formcadastro" action="{{ route('educacenso-export-situation') }}" method="post">
+    <form id="formcadastro" target="_blank" action="{{ route('educacenso-export-situation') }}" method="post">
         <table class="tablecadastro" width="100%" border="0" cellpadding="2" cellspacing="0">
             <tbody>
             <tr>
