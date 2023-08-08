@@ -19,20 +19,21 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
             ])
             ->with([
                 'inep',
-                'director:idpes,nome,email',
-                'director.individual:idpes,cpf'
+                'schoolManagers',
             ])
             ->whereKey($schoolId)
             ->first();
-
         if ($school instanceof LegacySchool) {
+
+            $schoolManager = $school->schoolManagers->sortBy('role_id')->first();
+
             return [
                 '1' => 89,
                 '2' => $school->inep->number,
-                '3' => clearInt($school->director->individual->cpf),
-                '4' => mb_strtoupper($school->director->nome),
-                '5' => 1,
-                '6' => $school->director->email,
+                '3' => clearInt($schoolManager->individual->cpf),
+                '4' => mb_strtoupper($schoolManager->individual->person->name),
+                '5' => $schoolManager->role_id,
+                '6' => $schoolManager->individual->person->email,
             ];
         }
 
