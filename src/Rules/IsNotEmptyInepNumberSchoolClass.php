@@ -52,9 +52,9 @@ class IsNotEmptyInepNumberSchoolClass implements ValidationRule, DataAwareRule
                 continue;
             }
 
-            if (strlen($enrollment->registration->schoolClass->inep->cod_turma_inep) != 10) {
+            if (strlen($enrollment->registration->schoolClass->inep->cod_turma_inep) > 10) {
                 $errorMessage->toString([
-                    'message' => 'Dados para formular o registro 90 inválidos. A turma ' . $enrollment->registration->schoolClass->nm_turma . ' não possui um número INEP com 10 digitos.',
+                    'message' => 'Dados para formular o registro 90 inválidos. A turma ' . $enrollment->registration->schoolClass->nm_turma . ' possui um número INEP com mais de 10 digitos.',
                 ]);
                 continue;
             }
