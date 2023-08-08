@@ -57,7 +57,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 'registration.student:cod_aluno',
                 'registration.student.inep:cod_aluno,cod_aluno_inep',
                 'registration.situation:cod_matricula,cod_situacao',
-                'schoolClass' => function ($q): void {
+                'schoolClass' => function ($q) {
                     $q->select([
                         'cod_turma',
                         'ref_ref_cod_escola',
@@ -72,7 +72,10 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
             ])
             ->where('data_enturmacao', '<=', $dataBaseEducacenso)
             ->whereHas('registration', fn ($query) => $query->where('ano', $year))
-            ->whereHas('schoolClass', fn ($query) => $query->where('ref_ref_cod_escola', $schoolId))
+            ->whereHas('schoolClass', function ($q) use ($schoolId) {
+                $q->where('ref_ref_cod_escola', $schoolId);
+                $q->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO);
+            })
             ->active()
             ->get();
 
@@ -109,7 +112,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 'registration.student:cod_aluno',
                 'registration.student.inep:cod_aluno,cod_aluno_inep',
                 'registration.situation:cod_matricula,cod_situacao',
-                'schoolClass' => function ($q): void {
+                'schoolClass' => function ($q) {
                     $q->select([
                         'cod_turma',
                         'ref_ref_cod_escola',
@@ -124,7 +127,10 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
             ])
             ->where('data_enturmacao', '<=', $dataBaseEducacenso)
             ->whereHas('registration', fn ($query) => $query->where('ano', $year))
-            ->whereHas('schoolClass', fn ($query) => $query->where('ref_ref_cod_escola', $schoolId))
+            ->whereHas('schoolClass', function ($q) use ($schoolId) {
+                $q->where('ref_ref_cod_escola', $schoolId);
+                $q->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO);
+            })
             ->active()
             ->get();
 
