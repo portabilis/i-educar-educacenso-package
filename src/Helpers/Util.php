@@ -10,8 +10,21 @@ if (! function_exists('clearInt')) {
 }
 
 if (! function_exists('convertSituationIEducarToEducacenso')) {
-    function convertSituationIEducarToEducacenso(int $situation): int
+    function convertSituationIEducarToEducacenso(int $situation, int $etapa = 0): int
     {
+        $etapasConcluintes = [27, 28, 29, 32, 33, 34, 37, 38, 39, 40, 41, 67, 68, 70, 71, 73, 74];
+        $situacoesAprovado = [
+            App_Model_MatriculaSituacao::APROVADO,
+            App_Model_MatriculaSituacao::APROVADO_APOS_EXAME,
+            App_Model_MatriculaSituacao::APROVADO_SEM_EXAME,
+            App_Model_MatriculaSituacao::APROVADO_COM_DEPENDENCIA,
+            App_Model_MatriculaSituacao::APROVADO_PELO_CONSELHO,
+        ];
+
+        if (in_array($situation, $situacoesAprovado, true) && in_array($etapa, $etapasConcluintes, true)) {
+            return 6;
+        }
+
         return match ($situation) {
             App_Model_MatriculaSituacao::APROVADO => 5,
             App_Model_MatriculaSituacao::REPROVADO => 4,

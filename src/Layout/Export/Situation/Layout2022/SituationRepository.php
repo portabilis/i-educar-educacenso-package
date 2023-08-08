@@ -56,11 +56,12 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 'registration.student:cod_aluno',
                 'registration.student.inep:cod_aluno,cod_aluno_inep',
                 'registration.situation:cod_matricula,cod_situacao',
-                'schoolClass' => function ($q) {
+                'schoolClass' => function ($q): void {
                     $q->select([
                         'cod_turma',
                         'ref_ref_cod_escola',
-                        'tipo_atendimento'
+                        'tipo_atendimento',
+                        'etapa_educacenso'
                     ]);
                     $q->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO);
                 },
@@ -83,7 +84,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 '5' => $enrollment->registration->student->inep ? $enrollment->registration->student->inep->number : null,
                 '6' => $enrollment->registration->student->getKey(),
                 '7' => $enrollment->registration->getKey(),
-                '8' => convertSituationIEducarToEducacenso($enrollment->registration->situation->cod_situacao),
+                '8' => convertSituationIEducarToEducacenso($enrollment->registration->situation->cod_situacao, $enrollment->schoolClass->etapa_educacenso),
             ];
         });
 
@@ -107,11 +108,12 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 'registration.student:cod_aluno',
                 'registration.student.inep:cod_aluno,cod_aluno_inep',
                 'registration.situation:cod_matricula,cod_situacao',
-                'schoolClass' => function ($q) {
+                'schoolClass' => function ($q): void {
                     $q->select([
                         'cod_turma',
                         'ref_ref_cod_escola',
-                        'tipo_atendimento'
+                        'tipo_atendimento',
+                        'etapa_educacenso'
                     ]);
                     $q->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO);
                 },
@@ -137,7 +139,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 '8' => null,
                 '9' => null,
                 '10' => null,
-                '11' => convertSituationIEducarToEducacenso($enrollment->registration->situation->cod_situacao),
+                '11' => convertSituationIEducarToEducacenso($enrollment->registration->situation->cod_situacao, $enrollment->schoolClass->etapa_educacenso),
             ];
         });
 
