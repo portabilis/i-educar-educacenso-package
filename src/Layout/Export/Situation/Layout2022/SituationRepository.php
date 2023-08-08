@@ -4,6 +4,7 @@ namespace iEducar\Packages\Educacenso\Layout\Export\Situation\Layout2022;
 
 use App\Models\LegacyEnrollment;
 use App\Models\LegacySchool;
+use iEducar\Modules\Educacenso\Model\TipoAtendimentoTurma;
 
 class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Contracts\SituationRepository
 {
@@ -55,7 +56,14 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 'registration.student:cod_aluno',
                 'registration.student.inep:cod_aluno,cod_aluno_inep',
                 'registration.situation:cod_matricula,cod_situacao',
-                'schoolClass:cod_turma,ref_ref_cod_escola',
+                'schoolClass' => function ($q) {
+                    $q->select([
+                        'cod_turma',
+                        'ref_ref_cod_escola',
+                        'tipo_atendimento'
+                    ]);
+                    $q->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO);
+                },
                 'schoolClass.school:cod_escola',
                 'schoolClass.school.inep:cod_escola,cod_escola_inep',
                 'schoolClass.inep:cod_turma,cod_turma_inep',
@@ -99,7 +107,14 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 'registration.student:cod_aluno',
                 'registration.student.inep:cod_aluno,cod_aluno_inep',
                 'registration.situation:cod_matricula,cod_situacao',
-                'schoolClass:cod_turma,ref_ref_cod_escola',
+                'schoolClass' => function ($q) {
+                    $q->select([
+                        'cod_turma',
+                        'ref_ref_cod_escola',
+                        'tipo_atendimento'
+                    ]);
+                    $q->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO);
+                },
                 'schoolClass.school:cod_escola',
                 'schoolClass.school.inep:cod_escola,cod_escola_inep',
                 'schoolClass.inep:cod_turma,cod_turma_inep',
