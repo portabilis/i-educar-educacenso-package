@@ -27,7 +27,6 @@ class ExportSituationController extends Controller
         $classRepository = 'iEducar\Packages\Educacenso\Layout\Export\Situation\Layout' . $request->get('year') . '\SituationRepository';
         $repository = new $classRepository();
 
-
         $array = [
             'escola' => $repository->getDataRecord89($request->get('year'), $request->get('school_id')),
             'matriculas' => $repository->getDataRecord90($request->get('year'), $request->get('school_id')),
