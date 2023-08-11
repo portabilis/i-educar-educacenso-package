@@ -2,6 +2,7 @@
 
 namespace iEducar\Packages\Educacenso\Layout\Export\Situation\Layout2022;
 
+use App\Models\LegacySchoolClass;
 use iEducar\Packages\Educacenso\Helpers\ErrorMessage;
 use iEducar\Packages\Educacenso\Layout\Export\Contracts\Validation;
 
