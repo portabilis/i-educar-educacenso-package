@@ -4,7 +4,6 @@ namespace iEducar\Packages\Educacenso\Layout\Export\Situation\Layout2022;
 
 use iEducar\Packages\Educacenso\Helpers\ErrorMessage;
 use iEducar\Packages\Educacenso\Layout\Export\Contracts\Validation;
-use iEducar\Packages\Educacenso\Rules\CPF;
 
 class Record89 extends Validation
 {
@@ -14,16 +13,49 @@ class Record89 extends Validation
             'escola.1' => [
                 'required',
                 'integer',
-                'in:90',
+                'in:89',
             ],
             'escola.2' => [
                 'required',
                 'digits:8',
             ],
             'escola.3' => [
-                'required',
-                'digits:11',
-                new CPF(),
+                function ($attribute, $value, $fail): void {
+                    $c = preg_replace('/\D/', '', $value);
+
+                    $errorMessage = new ErrorMessage($fail, [
+                        'key' => 'cpf',
+                        'value' => $value,
+                    ]);
+
+                    if (is_null($value) || $value == '') {
+                        $errorMessage->toString([
+                            'message' => 'Dados para formular o registro 89 inválidos. O campo "CPF do Gestor" é obrigatório.',
+                        ]);
+                    }
+
+                    if (strlen($c) != 11 || preg_match("/^{$c[0]}{11}$/", $c)) {
+                        $errorMessage->toString([
+                            'message' => 'Dados para formular o registro 89 inválidos. O campo "CPF do Gestor" é diferente de 11 caracteres.',
+                        ]);
+                    } else {
+                        for ($s = 10, $n = 0, $i = 0; $s >= 2; $n += $c[$i++] * $s--) ;
+
+                        if ($c[9] != ((($n %= 11) < 2) ? 0 : 11 - $n)) {
+                            $errorMessage->toString([
+                                'message' => 'Dados para formular o registro 89 inválidos. O campo "CPF do Gestor" é inválido.',
+                            ]);
+                        }
+
+                        for ($s = 11, $n = 0, $i = 0; $s >= 2; $n += $c[$i++] * $s--) ;
+
+                        if ($c[10] != ((($n %= 11) < 2) ? 0 : 11 - $n)) {
+                            $errorMessage->toString([
+                                'message' => 'Dados para formular o registro 89 inválidos. O campo "CPF do Gestor" é inválido.',
+                            ]);
+                        }
+                    }
+                }
             ],
             'escola.4' => [
                 'required',
