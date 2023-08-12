@@ -48,7 +48,7 @@ class ExportSituationController extends Controller
         $validator = Validator::make($array, $rules, $messages);
 
         if ($validator->fails()) {
-            redirect('/impediments')
+            return redirect('/impediments')
                 ->withErrors($validator)
                 ->withInput();
         }
