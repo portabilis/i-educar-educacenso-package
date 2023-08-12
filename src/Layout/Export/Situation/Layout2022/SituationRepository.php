@@ -57,7 +57,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 'registration.student:cod_aluno',
                 'registration.student.inep:cod_aluno,cod_aluno_inep',
                 'registration.situation:cod_matricula,cod_situacao',
-                'schoolClass' => function ($q) {
+                'schoolClass' => function ($q): void {
                     $q->select([
                         'cod_turma',
                         'ref_ref_cod_escola',
@@ -72,7 +72,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
             ])
             ->where('data_enturmacao', '<=', $dataBaseEducacenso)
             ->whereHas('registration', fn ($query) => $query->where('ano', $year))
-            ->whereHas('schoolClass', function ($q) use ($schoolId) {
+            ->whereHas('schoolClass', function ($q) use ($schoolId): void {
                 $q->where('ref_ref_cod_escola', $schoolId);
                 $q->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO);
             })
@@ -112,7 +112,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 'registration.student:cod_aluno',
                 'registration.student.inep:cod_aluno,cod_aluno_inep',
                 'registration.situation:cod_matricula,cod_situacao',
-                'schoolClass' => function ($q) {
+                'schoolClass' => function ($q): void {
                     $q->select([
                         'cod_turma',
                         'ref_ref_cod_escola',
@@ -127,7 +127,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
             ])
             ->where('data_enturmacao', '<=', $dataBaseEducacenso)
             ->whereHas('registration', fn ($query) => $query->where('ano', $year))
-            ->whereHas('schoolClass', function ($q) use ($schoolId) {
+            ->whereHas('schoolClass', function ($q) use ($schoolId): void {
                 $q->where('ref_ref_cod_escola', $schoolId);
                 $q->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO);
             })
