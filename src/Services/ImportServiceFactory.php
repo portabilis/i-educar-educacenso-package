@@ -8,6 +8,7 @@ use iEducar\Packages\Educacenso\Services\Version2019\ImportService as ImportServ
 use iEducar\Packages\Educacenso\Services\Version2020\ImportService as ImportService2020;
 use iEducar\Packages\Educacenso\Services\Version2021\ImportService as ImportService2021;
 use iEducar\Packages\Educacenso\Services\Version2022\ImportService as ImportService2022;
+use iEducar\Packages\Educacenso\Services\Version2023\ImportService as ImportService2023;
 
 class ImportServiceFactory
 {
@@ -41,6 +42,7 @@ class ImportServiceFactory
             2020 => ImportService2020::class,
             2021 => ImportService2021::class,
             2022 => ImportService2022::class,
+            2023 => ImportService2023::class,
         ];
 
         if (isset($imports[$year])) {
