@@ -657,6 +657,14 @@ class Registro30Import implements RegistroImportInterface
             $arrayCourses[] = FormacaoContinuada::NENHUM;
         }
 
+        if ($this->model->formacaoContinuadaEducacaoBilingueSurdos) {
+            $arrayCourses[] = FormacaoContinuada::EDUCACAO_BILINGUE_SURDOS;
+        }
+
+        if ($this->model->formacaoContinuadaEducacaoTecnologiaInformaçãoComunicacao) {
+            $arrayCourses[] = FormacaoContinuada::EDUCACAO_TIC;
+        }
+
         $employee->curso_formacao_continuada = $this->getPostgresIntegerArray($arrayCourses);
         $employee->save();
     }
