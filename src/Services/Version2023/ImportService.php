@@ -2,10 +2,10 @@
 
 namespace iEducar\Packages\Educacenso\Services\Version2023;
 
-use iEducar\Packages\Educacenso\Services\ImportService as GeneralImportService;
+use iEducar\Packages\Educacenso\Services\Version2022\ImportService as ImportServiceVersion2022;
 use iEducar\Packages\Educacenso\Services\Version2020\Registro40Import;
 
-class ImportService extends GeneralImportService
+class ImportService extends ImportServiceVersion2022
 {
     /**
      * Retorna o ano a que o service se refere
