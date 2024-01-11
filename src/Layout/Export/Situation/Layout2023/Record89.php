@@ -123,6 +123,9 @@ class Record89 extends Validation
             'escola.6.email' => $errorMessage->toString([
                 'message' => 'Dados para formular o registro 89 inválidos. O campo "E-mail do Gestor" deve ser um e-mail válido.',
             ]),
+            'escola.6.regex' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 89 inválidos. O campo "E-mail do Gestor" deve ser um e-mail válido.',
+            ]),
         ];
     }
 }

@@ -16,19 +16,25 @@
     <h2 class="subtitle">Análise exportação - Registros 89, 90 e 91</h2>
     <ul>
         @foreach ($errors->all() as $error)
-            @php
-                $error = json_decode($error);
-            @endphp
-            <li>
-                {{ $error->message ?? 'ERRO INDEFINIDO' }}
-            </li>
+            @if(json_validate($error))
+                @php
+                    $error = json_decode($error);
+                @endphp
+                <li>
+                    {{ $error->message ?? 'ERRO INDEFINIDO' }}
+                </li>
 
-            @if(property_exists($error, 'breadcrumb') && property_exists($error, 'url'))
-                <p>
-                    <a class="educacenso-link-path" href="{{ $error->url }}" target="_new">
-                        {{ $error->breadcrumb }}
-                    </a>
-                </p>
+                @if(property_exists($error, 'breadcrumb') && property_exists($error, 'url'))
+                    <p>
+                        <a class="educacenso-link-path" href="{{ $error->url }}" target="_new">
+                            {{ $error->breadcrumb }}
+                        </a>
+                    </p>
+                @endif
+            @else
+                <li>
+                    {{ $error ?? 'ERRO INDEFINIDO' }}
+                </li>
             @endif
         @endforeach
     </ul>
