@@ -40,6 +40,7 @@ if (! function_exists('convertSituationIEducarToEducacenso')) {
             App_Model_MatriculaSituacao::APROVADO_PELO_CONSELHO => 5,
             App_Model_MatriculaSituacao::REPROVADO_POR_FALTAS => 4,
             App_Model_MatriculaSituacao::FALECIDO => 3,
+            default => 7,
         };
     }
 }
