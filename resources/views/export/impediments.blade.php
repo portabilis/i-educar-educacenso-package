@@ -19,18 +19,16 @@
             @php
                 $error = json_decode($error);
             @endphp
-            @if($error)
-                <li>
-                    {{ $error->message ?? 'ERRO INDEFINIDO' }}
-                </li>
+            <li>
+                {{ $error->message ?? 'ERRO INDEFINIDO' }}
+            </li>
 
-                @if(property_exists($error, 'breadcrumb') && property_exists($error, 'url'))
-                    <p>
-                        <a class="educacenso-link-path" href="{{ $error->url }}" target="_new">
-                            {{ $error->breadcrumb }}
-                        </a>
-                    </p>
-                @endif
+            @if(property_exists($error, 'breadcrumb') && property_exists($error, 'url'))
+                <p>
+                    <a class="educacenso-link-path" href="{{ $error->url }}" target="_new">
+                        {{ $error->breadcrumb }}
+                    </a>
+                </p>
             @endif
         @endforeach
     </ul>
