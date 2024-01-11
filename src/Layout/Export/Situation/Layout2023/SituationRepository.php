@@ -5,7 +5,6 @@ namespace iEducar\Packages\Educacenso\Layout\Export\Situation\Layout2023;
 use App\Models\LegacyEnrollment;
 use App\Models\LegacySchool;
 use iEducar\Modules\Educacenso\Model\TipoAtendimentoTurma;
-use function iEducar\Packages\Educacenso\Layout\Export\Situation\Layout2022\config;
 
 class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Contracts\SituationRepository
 {
