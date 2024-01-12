@@ -66,7 +66,7 @@ class Record89 extends Validation
             'escola.5' => [
                 'required',
                 'integer',
-                'in:1',
+                'in:1,2',
             ],
             'escola.6' => [
                 'required',
