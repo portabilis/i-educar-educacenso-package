@@ -76,7 +76,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 $q->where('ref_ref_cod_escola', $schoolId);
                 $q->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO);
             })
-            ->active()
+            ->whereValid()
             ->get();
 
         $enrollments = $enrollments->map(function ($enrollment) {
@@ -131,7 +131,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 $q->where('ref_ref_cod_escola', $schoolId);
                 $q->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO);
             })
-            ->active()
+            ->whereValid()
             ->get();
 
         $enrollments = $enrollments->map(function ($enrollment) {
