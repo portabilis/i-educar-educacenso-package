@@ -1,6 +1,6 @@
 <?php
 
-namespace iEducar\Packages\Educacenso\Layout\Export\Situation\Layout2022;
+namespace iEducar\Packages\Educacenso\Layout\Export\Situation\Layout2023;
 
 use App\Models\LegacySchoolClass;
 use App\Models\LegacyStudent;

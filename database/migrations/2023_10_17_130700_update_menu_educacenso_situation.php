@@ -3,21 +3,27 @@
 use App\Menu;
 use Illuminate\Database\Migrations\Migration;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     public function up(): void
     {
-        $menu = Menu::where('title', 'Exportações')->first();
+        $educacensoMenu = Menu::query()
+            ->where('title', 'Educacenso')
+            ->first();
 
-        if($menu) {
+        $menuExportacao = Menu::query()
+            ->where('title', 'Exportações')
+            ->where('parent_id', $educacensoMenu->getKey())
+            ->first();
+
+        if($menuExportacao) {
             Menu::updateOrCreate([
                 'process' => 9998845,
             ], [
-                'parent_id' => $menu->getKey(),
+                'parent_id' => $menuExportacao->getKey(),
                 'title' => '2ª fase - Situação final',
                 'description' => 'Exportação do educacenso - 2ª fase',
                 'link' => '/educacenso/export-situation',
-                'order' => 1,
+                'order' => 2,
                 'type' => 3,
                 'parent_old' => 999932,
                 'old' => 9998845,

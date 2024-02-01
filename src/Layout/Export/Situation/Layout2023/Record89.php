@@ -1,6 +1,6 @@
 <?php
 
-namespace iEducar\Packages\Educacenso\Layout\Export\Situation\Layout2022;
+namespace iEducar\Packages\Educacenso\Layout\Export\Situation\Layout2023;
 
 use iEducar\Packages\Educacenso\Helpers\ErrorMessage;
 use iEducar\Packages\Educacenso\Layout\Export\Contracts\Validation;
@@ -121,6 +121,9 @@ class Record89 extends Validation
                 'message' => 'Dados para formular o registro 89 inválidos. O campo "E-mail do Gestor" é obrigatório.',
             ]),
             'escola.6.email' => $errorMessage->toString([
+                'message' => 'Dados para formular o registro 89 inválidos. O campo "E-mail do Gestor" deve ser um e-mail válido.',
+            ]),
+            'escola.6.regex' => $errorMessage->toString([
                 'message' => 'Dados para formular o registro 89 inválidos. O campo "E-mail do Gestor" deve ser um e-mail válido.',
             ]),
         ];

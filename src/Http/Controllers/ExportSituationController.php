@@ -53,6 +53,7 @@ class ExportSituationController extends Controller
                 ->withInput();
         }
 
-        return Excel::download(new Export($array), 'situation.csv');
+        $name = 'situacoes_' . $request->get('school_id') . '_' . $request->get('year') . '.txt';
+        return Excel::download(new Export($array), $name, \Maatwebsite\Excel\Excel::CSV);
     }
 }
