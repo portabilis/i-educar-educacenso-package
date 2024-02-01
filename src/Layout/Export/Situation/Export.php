@@ -33,6 +33,7 @@ class Export implements WithCustomCsvSettings, FromCollection
     {
         return [
             'delimiter' => '|',
+            'enclosure' => '',
         ];
     }
 }
