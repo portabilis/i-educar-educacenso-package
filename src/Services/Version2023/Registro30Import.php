@@ -7,9 +7,6 @@ use App\Models\Educacenso\RegistroEducacenso;
 use App\Services\EmployeePosgraduateService;
 use iEducar\Modules\ValueObjects\EmployeePosgraduateValueObject;
 use iEducar\Packages\Educacenso\Services\Version2020\Registro30Import as Registro30Import2020;
-
-use function iEducar\Packages\Educacenso\Services\Version2022\app;
-
 use iEducar\Packages\Educacenso\Services\Version2023\Models\Registro30Model;
 
 class Registro30Import extends Registro30Import2020

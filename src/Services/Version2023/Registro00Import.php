@@ -8,7 +8,7 @@ use App\Models\Educacenso\Registro00;
 use App\Models\Educacenso\RegistroEducacenso;
 use App\Models\LegacySchool;
 use iEducar\Packages\Educacenso\Services\Version2019\Registro00Import as Registro00Import2019;
-use iEducar\Packages\Educacenso\Services\Version2022\Models\Registro00Model;
+use iEducar\Packages\Educacenso\Services\Version2023\Models\Registro00Model;
 
 class Registro00Import extends Registro00Import2019
 {
