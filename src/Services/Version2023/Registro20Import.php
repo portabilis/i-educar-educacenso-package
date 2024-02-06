@@ -7,8 +7,6 @@ use App\Models\Educacenso\RegistroEducacenso;
 use App\Models\LegacySchoolClass;
 use iEducar\Packages\Educacenso\Services\Version2022\Registro20Import as Registro20Import2022;
 
-use function iEducar\Packages\Educacenso\Services\Version2022\transformDBArrayInString;
-
 use iEducar\Packages\Educacenso\Services\Version2023\Models\Registro20Model;
 
 class Registro20Import extends Registro20Import2022
