@@ -75,7 +75,7 @@ class Registro20Model extends Registro20
             $arrayColumns[47] ? UnidadesCurriculares::TRILHAS_DE_APROFUNDAMENTO_APRENDIZAGENS : null,
         ]);
 
-        $this->outrasUnidadesCurricularesObrigatorias = mb_convert_encoding($arrayColumns[48], 'ISO-8859-1', 'UTF-8');
+        $this->outrasUnidadesCurricularesObrigatorias = $arrayColumns[48] ? mb_convert_encoding($arrayColumns[48], 'ISO-8859-1', 'UTF-8') : null;
 
         $this->componentes = $this->getComponentesByImportFile(array_slice($arrayColumns, 48, 26));
         $this->classeComLinguaBrasileiraSinais = $arrayColumns[76];
