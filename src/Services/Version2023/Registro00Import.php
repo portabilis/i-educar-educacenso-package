@@ -49,6 +49,10 @@ class Registro00Import extends Registro00Import2019
 
             $school->iddis = $district->getKey();
         }
+        
+        $school->poder_publico_parceria_convenio = transformDBArrayInString($model->poderPublicoConveniado) ?: null;
+        $school->formas_contratacao_parceria_escola_secretaria_estadual = transformDBArrayInString($model->formasContratacaoPoderPublicoEstadual) ?: null;
+        $school->formas_contratacao_parceria_escola_secretaria_municipal = transformDBArrayInString($model->formasContratacaoPoderPublicoMunicipal) ?: null;
 
         $school->save();
     }
