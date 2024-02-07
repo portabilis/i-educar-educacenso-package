@@ -729,6 +729,10 @@ class Registro10Import implements RegistroImportInterface
             $arrayInstrumentosPedagogicos[] = InstrumentosPedagogicos::MATERIAIS_EDUCACAO_CAMPO;
         }
 
+        if ($this->model->instrumentosPedagogicosEducacaoBilingueSurdos) {
+            $arrayInstrumentosPedagogicos[] = InstrumentosPedagogicos::MATERIAIS_EDUCACAO_SURDOS;
+        }
+
         return $this->getPostgresIntegerArray($arrayInstrumentosPedagogicos);
     }
 
