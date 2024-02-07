@@ -27,7 +27,7 @@ class Registro20Import extends Registro20Import2022
         $schoolClass->estrutura_curricular = transformDBArrayInString($model->estruturaCurricular) ?: null;
         $schoolClass->formas_organizacao_turma = $model->formasOrganizacaoTurma ?: null;
         $schoolClass->unidade_curricular = transformDBArrayInString($model->unidadesCurriculares) ?: null;
-        $schoolClass->outras_unidades_curriculares_obrigatorias = $model->outras_unidades_curriculares_obrigatorias ?: null;
+        $schoolClass->outras_unidades_curriculares_obrigatorias = $model->outrasUnidadesCurricularesObrigatorias ?: null;
         $schoolClass->classe_com_lingua_brasileira_sinais = $model->classeComLinguaBrasileiraSinais == 1 ? 1 : 2;
 
         $schoolClass->save();
