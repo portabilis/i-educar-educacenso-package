@@ -343,6 +343,10 @@ class Registro30Import implements RegistroImportInterface
         if ($this->model->deficienciaAltasHabilidades) {
             $this->createDeficiency($person, Deficiencias::ALTAS_HABILIDADES_SUPERDOTACAO);
         }
+
+        if ($this->model->deficienciaVisaoMonocular) {
+            $this->createDeficiency($person, Deficiencias::VISAO_MONOCULAR);
+        }
     }
 
     /**
