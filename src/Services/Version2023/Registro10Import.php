@@ -25,6 +25,7 @@ class Registro10Import extends Registro10Import2022
         $model = $this->model;
 
         $school->nao_ha_funcionarios_para_funcoes = (bool) $model->semFuncionariosParaFuncoes;
+        $school->qtd_tradutor_interprete_libras_outro_ambiente = $model->qtdTradutorInterpreteLibrasOutroAmbiente ?: 0;
 
         $school->save();
     }
