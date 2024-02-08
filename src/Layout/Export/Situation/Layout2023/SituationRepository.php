@@ -33,7 +33,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 '3' => clearInt($schoolManager->individual->cpf),
                 '4' => mb_strtoupper($schoolManager->individual->person->name),
                 '5' => $schoolManager->role_id,
-                '6' => $schoolManager->individual->person->email,
+                '6' => mb_strtoupper($schoolManager->individual->person->email),
             ];
         }
 
