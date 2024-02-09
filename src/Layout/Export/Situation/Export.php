@@ -3,9 +3,8 @@
 namespace iEducar\Packages\Educacenso\Layout\Export\Situation;
 
 use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 
-class Export implements WithCustomCsvSettings, FromCollection
+class Export implements FromCollection
 {
     public function __construct(
         public array $data
@@ -26,13 +25,5 @@ class Export implements WithCustomCsvSettings, FromCollection
         }
 
         return $collect;
-    }
-
-    public function getCsvSettings(): array
-    {
-        return [
-            'delimiter' => '|',
-            'enclosure' => '',
-        ];
     }
 }
