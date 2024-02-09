@@ -64,7 +64,7 @@ class Csv extends \PhpOffice\PhpSpreadsheet\Writer\Csv
         foreach ($values as $element) {
             $line .= $delimiter;
             $delimiter = $this->delimiter;
-            $line .= $element;
+            $line .= mb_strtoupper($element);
         }
 
         $line .= PHP_EOL;
