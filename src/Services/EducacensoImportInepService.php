@@ -62,7 +62,7 @@ class EducacensoImportInepService
             if (!empty($id) && !empty($inep)) {
                 match ($register) {
                     '20' => $this->updateSchoolClass($id, $inep),
-                    '30', '40', '50' => $this->updateEmployee($id, $inep),
+                    '40', '50' => $this->updateEmployee($id, $inep),
                     '60' => $this->updateStudent($id, $inep),
                     default => null
                 };
@@ -92,11 +92,14 @@ class EducacensoImportInepService
 
     private function updateStudent($id, $inep): void
     {
-        $doesntExist = LegacyStudent::query()->whereKey($id)->doesntExist();
-        if ($doesntExist) {
+        $students = LegacyStudent::query()->where('ref_idpes', $id)->get(['cod_aluno']);
+        if ($students->isEmpty()) {
             return;
         }
-        StudentInep::query()->updateOrCreate(['cod_aluno' => $id], ['cod_aluno_inep' => $inep]);
+
+        foreach ($students as $student) {
+            StudentInep::query()->updateOrCreate(['cod_aluno' => $student->getKey()], ['cod_aluno_inep' => $inep]);
+        }
     }
 
     private function updateImporter(): void
