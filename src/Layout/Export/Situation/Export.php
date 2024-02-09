@@ -18,7 +18,6 @@ class Export implements WithCustomCsvSettings, FromCollection
 
         $collect->push($this->data['escola']);
 
-        $array [] = $this->data['escola'];
         foreach ($this->data['matriculas'] as $matricula) {
             $collect->push($matricula);
         }
