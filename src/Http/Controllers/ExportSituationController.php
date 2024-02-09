@@ -5,8 +5,10 @@ namespace iEducar\Packages\Educacenso\Http\Controllers;
 use App\Http\Controllers\Controller;
 use iEducar\Packages\Educacenso\Http\Requests\ExportSituationRequest;
 use iEducar\Packages\Educacenso\Layout\Export\Situation\Export;
+use iEducar\Packages\Educacenso\Services\Csv;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class ExportSituationController extends Controller
 {
@@ -52,6 +54,11 @@ class ExportSituationController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
+
+        IOFactory::registerWriter(
+            writerType: \Maatwebsite\Excel\Excel::CSV,
+            writerClass: Csv::class
+        );
 
         $name = 'situacoes_' . $request->get('school_id') . '_' . $request->get('year') . '.txt';
         return Excel::download(
