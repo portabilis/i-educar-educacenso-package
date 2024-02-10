@@ -8,7 +8,8 @@
     ],
     "autoload": {
         "psr-4": {
-            "iEducar\\Packages\\Educacenso\\": "src/"
+            "iEducar\\Packages\\Educacenso\\": "src/",
+            "Database\\Factories\\": "database/factories/"
         },
         "files": [
             "src/Helpers/Util.php"
