@@ -55,6 +55,10 @@ class ExportSituationController extends Controller
                 ->withInput();
         }
 
+        /**
+         * Foi necessário reescrever a classe Csv permitindo assim a
+         * exportação de linhas com número diferente de colunas.
+         */
         IOFactory::registerWriter(
             writerType: \Maatwebsite\Excel\Excel::CSV,
             writerClass: Csv::class
