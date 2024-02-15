@@ -64,7 +64,7 @@ class ExportSituationController extends Controller
             writerClass: Csv::class
         );
 
-        $name = 'situacoes_' . $request->get('school_id') . '_' . $request->get('year') . '.txt';
+        $name = 'sit_' . $request->get('school_id') . '_' . $request->get('year') . '.txt';
         return Excel::download(
             export: new Export($array),
             fileName: $name,
