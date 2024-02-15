@@ -35,9 +35,10 @@ class IsNotEmptyInepNumberStudent implements ValidationRule, DataAwareRule
             ->when($dataBaseEducacenso, function ($q) use ($dataBaseEducacenso): void {
                 $q->where('data_enturmacao', '<=', $dataBaseEducacenso);
             })
-            ->whereHas('registration', fn (
-                $query
-            ) => $query->where('ano', $this->data['year']))
+            ->whereHas('registration', function ($q) {
+                $q->where('ano', $this->data['year']);
+                $q->whereNull('data_cancel');
+            })
             ->whereHas('schoolClass', fn (
                 $query
             ) => $query->where('ref_ref_cod_escola', $this->data['school_id']))

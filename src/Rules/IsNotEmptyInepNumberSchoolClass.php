@@ -14,6 +14,8 @@ class IsNotEmptyInepNumberSchoolClass implements ValidationRule, DataAwareRule
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+        $dataBaseEducacenso = config('educacenso.data_base.' . $this->data['year']);
+
         $enrollments = LegacyEnrollment::query()
             ->select([
                 'ref_cod_matricula',
@@ -25,7 +27,13 @@ class IsNotEmptyInepNumberSchoolClass implements ValidationRule, DataAwareRule
                 'schoolClass.school:cod_escola',
                 'schoolClass.inep:cod_turma,cod_turma_inep',
             ])
-            ->whereHas('registration', fn ($query) => $query->where('ano', $this->data['year']))
+            ->when($dataBaseEducacenso, function ($q) use ($dataBaseEducacenso): void {
+                $q->where('data_enturmacao', '<=', $dataBaseEducacenso);
+            })
+            ->whereHas('registration', function ($q) {
+                $q->where('ano', $this->data['year']);
+                $q->whereNull('data_cancel');
+            })
             ->whereHas('schoolClass', fn ($query) => $query->where('ref_ref_cod_escola', $this->data['school_id']))
             ->active()
             ->get();
