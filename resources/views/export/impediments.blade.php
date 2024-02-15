@@ -13,7 +13,12 @@
         </h1>
     </div>
     <div id="editor"></div>
-    <h2 class="subtitle">Análise exportação - Registros 89, 90 e 91</h2>
+    <h2 class="subtitle">
+        Análise exportação - Registros 89, 90 e 91<br/>
+        <span style="font-size: 12px">
+            <strong>{{ count($errors->all()) }}</strong> impeditivos encontrados
+        </span>
+    </h2>
     <ul>
         @foreach ($errors->all() as $error)
             @if(json_validate($error))

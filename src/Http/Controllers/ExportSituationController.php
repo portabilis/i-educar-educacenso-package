@@ -5,8 +5,10 @@ namespace iEducar\Packages\Educacenso\Http\Controllers;
 use App\Http\Controllers\Controller;
 use iEducar\Packages\Educacenso\Http\Requests\ExportSituationRequest;
 use iEducar\Packages\Educacenso\Layout\Export\Situation\Export;
+use iEducar\Packages\Educacenso\Services\Csv;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class ExportSituationController extends Controller
 {
@@ -53,7 +55,20 @@ class ExportSituationController extends Controller
                 ->withInput();
         }
 
-        $name = 'situacoes_' . $request->get('school_id') . '_' . $request->get('year') . '.txt';
-        return Excel::download(new Export($array), $name, \Maatwebsite\Excel\Excel::CSV);
+        /**
+         * Foi necessário reescrever a classe Csv permitindo assim a
+         * exportação de linhas com número diferente de colunas.
+         */
+        IOFactory::registerWriter(
+            writerType: \Maatwebsite\Excel\Excel::CSV,
+            writerClass: Csv::class
+        );
+
+        $name = 'sit_' . $request->get('school_id') . '_' . $request->get('year') . '.txt';
+        return Excel::download(
+            export: new Export($array),
+            fileName: $name,
+            writerType: \Maatwebsite\Excel\Excel::CSV
+        );
     }
 }
