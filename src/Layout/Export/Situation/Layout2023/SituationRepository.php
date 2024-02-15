@@ -71,8 +71,12 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 'schoolClass.inep:cod_turma,cod_turma_inep',
             ])
             ->where('data_enturmacao', '<=', $dataBaseEducacenso)
-            ->whereHas('registration', function ($q) use ($year) {
+            ->whereHas('registration', function ($q) use ($year, $dataBaseEducacenso) {
                 $q->where('ano', $year);
+                $q->where(function ($q) use ($dataBaseEducacenso) {
+                    $q->whereNull('data_cancel');
+                    $q->orWhere('data_cancel', '>=', $dataBaseEducacenso);
+                });
                 $q->whereNull('data_cancel');
             })
             ->whereHas('schoolClass', function ($q) use ($schoolId): void {
@@ -129,9 +133,12 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 'schoolClass.inep:cod_turma,cod_turma_inep',
             ])
             ->where('data_enturmacao', '<=', $dataBaseEducacenso)
-            ->whereHas('registration', function ($q) use ($year) {
+            ->whereHas('registration', function ($q) use ($year, $dataBaseEducacenso) {
                 $q->where('ano', $year);
-                $q->whereNull('data_cancel');
+                $q->where(function ($q) use ($dataBaseEducacenso) {
+                    $q->whereNull('data_cancel');
+                    $q->orWhere('data_cancel', '>=', $dataBaseEducacenso);
+                });
             })
             ->whereHas('schoolClass', function ($q) use ($schoolId): void {
                 $q->where('ref_ref_cod_escola', $schoolId);
