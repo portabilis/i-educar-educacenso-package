@@ -9,6 +9,7 @@ use iEducar\Packages\Educacenso\Layout\Export\Contracts\Validation;
 
 class Record90 extends Validation
 {
+    private $unsetMatriculas = [];
     public function __construct(
         public array $data
     ) {
@@ -50,16 +51,12 @@ class Record90 extends Validation
                         $errorMessage->toString([
                             'message' => 'Dados para formular o registro 90 inválidos. O campo Código INEP da Turma ' . $schoolClass->name . ' é obrigatório.',
                         ]);
-                    }
-
-                    if (strlen($value) > 10) {
+                    } elseif (strlen($value) > 10) {
                         $schoolClass = LegacySchoolClass::find($schoolClassId);
                         $errorMessage->toString([
                             'message' => 'Dados para formular o registro 90 inválidos. O campo Código INEP da Turma ' . $schoolClass->name . ' deve possuir no máximo 10 caracteres.',
                         ]);
-                    }
-
-                    if (is_numeric($value) == false) {
+                    } elseif (is_numeric($value) == false) {
                         $schoolClass = LegacySchoolClass::find($schoolClassId);
                         $errorMessage->toString([
                             'message' => 'Dados para formular o registro 90 inválidos. O campo Código INEP da Turma ' . $schoolClass->name . ' deve conter apenas números.',
@@ -67,10 +64,10 @@ class Record90 extends Validation
                     }
                 }
             ],
-            'matriculas.*.5' => [
+            'matriculas.*' => [
                 function ($attribute, $value, $fail) use ($data): void {
-                    $index = array_search($value, array_column($data, '5'), true);
-                    $studentId = $data[$index]['6'];
+                    $inep = $value['5'];
+                    $studentId = $value['6'];
 
                     $errorMessage = new ErrorMessage($fail, [
                         'key' => 'cod_aluno',
@@ -79,21 +76,17 @@ class Record90 extends Validation
                         'url' => '/module/Cadastro/aluno?id=' . $studentId
                     ]);
 
-                    if (is_null($value) || $value == '') {
+                    if (is_null($inep) || $inep == '') {
                         $student = LegacyStudent::find($studentId);
                         $errorMessage->toString([
                             'message' => 'Dados para formular o registro 90 inválidos. O campo Código INEP do Aluno ' . $student->name . ' é obrigatório.',
                         ]);
-                    }
-
-                    if (strlen($value) != 12) {
+                    } elseif (strlen($inep) != 12) {
                         $student = LegacyStudent::find($studentId);
                         $errorMessage->toString([
                             'message' => 'Dados para formular o registro 90 inválidos. O campo Código INEP do Aluno ' . $student->name . ' deve possuir 12 caracteres.',
                         ]);
-                    }
-
-                    if (is_numeric($value) == false) {
+                    } elseif (is_numeric($inep) == false) {
                         $student = LegacyStudent::find($studentId);
                         $errorMessage->toString([
                             'message' => 'Dados para formular o registro 90 inválidos. O campo Código INEP do Aluno ' . $student->name . ' deve conter apenas números.',

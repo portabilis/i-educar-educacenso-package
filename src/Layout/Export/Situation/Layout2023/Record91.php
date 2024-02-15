@@ -35,7 +35,6 @@ class Record91 extends Validation
             'turma_matriculas.*.4' => [
                 function ($attribute, $value, $fail) use ($data): void {
                     $index = array_search($value, array_column($data, '4'), true);
-
                     $schoolClassId = $data[$index]['3'];
 
                     $errorMessage = new ErrorMessage($fail, [
@@ -50,16 +49,12 @@ class Record91 extends Validation
                         $errorMessage->toString([
                             'message' => 'Dados para formular o registro 91 inválidos. O campo Código INEP da Turma ' . $schoolClass->name . ' é obrigatório.',
                         ]);
-                    }
-
-                    if (strlen($value) > 10) {
+                    } elseif (strlen($value) > 10) {
                         $schoolClass = LegacySchoolClass::find($schoolClassId);
                         $errorMessage->toString([
                             'message' => 'Dados para formular o registro 91 inválidos. O campo Código INEP da Turma ' . $schoolClass->name . ' deve possuir no máximo 10 caracteres.',
                         ]);
-                    }
-
-                    if (is_numeric($value) == false) {
+                    } elseif (is_numeric($value) == false) {
                         $schoolClass = LegacySchoolClass::find($schoolClassId);
                         $errorMessage->toString([
                             'message' => 'Dados para formular o registro 91 inválidos. O campo Código INEP da Turma ' . $schoolClass->name . ' deve conter apenas números.',
@@ -67,10 +62,10 @@ class Record91 extends Validation
                     }
                 }
             ],
-            'turma_matriculas.*.5' => [
+            'turma_matriculas.*' => [
                 function ($attribute, $value, $fail) use ($data): void {
-                    $index = array_search($value, array_column($data, '5'), true);
-                    $studentId = $data[$index]['6'];
+                    $inep = $value['5'];
+                    $studentId = $value['6'];
 
                     $errorMessage = new ErrorMessage($fail, [
                         'key' => 'cod_aluno',
@@ -79,21 +74,17 @@ class Record91 extends Validation
                         'url' => '/module/Cadastro/aluno?id=' . $studentId
                     ]);
 
-                    if (is_null($value) || $value == '') {
+                    if (is_null($inep) || $inep == '') {
                         $student = LegacyStudent::find($studentId);
                         $errorMessage->toString([
                             'message' => 'Dados para formular o registro 91 inválidos. O campo Código INEP do Aluno ' . $student->name . ' é obrigatório.',
                         ]);
-                    }
-
-                    if (strlen($value) != 12) {
+                    } elseif (strlen($inep) != 12) {
                         $student = LegacyStudent::find($studentId);
                         $errorMessage->toString([
                             'message' => 'Dados para formular o registro 91 inválidos. O campo Código INEP do Aluno ' . $student->name . ' deve possuir 12 caracteres.',
                         ]);
-                    }
-
-                    if (is_numeric($value) == false) {
+                    } elseif (is_numeric($inep) == false) {
                         $student = LegacyStudent::find($studentId);
                         $errorMessage->toString([
                             'message' => 'Dados para formular o registro 91 inválidos. O campo Código INEP do Aluno ' . $student->name . ' deve conter apenas números.',
