@@ -54,7 +54,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 '4' => $enrollment->schoolClass->inep ? $enrollment->schoolClass->inep->number : null,
                 '5' => $enrollment->registration->student->inep ? $enrollment->registration->student->inep->number : null,
                 '6' => $enrollment->registration->student->getKey(),
-                '7' => $enrollment->inep->matricula_inep,
+                '7' => $enrollment->inep?->matricula_inep,
                 '8' => convertSituationIEducarToEducacenso($enrollment->registration->situation->cod_situacao, $enrollment->schoolClass->etapa_educacenso),
             ];
         });
