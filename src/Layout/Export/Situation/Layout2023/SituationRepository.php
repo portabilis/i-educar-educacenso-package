@@ -54,7 +54,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 '4' => $enrollment->schoolClass->inep ? $enrollment->schoolClass->inep->number : null,
                 '5' => $enrollment->registration->student->inep ? $enrollment->registration->student->inep->number : null,
                 '6' => $enrollment->registration->student->getKey(),
-                '7' => $enrollment->registration->getKey(),
+                '7' => $enrollment->inep->matricula_inep,
                 '8' => convertSituationIEducarToEducacenso($enrollment->registration->situation->cod_situacao, $enrollment->schoolClass->etapa_educacenso),
             ];
         });
@@ -95,13 +95,15 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
             ->select([
                 'ref_cod_matricula',
                 'ref_cod_turma',
-                'data_enturmacao'
+                'data_enturmacao',
+                'id'
             ])
             ->with([
                 'registration:cod_matricula,ref_cod_aluno,ano',
                 'registration.student:cod_aluno',
                 'registration.student.inep:cod_aluno,cod_aluno_inep',
                 'registration.situation:cod_matricula,cod_situacao',
+                'inep:matricula_turma_id,matricula_inep',
                 'schoolClass' => function ($q): void {
                     $q->select([
                         'cod_turma',
