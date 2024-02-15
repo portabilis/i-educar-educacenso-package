@@ -78,17 +78,17 @@ class Record90 extends Validation
                     if (is_null($inep) || $inep == '') {
                         $student = LegacyStudent::find($studentId);
                         $errorMessage->toString([
-                            'message' => 'Dados para formular o registro 90 inválidos. O campo Código INEP do(a) Aluno(a) ' . $student->name . ' é obrigatório.',
+                            'message' => 'Dados para formular o registro 90 inválidos. O campo Código INEP do(a) Aluno(a) ' . mb_strtoupper($student->name) . ' é obrigatório.',
                         ]);
                     } elseif (strlen($inep) != 12) {
                         $student = LegacyStudent::find($studentId);
                         $errorMessage->toString([
-                            'message' => 'Dados para formular o registro 90 inválidos. O campo Código INEP do(a) Aluno(a) ' . $student->name . ' deve possuir 12 caracteres.',
+                            'message' => 'Dados para formular o registro 90 inválidos. O campo Código INEP do(a) Aluno(a) ' . mb_strtoupper($student->name) . ' deve possuir 12 caracteres.',
                         ]);
                     } elseif (is_numeric($inep) == false) {
                         $student = LegacyStudent::find($studentId);
                         $errorMessage->toString([
-                            'message' => 'Dados para formular o registro 90 inválidos. O campo Código INEP do(a) Aluno(a) ' . $student->name . ' deve conter apenas números.',
+                            'message' => 'Dados para formular o registro 90 inválidos. O campo Código INEP do(a) Aluno(a) ' . mb_strtoupper($student->name) . ' deve conter apenas números.',
                         ]);
                     }
                 },
@@ -115,21 +115,21 @@ class Record90 extends Validation
                         $schoolClass = LegacySchoolClass::find($schoolClassId);
 
                         $errorMessage->toString([
-                            'message' => 'Dados para formular o registro 90 inválidos. O campo Matrícula INEP do(a) Aluno(a) ' . $student->name . ' na Turma ' . $schoolClass->name . ' é obrigatório.',
+                            'message' => 'Dados para formular o registro 90 inválidos. O campo Matrícula INEP do(a) Aluno(a) ' . mb_strtoupper($student->name) . ' na Turma ' . $schoolClass->name . ' é obrigatório.',
                         ]);
                     } elseif (strlen($matricula) > 12) {
                         $student = LegacyStudent::find($studentId);
                         $schoolClass = LegacySchoolClass::find($schoolClassId);
 
                         $errorMessage->toString([
-                            'message' => 'Dados para formular o registro 90 inválidos. O campo Matrícula INEP do(a) Aluno(a) ' . $student->name . ' na Turma ' . $schoolClass->name . ' não pode possuir mais de 12 caracteres.',
+                            'message' => 'Dados para formular o registro 90 inválidos. O campo Matrícula INEP do(a) Aluno(a) ' . mb_strtoupper($student->name) . ' na Turma ' . $schoolClass->name . ' não pode possuir mais de 12 caracteres.',
                         ]);
                     } elseif (is_numeric($matricula) == false) {
                         $student = LegacyStudent::find($studentId);
                         $schoolClass = LegacySchoolClass::find($schoolClassId);
 
                         $errorMessage->toString([
-                            'message' => 'Dados para formular o registro 90 inválidos. O campo Matrícula INEP do(a) Aluno(a) ' . $student->name . ' na Turma ' . $schoolClass->name . ' deve conter apenas números.',
+                            'message' => 'Dados para formular o registro 90 inválidos. O campo Matrícula INEP do(a) Aluno(a) ' . mb_strtoupper($student->name) . ' na Turma ' . $schoolClass->name . ' deve conter apenas números.',
                         ]);
                     }
                 },
