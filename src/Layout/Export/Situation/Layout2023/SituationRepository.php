@@ -77,7 +77,6 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                     $q->whereNull('data_cancel');
                     $q->orWhere('data_cancel', '>=', $dataBaseEducacenso);
                 });
-                $q->whereNull('data_cancel');
             })
             ->whereHas('schoolClass', function ($q) use ($schoolId): void {
                 $q->where('ref_ref_cod_escola', $schoolId);
