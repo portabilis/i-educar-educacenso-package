@@ -63,7 +63,7 @@ class EducacensoImportInepService
             $inep = $lineArray[3] ?? null;
             $inepSchoolClass = $lineArray[5] ?? null;
             $matricula = $lineArray[6] ?? null;
-            if (!empty($id) && !empty($inep)) {
+            if (! empty($id) && ! empty($inep)) {
                 match ($register) {
                     '20' => $this->updateSchoolClass($id, $inep),
                     '40', '50' => $this->updateEmployee($id, $inep),
@@ -117,7 +117,7 @@ class EducacensoImportInepService
         if ($schoolClassInep) {
             $enrollment = LegacyEnrollment::query()
                 ->where('ref_cod_turma', $schoolClassInep->cod_turma)
-                ->whereHas('registration', function ($q) use ($student) {
+                ->whereHas('registration', function ($q) use ($student): void {
                     $q->where('ref_cod_aluno', $student->getKey());
                 })
                 ->get(['id'])

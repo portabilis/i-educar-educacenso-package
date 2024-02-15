@@ -41,7 +41,7 @@ class EducacensoProvider extends ServiceProvider
                 ->names('educacenso-import-registrations')
                 ->middleware('can:view:' . Process::EDUCACENSO_IMPORT_HISTORY);
 
-            Route::prefix('educacenso/importacao/inep')->middleware('can:modify:' . Process::EDUCACENSO_IMPORT_INEP)->group(function () {
+            Route::prefix('educacenso/importacao/inep')->middleware('can:modify:' . Process::EDUCACENSO_IMPORT_INEP)->group(function (): void {
                 Route::get('create', [ImportInepController::class, 'create'])->name('educacenso.import.inep.create');
                 Route::post('/', [ImportInepController::class, 'store'])->name('educacenso.import.inep.store');
                 Route::get('/', [ImportInepController::class, 'index'])->name('educacenso.import.inep.index');

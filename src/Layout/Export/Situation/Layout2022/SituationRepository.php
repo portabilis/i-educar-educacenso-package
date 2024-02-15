@@ -71,7 +71,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 'schoolClass.inep:cod_turma,cod_turma_inep',
             ])
             ->where('data_enturmacao', '<=', $dataBaseEducacenso)
-            ->whereHas('registration', function ($q) use ($year) {
+            ->whereHas('registration', function ($q) use ($year): void {
                 $q->where('ano', $year);
                 $q->whereNull('data_cancel');
             })
@@ -129,7 +129,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 'schoolClass.inep:cod_turma,cod_turma_inep',
             ])
             ->where('data_enturmacao', '<=', $dataBaseEducacenso)
-            ->whereHas('registration', function ($q) use ($year) {
+            ->whereHas('registration', function ($q) use ($year): void {
                 $q->where('ano', $year);
                 $q->whereNull('data_cancel');
             })

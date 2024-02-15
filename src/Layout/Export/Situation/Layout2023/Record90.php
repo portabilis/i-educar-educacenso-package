@@ -98,7 +98,7 @@ class Record90 extends Validation
                 'max:20',
             ],
             'matriculas.*' => [
-                function ($attribute, $value, $fail) {
+                function ($attribute, $value, $fail): void {
                     $schoolClassId = $value['3'];
                     $studentId = $value['6'];
                     $matricula = $value['7'];
