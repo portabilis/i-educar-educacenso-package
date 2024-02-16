@@ -18,6 +18,7 @@ class IsNotEmptyInepNumberStudent implements ValidationRule, DataAwareRule
         Closure $fail
     ): void {
         $dataBaseEducacenso = config('educacenso.data_base.' . $this->data['year']);
+        $shool_id = $this->data['school_id'];
 
         $enrollments = LegacyEnrollment::query()
             ->select([
@@ -39,9 +40,9 @@ class IsNotEmptyInepNumberStudent implements ValidationRule, DataAwareRule
                 $q->where('ano', $this->data['year']);
                 $q->whereNull('data_cancel');
             })
-            ->whereHas('schoolClass', fn (
-                $query
-            ) => $query->where('ref_ref_cod_escola', $this->data['school_id']))
+            ->whereHas('schoolClass', function($q) use ($shool_id): void {
+                $q->where('ref_ref_cod_escola', $shool_id);
+            })
             ->active()
             ->get();
 
@@ -55,28 +56,28 @@ class IsNotEmptyInepNumberStudent implements ValidationRule, DataAwareRule
 
             if (is_null($enrollment->registration->student->inep)) {
                 $errorMessage->toString([
-                    'message' => 'Dados para formular o registro 90 inválidos. O aluno ' . mb_strtoupper($enrollment->registration->student->person->nome) . ' não possui um número INEP.',
+                    'message' => 'Dados para formular o registro 90 inválidos. O(a) aluno(a) ' . mb_strtoupper($enrollment->registration->student->person->nome) . ' não possui um número INEP.',
                 ]);
                 continue;
             }
 
             if (empty($enrollment->registration->student->inep->cod_aluno_inep)) {
                 $errorMessage->toString([
-                    'message' => 'Dados para formular o registro 90 inválidos. O aluno ' . mb_strtoupper($enrollment->registration->student->person->nome) . ' não possui um número INEP válido.',
+                    'message' => 'Dados para formular o registro 90 inválidos. O(a) aluno(a) ' . mb_strtoupper($enrollment->registration->student->person->nome) . ' não possui um número INEP válido.',
                 ]);
                 continue;
             }
 
             if (strlen($enrollment->registration->student->inep->cod_aluno_inep) != 12) {
                 $errorMessage->toString([
-                    'message' => 'Dados para formular o registro 90 inválidos. O aluno ' . mb_strtoupper($enrollment->registration->student->person->nome) . ' não possui um número INEP com 12 casas decimais.',
+                    'message' => 'Dados para formular o registro 90 inválidos. O(a) aluno(a) ' . mb_strtoupper($enrollment->registration->student->person->nome) . ' não possui um número INEP com 12 casas decimais.',
                 ]);
                 continue;
             }
 
             if (! is_numeric($enrollment->registration->student->inep->cod_aluno_inep)) {
                 $errorMessage->toString([
-                    'message' => 'Dados para formular o registro 90 inválidos. O aluno ' . mb_strtoupper($enrollment->registration->student->person->nome) . ' não possui um número INEP numérico.',
+                    'message' => 'Dados para formular o registro 90 inválidos. O(a) aluno(a) ' . mb_strtoupper($enrollment->registration->student->person->nome) . ' não possui um número INEP numérico.',
                 ]);
             }
         }
