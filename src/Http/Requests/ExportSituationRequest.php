@@ -5,6 +5,7 @@ namespace iEducar\Packages\Educacenso\Http\Requests;
 use App\Models\LegacyInstitution;
 use App\Models\LegacySchool;
 use iEducar\Packages\Educacenso\Helpers\ErrorMessage;
+use iEducar\Packages\Educacenso\Rules\IsNotEmptyInepNumberEnrollment;
 use iEducar\Packages\Educacenso\Rules\IsNotEmptyInepNumberSchool;
 use iEducar\Packages\Educacenso\Rules\IsNotEmptyInepNumberSchoolClass;
 use iEducar\Packages\Educacenso\Rules\IsNotEmptyInepNumberStudent;
@@ -40,9 +41,10 @@ class ExportSituationRequest extends FormRequest
                 'required',
                 'integer',
                 'exists:' . LegacySchool::class . ',cod_escola',
-                //new IsNotEmptyInepNumberSchool(),
-                //new IsNotEmptyInepNumberSchoolClass(),
-                //new IsNotEmptyInepNumberStudent(),
+                new IsNotEmptyInepNumberSchool(),
+                new IsNotEmptyInepNumberSchoolClass(),
+                new IsNotEmptyInepNumberStudent(),
+                new IsNotEmptyInepNumberEnrollment(),
             ]
         ];
     }

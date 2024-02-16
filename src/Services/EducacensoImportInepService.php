@@ -4,6 +4,8 @@ namespace iEducar\Packages\Educacenso\Services;
 
 use App\Models\Employee;
 use App\Models\EmployeeInep;
+use App\Models\EnrollmentInep;
+use App\Models\LegacyEnrollment;
 use App\Models\LegacySchoolClass;
 use App\Models\LegacyStudent;
 use App\Models\NotificationType;
@@ -59,11 +61,13 @@ class EducacensoImportInepService
             $register = $lineArray[0];
             $id = $lineArray[2] ?? null;
             $inep = $lineArray[3] ?? null;
-            if (!empty($id) && !empty($inep)) {
+            $inepSchoolClass = $lineArray[5] ?? null;
+            $matricula = $lineArray[6] ?? null;
+            if (! empty($id) && ! empty($inep)) {
                 match ($register) {
                     '20' => $this->updateSchoolClass($id, $inep),
                     '40', '50' => $this->updateEmployee($id, $inep),
-                    '60' => $this->updateStudent($id, $inep),
+                    '60' => $this->updateStudent($id, $inep, $inepSchoolClass, $matricula),
                     default => null
                 };
             }
@@ -90,7 +94,7 @@ class EducacensoImportInepService
         EmployeeInep::query()->updateOrCreate(['cod_servidor' => $id], ['cod_docente_inep' => $inep]);
     }
 
-    private function updateStudent($id, $inep): void
+    private function updateStudent($id, $inep, $inepSchoolClass, $matricula): void
     {
         $students = LegacyStudent::query()->where('ref_idpes', $id)->get(['cod_aluno']);
         if ($students->isEmpty()) {
@@ -98,7 +102,37 @@ class EducacensoImportInepService
         }
 
         foreach ($students as $student) {
-            StudentInep::query()->updateOrCreate(['cod_aluno' => $student->getKey()], ['cod_aluno_inep' => $inep]);
+            StudentInep::query()
+                ->updateOrCreate([
+                    'cod_aluno' => $student->getKey()
+                ], [
+                    'cod_aluno_inep' => $inep
+                ]);
+        }
+
+        $schoolClassInep = SchoolClassInep::query()
+            ->where('cod_turma_inep', $inepSchoolClass)
+            ->first();
+
+        if ($schoolClassInep) {
+            $enrollment = LegacyEnrollment::query()
+                ->where('ref_cod_turma', $schoolClassInep->cod_turma)
+                ->whereHas('registration', function ($q) use ($student): void {
+                    $q->where('ref_cod_aluno', $student->getKey());
+                })
+                ->get(['id'])
+                ->first();
+
+            if ($enrollment) {
+                EnrollmentInep::query()
+                    ->updateOrCreate([
+                        'matricula_turma_id' => $enrollment->getKey(),
+                        'matricula_inep' => $matricula
+                    ], [
+                        'matricula_turma_id' => $enrollment->getKey(),
+                        'matricula_inep' => $matricula
+                    ]);
+            }
         }
     }
 

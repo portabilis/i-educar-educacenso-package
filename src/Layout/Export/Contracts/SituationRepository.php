@@ -9,4 +9,6 @@ abstract class SituationRepository
     abstract public function getDataRecord90(int $year, int $schoolId): array;
 
     abstract public function getDataRecord91(int $year, int $schoolId): array;
+
+    abstract public function getEnrollmentsToExport(int $year, int $schoolId): mixed;
 }

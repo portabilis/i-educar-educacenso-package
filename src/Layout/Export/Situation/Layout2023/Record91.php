@@ -77,17 +77,17 @@ class Record91 extends Validation
                     if (is_null($inep) || $inep == '') {
                         $student = LegacyStudent::find($studentId);
                         $errorMessage->toString([
-                            'message' => 'Dados para formular o registro 91 inválidos. O campo Código INEP do Aluno ' . $student->name . ' é obrigatório.',
+                            'message' => 'Dados para formular o registro 91 inválidos. O campo Código INEP do(a) Aluno(a) ' . $student->name . ' é obrigatório.',
                         ]);
                     } elseif (strlen($inep) != 12) {
                         $student = LegacyStudent::find($studentId);
                         $errorMessage->toString([
-                            'message' => 'Dados para formular o registro 91 inválidos. O campo Código INEP do Aluno ' . $student->name . ' deve possuir 12 caracteres.',
+                            'message' => 'Dados para formular o registro 91 inválidos. O campo Código INEP do(a) Aluno(a) ' . $student->name . ' deve possuir 12 caracteres.',
                         ]);
                     } elseif (is_numeric($inep) == false) {
                         $student = LegacyStudent::find($studentId);
                         $errorMessage->toString([
-                            'message' => 'Dados para formular o registro 91 inválidos. O campo Código INEP do Aluno ' . $student->name . ' deve conter apenas números.',
+                            'message' => 'Dados para formular o registro 91 inválidos. O campo Código INEP do(a) Aluno(a) ' . $student->name . ' deve conter apenas números.',
                         ]);
                     }
                 }

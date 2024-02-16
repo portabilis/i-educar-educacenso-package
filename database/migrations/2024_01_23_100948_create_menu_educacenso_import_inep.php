@@ -5,11 +5,10 @@ use App\Process;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     public function up(): void
     {
-        Schema::create('educacenso_inep_imports', function (Blueprint $table) {
+        Schema::create('educacenso_inep_imports', function (Blueprint $table): void {
             $table->id();
             $table->smallInteger('year');
             $table->string('school_name');

@@ -51,10 +51,10 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 '1' => 90,
                 '2' => $enrollment->schoolClass->school->inep->number,
                 '3' => $enrollment->schoolClass->getKey(),
-                '4' => $enrollment->schoolClass->inep ? $enrollment->schoolClass->inep->number : null,
-                '5' => $enrollment->registration->student->inep ? $enrollment->registration->student->inep->number : null,
+                '4' => $enrollment->schoolClass?->inep->number ?: null,
+                '5' => $enrollment->registration->student?->inep->number ?: null,
                 '6' => $enrollment->registration->student->getKey(),
-                '7' => $enrollment->registration->getKey(),
+                '7' => $enrollment->inep?->matricula_inep,
                 '8' => convertSituationIEducarToEducacenso($enrollment->registration->situation->cod_situacao, $enrollment->schoolClass->etapa_educacenso),
             ];
         });
@@ -73,8 +73,8 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 '1' => 91,
                 '2' => $enrollment->schoolClass->school->inep->number,
                 '3' => $enrollment->schoolClass->getKey(),
-                '4' => $enrollment->schoolClass->inep ? $enrollment->schoolClass->inep->number : null,
-                '5' => $enrollment->registration->student->inep ? $enrollment->registration->student->inep->number : null,
+                '4' => $enrollment->schoolClass?->inep->number ?: null,
+                '5' => $enrollment->registration->student?->inep->number ?: null,
                 '6' => $enrollment->registration->student->getKey(),
                 '7' => null,
                 '8' => null,
@@ -87,7 +87,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
         return $enrollments->toArray();
     }
 
-    private function getEnrollmentsToExport($year, $schoolId)
+    public function getEnrollmentsToExport($year, $schoolId): mixed
     {
         $dataBaseEducacenso = config('educacenso.data_base.' . $year);
 
@@ -95,19 +95,24 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
             ->select([
                 'ref_cod_matricula',
                 'ref_cod_turma',
-                'data_enturmacao'
+                'data_enturmacao',
+                'id',
+                'sequencial'
             ])
             ->with([
                 'registration:cod_matricula,ref_cod_aluno,ano',
-                'registration.student:cod_aluno',
+                'registration.student:cod_aluno,ref_idpes',
+                'registration.student.person:idpes,nome',
                 'registration.student.inep:cod_aluno,cod_aluno_inep',
                 'registration.situation:cod_matricula,cod_situacao',
+                'inep:matricula_turma_id,matricula_inep',
                 'schoolClass' => function ($q): void {
                     $q->select([
                         'cod_turma',
                         'ref_ref_cod_escola',
                         'tipo_atendimento',
-                        'etapa_educacenso'
+                        'etapa_educacenso',
+                        'nm_turma',
                     ]);
                     $q->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO);
                 },
@@ -116,9 +121,9 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 'schoolClass.inep:cod_turma,cod_turma_inep',
             ])
             ->where('data_enturmacao', '<=', $dataBaseEducacenso)
-            ->whereHas('registration', function ($q) use ($year, $dataBaseEducacenso) {
+            ->whereHas('registration', function ($q) use ($year, $dataBaseEducacenso): void {
                 $q->where('ano', $year);
-                $q->where(function ($q) use ($dataBaseEducacenso) {
+                $q->where(function ($q) use ($dataBaseEducacenso): void {
                     $q->whereNull('data_cancel');
                     $q->orWhere('data_cancel', '>=', $dataBaseEducacenso);
                 });

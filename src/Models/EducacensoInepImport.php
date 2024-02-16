@@ -16,10 +16,10 @@ class EducacensoInepImport extends Model
         'status_id',
     ];
 
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
-        static::creating(function (self $studentFileExport) {
+        static::creating(function (self $studentFileExport): void {
             $studentFileExport->status_id = EducacensoImportStatus::WAITING;
         });
     }

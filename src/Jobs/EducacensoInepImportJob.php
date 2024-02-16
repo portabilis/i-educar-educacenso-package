@@ -25,7 +25,7 @@ class EducacensoInepImportJob implements ShouldQueue
     {
     }
 
-    public function handle()
+    public function handle(): void
     {
         $this->setConnection();
         (new EducacensoImportInepService($this->educacensoInepImport, $this->data))->execute();
@@ -36,7 +36,7 @@ class EducacensoInepImportJob implements ShouldQueue
         DB::setDefaultConnection($this->educacensoInepImport->getConnectionName());
     }
 
-    public function failed(Throwable $exception)
+    public function failed(Throwable $exception): void
     {
         $this->setConnection();
         (new EducacensoImportInepService($this->educacensoInepImport, $this->data))->failed();
