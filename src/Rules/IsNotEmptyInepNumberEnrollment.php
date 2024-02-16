@@ -31,7 +31,7 @@ class IsNotEmptyInepNumberEnrollment implements ValidationRule, DataAwareRule
                 'url' => '/intranet/educar_aluno_det.php?cod_aluno=' . $enrollment->registration->student->getKey(),
             ]);
 
-            if (is_null($enrollment->inep->matricula_inep)) {
+            if (is_null($enrollment->inep?->matricula_inep)) {
                 $errorMessage->toString([
                     'message' => 'Dados para formular o registro 90 inválidos. O campo Matrícula INEP do(a) Aluno(a) ' . mb_strtoupper($enrollment->registration->student->person->nome) . ' na Turma ' . $enrollment->schoolClass->name . ' é obrigatório.',
                 ]);
@@ -39,14 +39,14 @@ class IsNotEmptyInepNumberEnrollment implements ValidationRule, DataAwareRule
                 continue;
             }
 
-            if (strlen($enrollment->inep->matricula_inep) > 12) {
+            if (strlen($enrollment->inep?->matricula_inep) > 12) {
                 $errorMessage->toString([
                     'message' => 'Dados para formular o registro 90 inválidos. O campo Matrícula INEP do(a) Aluno(a) ' . mb_strtoupper($enrollment->registration->student->person->nome) . ' não pode possuir mais de 12 caracteres.',
                 ]);
                 continue;
             }
 
-            if (! is_numeric($enrollment->inep->matricula_inep)) {
+            if (! is_numeric($enrollment?->inep->matricula_inep)) {
                 $errorMessage->toString([
                     'message' => 'Dados para formular o registro 90 inválidos. O campo Matrícula INEP do(a) Aluno(a) ' . mb_strtoupper($enrollment->registration->student->person->nome) . ' deve conter apenas números.',
                 ]);
