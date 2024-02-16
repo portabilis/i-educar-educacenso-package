@@ -87,7 +87,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
         return $enrollments->toArray();
     }
 
-    private function getEnrollmentsToExport($year, $schoolId)
+    public function getEnrollmentsToExport($year, $schoolId): mixed
     {
         $dataBaseEducacenso = config('educacenso.data_base.' . $year);
 
@@ -100,7 +100,8 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
             ])
             ->with([
                 'registration:cod_matricula,ref_cod_aluno,ano',
-                'registration.student:cod_aluno',
+                'registration.student:cod_aluno,ref_idpes',
+                'registration.student.person:idpes,nome',
                 'registration.student.inep:cod_aluno,cod_aluno_inep',
                 'registration.situation:cod_matricula,cod_situacao',
                 'inep:matricula_turma_id,matricula_inep',
@@ -109,7 +110,8 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                         'cod_turma',
                         'ref_ref_cod_escola',
                         'tipo_atendimento',
-                        'etapa_educacenso'
+                        'etapa_educacenso',
+                        'nm_turma',
                     ]);
                     $q->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO);
                 },

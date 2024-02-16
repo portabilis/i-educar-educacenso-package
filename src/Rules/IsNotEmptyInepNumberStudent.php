@@ -2,7 +2,6 @@
 
 namespace iEducar\Packages\Educacenso\Rules;
 
-use App\Models\LegacyEnrollment;
 use Closure;
 use iEducar\Packages\Educacenso\Helpers\ErrorMessage;
 use Illuminate\Contracts\Validation\DataAwareRule;
@@ -17,34 +16,12 @@ class IsNotEmptyInepNumberStudent implements ValidationRule, DataAwareRule
         mixed   $value,
         Closure $fail
     ): void {
-        $dataBaseEducacenso = config('educacenso.data_base.' . $this->data['year']);
+        $year = $this->data['year'];
         $shool_id = $this->data['school_id'];
 
-        $enrollments = LegacyEnrollment::query()
-            ->select([
-                'ref_cod_matricula',
-                'ref_cod_turma',
-            ])
-            ->with([
-                'registration:cod_matricula,ref_cod_aluno,ano',
-                'registration.student:cod_aluno,ref_idpes',
-                'registration.student.person:idpes,nome',
-                'registration.student.inep:cod_aluno,cod_aluno_inep',
-                'schoolClass:cod_turma,ref_ref_cod_escola',
-                'schoolClass.school:cod_escola',
-            ])
-            ->when($dataBaseEducacenso, function ($q) use ($dataBaseEducacenso): void {
-                $q->where('data_enturmacao', '<=', $dataBaseEducacenso);
-            })
-            ->whereHas('registration', function ($q): void {
-                $q->where('ano', $this->data['year']);
-                $q->whereNull('data_cancel');
-            })
-            ->whereHas('schoolClass', function($q) use ($shool_id): void {
-                $q->where('ref_ref_cod_escola', $shool_id);
-            })
-            ->active()
-            ->get();
+        $classRepository = 'iEducar\Packages\Educacenso\Layout\Export\Situation\Layout' . $this->data['year'] . '\SituationRepository';
+        $repository = new $classRepository();
+        $enrollments = $repository->getEnrollmentsToExport($year, $shool_id);
 
         foreach ($enrollments as $enrollment) {
             $errorMessage = new ErrorMessage($fail, [
