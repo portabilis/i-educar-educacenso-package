@@ -21,7 +21,7 @@ class IsNotEmptyInepNumberEnrollment implements ValidationRule, DataAwareRule
 
         $classRepository = 'iEducar\Packages\Educacenso\Layout\Export\Situation\Layout' . $this->data['year'] . '\SituationRepository';
         $repository = new $classRepository();
-        $enrollments = $repository->getEnrollmentsToExport($year, $shool_id);
+        $enrollments = $repository->getEnrollments90ToExport($year, $shool_id);
 
         foreach ($enrollments as $enrollment) {
             $errorMessage = new ErrorMessage($fail, [
