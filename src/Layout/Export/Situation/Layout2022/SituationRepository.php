@@ -44,7 +44,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
         int $year,
         int $schoolId
     ): array {
-        $enrollments = $this->getEnrollmentsToExport($year, $schoolId);
+        $enrollments = $this->getEnrollments90ToExport($year, $schoolId);
 
         $enrollments = $enrollments->map(function ($enrollment) {
             return [
@@ -54,7 +54,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 '4' => $enrollment->schoolClass?->inep->number ?: null,
                 '5' => $enrollment->registration->student?->inep->number ?: null,
                 '6' => $enrollment->registration->student->getKey(),
-                '7' => $enrollment->registration->getKey(),
+                '7' => $enrollment->inep?->matricula_inep ?: null,
                 '8' => convertSituationIEducarToEducacenso($enrollment->registration->situation->cod_situacao, $enrollment->schoolClass->etapa_educacenso),
             ];
         });
@@ -66,7 +66,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
         int $year,
         int $schoolId
     ): array {
-        $enrollments = $this->getEnrollmentsToExport($year, $schoolId);
+        $enrollments = $this->getEnrollments91ToExport($year, $schoolId);
 
         $enrollments = $enrollments->map(function ($enrollment) {
             return [
@@ -87,7 +87,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
         return $enrollments->toArray();
     }
 
-    public function getEnrollmentsToExport($year, $schoolId): mixed
+    public function getEnrollments90ToExport($year, $schoolId): mixed
     {
         $dataBaseEducacenso = config('educacenso.data_base.' . $year);
 
@@ -96,7 +96,8 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 'ref_cod_matricula',
                 'ref_cod_turma',
                 'data_enturmacao',
-                'id'
+                'id',
+                'sequencial'
             ])
             ->with([
                 'registration:cod_matricula,ref_cod_aluno,ano',
@@ -125,6 +126,62 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 $q->where(function ($q) use ($dataBaseEducacenso): void {
                     $q->whereNull('data_cancel');
                     $q->orWhere('data_cancel', '>=', $dataBaseEducacenso);
+                });
+            })
+            ->whereHas('schoolClass', function ($q) use ($schoolId): void {
+                $q->where('ref_ref_cod_escola', $schoolId);
+                $q->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO);
+            })
+            ->whereValid()
+            ->get();
+    }
+
+    public function getEnrollments91ToExport($year, $schoolId): mixed
+    {
+        $dataBaseEducacenso = config('educacenso.data_base.' . $year);
+
+        return LegacyEnrollment::query()
+            ->select([
+                'ref_cod_matricula',
+                'ref_cod_turma',
+                'data_enturmacao',
+                'id',
+                'sequencial'
+            ])
+            ->with([
+                'registration:cod_matricula,ref_cod_aluno,ano',
+                'registration.student:cod_aluno,ref_idpes',
+                'registration.student.person:idpes,nome',
+                'registration.student.inep:cod_aluno,cod_aluno_inep',
+                'registration.situation:cod_matricula,cod_situacao',
+                'inep:matricula_turma_id,matricula_inep',
+                'schoolClass' => function ($q): void {
+                    $q->select([
+                        'cod_turma',
+                        'ref_ref_cod_escola',
+                        'tipo_atendimento',
+                        'etapa_educacenso',
+                        'nm_turma',
+                    ]);
+                    $q->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO);
+                },
+                'schoolClass.school:cod_escola',
+                'schoolClass.school.inep:cod_escola,cod_escola_inep',
+                'schoolClass.inep:cod_turma,cod_turma_inep',
+            ])
+            ->where('data_enturmacao', '>', $dataBaseEducacenso)
+            ->whereHas('registration', function ($q) use ($year, $dataBaseEducacenso): void {
+                $q->where('ano', $year);
+                $q->where('data_matricula', '>', $dataBaseEducacenso);
+                $q->whereExists(function ($q) use ($year, $dataBaseEducacenso): void {
+                    $q->selectRaw('1')
+                        ->from('pmieducar.matricula AS m')
+                        ->where('m.ativo', 1)
+                        ->where('m.ano', $year)
+                        ->whereColumn('m.cod_matricula', '<>', 'matricula.cod_matricula')
+                        ->whereColumn('m.ref_ref_cod_serie', 'matricula.ref_ref_cod_serie')
+                        ->whereColumn('m.ref_cod_aluno', 'matricula.ref_cod_aluno')
+                        ->where('m.data_matricula', '<=', $dataBaseEducacenso);
                 });
             })
             ->whereHas('schoolClass', function ($q) use ($schoolId): void {
