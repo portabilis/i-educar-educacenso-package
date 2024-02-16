@@ -54,7 +54,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 '4' => $enrollment->schoolClass?->inep->number ?: null,
                 '5' => $enrollment->registration->student?->inep->number ?: null,
                 '6' => $enrollment->registration->student->getKey(),
-                '7' => $enrollment->registration->getKey(),
+                '7' => $enrollment->inep?->matricula_inep ?: null,
                 '8' => convertSituationIEducarToEducacenso($enrollment->registration->situation->cod_situacao, $enrollment->schoolClass->etapa_educacenso),
             ];
         });
@@ -96,7 +96,8 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 'ref_cod_matricula',
                 'ref_cod_turma',
                 'data_enturmacao',
-                'id'
+                'id',
+                'sequencial'
             ])
             ->with([
                 'registration:cod_matricula,ref_cod_aluno,ano',
@@ -172,6 +173,16 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
             ->whereHas('registration', function ($q) use ($year, $dataBaseEducacenso): void {
                 $q->where('ano', $year);
                 $q->where('data_matricula', '>', $dataBaseEducacenso);
+                $q->whereExists(function ($q) use ($year, $dataBaseEducacenso): void {
+                    $q->selectRaw('1')
+                        ->from('pmieducar.matricula AS m')
+                        ->where('m.ativo', 1)
+                        ->where('m.ano', $year)
+                        ->whereColumn('m.cod_matricula', '<>', 'matricula.cod_matricula')
+                        ->whereColumn('m.ref_ref_cod_serie', 'matricula.ref_ref_cod_serie')
+                        ->whereColumn('m.ref_cod_aluno', 'matricula.ref_cod_aluno')
+                        ->where('m.data_matricula', '<=', $dataBaseEducacenso);
+                });
             })
             ->whereHas('schoolClass', function ($q) use ($schoolId): void {
                 $q->where('ref_ref_cod_escola', $schoolId);
