@@ -96,7 +96,8 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 'ref_cod_matricula',
                 'ref_cod_turma',
                 'data_enturmacao',
-                'id'
+                'id',
+                'sequencial'
             ])
             ->with([
                 'registration:cod_matricula,ref_cod_aluno,ano',

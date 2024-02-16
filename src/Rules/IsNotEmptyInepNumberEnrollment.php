@@ -28,7 +28,7 @@ class IsNotEmptyInepNumberEnrollment implements ValidationRule, DataAwareRule
                 'key' => 'cod_aluno',
                 'value' => $enrollment->registration->student->getKey(),
                 'breadcrumb' => 'Escolas -> Cadastros -> Alunos -> Matrícula -> Histórico de Enturmações',
-                'url' => '/intranet/educar_aluno_det.php?cod_aluno=' . $enrollment->registration->student->getKey(),
+                'url' => '/intranet/educar_matricula_historico_cad.php?ref_cod_matricula=' . $enrollment->registration->getKey() . '&ref_cod_turma=' . $enrollment->schoolClass->getKey() . '&sequencial=' . $enrollment->sequencial,
             ]);
 
             if (is_null($enrollment->inep?->matricula_inep)) {
