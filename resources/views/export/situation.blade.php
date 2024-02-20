@@ -16,10 +16,15 @@
                     <span class="form">
                         Ano
                     </span>
+                    <span class="campo_obrigatorio">*</span>
                 </td>
                 <td class="formlttd" valign="top">
                     <span class="form">
-                        @include('form.select-year')
+                        <select name="ano" id="ano" required class="formcampo">
+                            @foreach($years as $year)
+                                <option value="{{ $year }}">{{ $year }}</option>
+                            @endforeach
+                        </select>
                     </span>
                 </td>
             </tr>
@@ -28,6 +33,7 @@
                     <span class="form">
                         Instituição
                     </span>
+                    <span class="campo_obrigatorio">*</span>
                 </td>
                 <td class="formlttd" valign="top">
                     <span class="form">
@@ -40,6 +46,7 @@
                     <span class="form">
                         Escola
                     </span>
+                    <span class="campo_obrigatorio">*</span>
                 </td>
                 <td class="formmdtd" valign="top">
                     <span class="form">
