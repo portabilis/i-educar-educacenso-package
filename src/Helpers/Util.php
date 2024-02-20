@@ -25,7 +25,7 @@ if (! function_exists('convertSituationIEducarToEducacenso')) {
             return 6;
         }
 
-        $etapasEducacaoInfantil = [1, 2];
+        $etapasEducacaoInfantil = [1, 2, 3];
 
         if (in_array($situation, $situacoesAprovado, true) && in_array($etapa, $etapasEducacaoInfantil, true)) {
             return 7;
