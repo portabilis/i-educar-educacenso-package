@@ -21,7 +21,10 @@ class ExportSituationController extends Controller
 
         $this->menu(9998845);
 
-        return view('educacenso::export.situation');
+        $years = config('educacenso.stage-2.years');
+        rsort($years);
+
+        return view('educacenso::export.situation', compact('years'));
     }
 
     public function store(ExportSituationRequest $request)
