@@ -103,7 +103,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                     '2' => $enrollment->schoolClass->school->inep->number,
                     '3' => $enrollment->schoolClass->getKey(),
                     '4' => $enrollment->schoolClass?->inep->number ?: null,
-                    '5' => $enrollment->registration->student?->inep?->number ?? null,
+                    '5' => $enrollment->registration->student?->inep?->number ?: null,
                     '6' => $enrollment->registration->student->getKey(),
                     '7' => null,
                     '8' => null,
@@ -187,6 +187,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                     ]);
                     $q->whereNotIn('cod_matricula', $this->ignoreRegistrationsRecord90);
                 },
+                'registration:cod_matricula,ref_cod_aluno,ano,ref_ref_cod_escola,ref_ref_cod_serie,ref_cod_curso,data_matricula',
                 'registration.student:cod_aluno,ref_idpes',
                 'registration.student.person:idpes,nome',
                 'registration.student.inep:cod_aluno,cod_aluno_inep',
