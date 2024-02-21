@@ -103,7 +103,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                     '2' => $enrollment->schoolClass->school->inep->number,
                     '3' => $enrollment->schoolClass->getKey(),
                     '4' => $enrollment->schoolClass?->inep->number ?: null,
-                    '5' => $enrollment->registration->student?->inep->number ?: null,
+                    '5' => $enrollment->registration->student?->inep?->number ?? null,
                     '6' => $enrollment->registration->student->getKey(),
                     '7' => null,
                     '8' => null,
