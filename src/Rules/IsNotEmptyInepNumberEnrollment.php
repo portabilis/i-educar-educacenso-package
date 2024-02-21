@@ -2,6 +2,7 @@
 
 namespace iEducar\Packages\Educacenso\Rules;
 
+use App\Models\LegacyEnrollment;
 use Closure;
 use iEducar\Packages\Educacenso\Helpers\ErrorMessage;
 use Illuminate\Contracts\Validation\DataAwareRule;
@@ -22,35 +23,38 @@ class IsNotEmptyInepNumberEnrollment implements ValidationRule, DataAwareRule
         $classRepository = 'iEducar\Packages\Educacenso\Layout\Export\Situation\Layout' . $this->data['year'] . '\SituationRepository';
         $repository = new $classRepository();
         $enrollments = $repository->getEnrollments90ToExport($year, $shool_id);
-
         foreach ($enrollments as $enrollment) {
-            $errorMessage = new ErrorMessage($fail, [
-                'key' => 'cod_aluno',
-                'value' => $enrollment->registration->student->getKey(),
-                'breadcrumb' => 'Escolas -> Cadastros -> Alunos -> Matrícula -> Histórico de Enturmações',
-                'url' => '/intranet/educar_matricula_historico_cad.php?ref_cod_matricula=' . $enrollment->registration->getKey() . '&ref_cod_turma=' . $enrollment->schoolClass->getKey() . '&sequencial=' . $enrollment->sequencial,
+            $this->validateEnrollment($enrollment, $fail);
+        }
+    }
+
+    private function validateEnrollment(LegacyEnrollment $enrollment, Closure $fail): void
+    {
+        $errorMessage = new ErrorMessage($fail, [
+            'key' => 'cod_aluno',
+            'value' => $enrollment->registration->student->getKey(),
+            'breadcrumb' => 'Escolas -> Cadastros -> Alunos -> Matrícula -> Histórico de Enturmações -> INEP da Matrícula',
+            'url' => route('enrollments.enrollment-inep.edit', $enrollment->getKey()),
+        ]);
+
+        if (is_null($enrollment->inep?->matricula_inep)) {
+            $errorMessage->toString([
+                'message' => 'Dados para formular o registro 90 inválidos. O campo Matrícula INEP do(a) Aluno(a) ' . mb_strtoupper($enrollment->registration->student->person->nome) . ' na Turma ' . $enrollment->schoolClass->name . ' é obrigatório.',
             ]);
+            return;
+        }
 
-            if (is_null($enrollment->inep?->matricula_inep)) {
-                $errorMessage->toString([
-                    'message' => 'Dados para formular o registro 90 inválidos. O campo Matrícula INEP do(a) Aluno(a) ' . mb_strtoupper($enrollment->registration->student->person->nome) . ' na Turma ' . $enrollment->schoolClass->name . ' é obrigatório.',
-                ]);
+        if (strlen($enrollment->inep?->matricula_inep) > 12) {
+            $errorMessage->toString([
+                'message' => 'Dados para formular o registro 90 inválidos. O campo Matrícula INEP do(a) Aluno(a) ' . mb_strtoupper($enrollment->registration->student->person->nome) . ' não pode possuir mais de 12 caracteres.',
+            ]);
+            return;
+        }
 
-                continue;
-            }
-
-            if (strlen($enrollment->inep?->matricula_inep) > 12) {
-                $errorMessage->toString([
-                    'message' => 'Dados para formular o registro 90 inválidos. O campo Matrícula INEP do(a) Aluno(a) ' . mb_strtoupper($enrollment->registration->student->person->nome) . ' não pode possuir mais de 12 caracteres.',
-                ]);
-                continue;
-            }
-
-            if (! is_numeric($enrollment?->inep->matricula_inep)) {
-                $errorMessage->toString([
-                    'message' => 'Dados para formular o registro 90 inválidos. O campo Matrícula INEP do(a) Aluno(a) ' . mb_strtoupper($enrollment->registration->student->person->nome) . ' deve conter apenas números.',
-                ]);
-            }
+        if (! is_numeric($enrollment?->inep->matricula_inep)) {
+            $errorMessage->toString([
+                'message' => 'Dados para formular o registro 90 inválidos. O campo Matrícula INEP do(a) Aluno(a) ' . mb_strtoupper($enrollment->registration->student->person->nome) . ' deve conter apenas números.',
+            ]);
         }
     }
 
