@@ -146,10 +146,19 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 'ref_cod_turma',
                 'data_enturmacao',
                 'id',
-                'sequencial'
+                'sequencial',
+                'desconsiderar_educacenso'
             ])
             ->with([
-                'registration:cod_matricula,ref_cod_aluno,ano',
+                'registration' => function ($q): void {
+                    $q->select([
+                        'cod_matricula',
+                        'ref_cod_aluno',
+                        'ano'
+                    ]);
+                    $q->whereNotIn('cod_matricula', $this->ignoreRegistrationsRecord90);
+                },
+                'registration:cod_matricula,ref_cod_aluno,ano,ref_ref_cod_escola,ref_ref_cod_serie,ref_cod_curso,data_matricula',
                 'registration.student:cod_aluno,ref_idpes',
                 'registration.student.person:idpes,nome',
                 'registration.student.inep:cod_aluno,cod_aluno_inep',
@@ -170,19 +179,12 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 'schoolClass.inep:cod_turma,cod_turma_inep',
             ])
             ->where('data_enturmacao', '>', $dataBaseEducacenso)
+            ->where('desconsiderar_educacenso', false)
+            ->whereNotIn('ref_cod_matricula', $this->ignoreRegistrationsRecord90)
             ->whereHas('registration', function ($q) use ($year, $dataBaseEducacenso): void {
                 $q->where('ano', $year);
                 $q->where('data_matricula', '>', $dataBaseEducacenso);
-                $q->whereExists(function ($q) use ($year, $dataBaseEducacenso): void {
-                    $q->selectRaw('1')
-                        ->from('pmieducar.matricula AS m')
-                        ->where('m.ativo', 1)
-                        ->where('m.ano', $year)
-                        ->whereColumn('m.cod_matricula', '<>', 'matricula.cod_matricula')
-                        ->whereColumn('m.ref_ref_cod_serie', 'matricula.ref_ref_cod_serie')
-                        ->whereColumn('m.ref_cod_aluno', 'matricula.ref_cod_aluno')
-                        ->where('m.data_matricula', '<=', $dataBaseEducacenso);
-                });
+                $q->active();
             })
             ->whereHas('schoolClass', function ($q) use ($schoolId): void {
                 $q->where('ref_ref_cod_escola', $schoolId);
