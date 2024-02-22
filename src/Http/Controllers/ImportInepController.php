@@ -107,6 +107,9 @@ class ImportInepController extends Controller
             url('intranet/educar_educacenso_index.php') => 'Educacenso',
         ]);
 
-        return view('educacenso::import-inep.create');
+        $years = config('educacenso.stage-2.years');
+        rsort($years);
+
+        return view('educacenso::import-inep.create', compact('years'));
     }
 }

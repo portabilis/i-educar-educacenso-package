@@ -25,7 +25,7 @@
                 @php
                     $error = json_decode($error);
                 @endphp
-                <li>
+                <li @if(property_exists($error, 'impediment') && $error->impediment == false) style="color: #449023; font-weight: bold"  @endif>
                     {{ $error->message ?? 'ERRO INDEFINIDO' }}
                 </li>
 

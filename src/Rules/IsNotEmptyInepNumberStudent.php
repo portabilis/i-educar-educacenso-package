@@ -29,11 +29,15 @@ class IsNotEmptyInepNumberStudent implements ValidationRule, DataAwareRule
 
         $enrollments = $repository->getEnrollments91ToExport($year, $shool_id);
         foreach ($enrollments as $enrollment) {
-            $this->validateEnrollment($enrollment, $fail);
+            $this->validateEnrollment(
+                enrollment: $enrollment,
+                fail: $fail,
+                record91: true
+            );
         }
     }
 
-    private function validateEnrollment(LegacyEnrollment $enrollment, Closure $fail): void
+    private function validateEnrollment(LegacyEnrollment $enrollment, Closure $fail, $record91 = false): void
     {
         $errorMessage = new ErrorMessage($fail, [
             'key' => 'cod_aluno',
@@ -46,6 +50,17 @@ class IsNotEmptyInepNumberStudent implements ValidationRule, DataAwareRule
             $errorMessage->toString([
                 'message' => 'Dados para formular os registros inválidos. O(a) aluno(a) ' . mb_strtoupper($enrollment->registration->student->person->nome) . ' não possui um número INEP.',
             ]);
+
+            if ($record91) {
+                (new ErrorMessage($fail, [
+                    'impediment' => false,
+                    'value' => $enrollment->registration->student->getKey(),
+                    'breadcrumb' => 'Escolas -> Cadastros -> Alunos -> Matrícula -> Histórico de Enturmações -> INEP da Matrícula',
+                    'url' => route('enrollments.enrollment-inep.edit', $enrollment->getKey()),
+                ]))->toString([
+                    'message' => 'Caso o aluno não possua INEP na base do censo, acesse a tela de INEP da matricula e marque para não exportar o(a) aluno(a) ' . mb_strtoupper($enrollment->registration->student->person->nome),
+                ]);
+            }
             return;
         }
 
@@ -53,6 +68,17 @@ class IsNotEmptyInepNumberStudent implements ValidationRule, DataAwareRule
             $errorMessage->toString([
                 'message' => 'Dados para formular os registros inválidos. O(a) aluno(a) ' . mb_strtoupper($enrollment->registration->student->person->nome) . ' não possui um número INEP válido.',
             ]);
+
+            if ($record91) {
+                (new ErrorMessage($fail, [
+                    'impediment' => false,
+                    'value' => $enrollment->registration->student->getKey(),
+                    'breadcrumb' => 'Escolas -> Cadastros -> Alunos -> Matrícula -> Histórico de Enturmações -> INEP da Matrícula',
+                    'url' => route('enrollments.enrollment-inep.edit', $enrollment->getKey()),
+                ]))->toString([
+                    'message' => 'Caso o aluno não possua INEP na base do censo, acesse a tela de INEP da matricula e marque para não exportar o(a) aluno(a) ' . mb_strtoupper($enrollment->registration->student->person->nome),
+                ]);
+            }
             return;
         }
 
