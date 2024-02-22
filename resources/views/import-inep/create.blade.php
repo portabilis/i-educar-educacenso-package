@@ -18,7 +18,13 @@
                     <sub style="vertical-align:top;">somente números</sub>
                 </td>
                 <td class="formmdtd" valign="top">
-                    @include('form.select-year')
+                    <span class="form">
+                        <select name="ano" id="ano" required class="formcampo">
+                            @foreach($years as $year)
+                                <option value="{{ $year }}">{{ $year }}</option>
+                            @endforeach
+                        </select>
+                    </span>
                 </td>
             </tr>
             <tr id="tr_nm_arquivo">
