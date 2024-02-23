@@ -131,6 +131,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
             ->whereHas('schoolClass', function ($q) use ($schoolId): void {
                 $q->where('ref_ref_cod_escola', $schoolId);
                 $q->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO);
+                $q->active();
             })
             ->whereValid()
             ->get();
@@ -189,6 +190,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
             ->whereHas('schoolClass', function ($q) use ($schoolId): void {
                 $q->where('ref_ref_cod_escola', $schoolId);
                 $q->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO);
+                $q->active();
             })
             ->whereValid()
             ->get();
