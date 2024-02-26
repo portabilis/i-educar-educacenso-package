@@ -121,6 +121,27 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
     {
         $dataBaseEducacenso = config('educacenso.data_base.' . $year);
 
+        $idsRemanejados = LegacyEnrollment::query()
+            ->select([
+                'id',
+                'ref_cod_matricula',
+                'ref_cod_turma',
+            ])
+            ->where('data_enturmacao', '<=', $dataBaseEducacenso)
+            ->whereNotNull('data_exclusao')
+            ->where('data_exclusao', '<=', $dataBaseEducacenso)
+            ->where('remanejado', true)
+            ->where('ativo', 0)
+            ->whereHas('registration', function ($q) use ($year): void {
+                $q->where('ano', $year);
+            })
+            ->whereHas('schoolClass', function ($q) use ($schoolId): void {
+                $q->where('ref_ref_cod_escola', $schoolId);
+                $q->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO);
+                $q->active();
+            })
+            ->pluck('id');
+
         return LegacyEnrollment::query()
             ->select([
                 'ref_cod_matricula',
@@ -151,6 +172,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 'schoolClass.inep:cod_turma,cod_turma_inep',
             ])
             ->where('data_enturmacao', '<=', $dataBaseEducacenso)
+            ->whereNotIn('id', $idsRemanejados)
             ->whereHas('registration', function ($q) use ($year, $dataBaseEducacenso): void {
                 $q->where('ano', $year);
                 $q->where(function ($q) use ($dataBaseEducacenso): void {
