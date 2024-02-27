@@ -120,6 +120,7 @@ class EducacensoImportInepService
                 ->whereHas('registration', function ($q) use ($student): void {
                     $q->where('ref_cod_aluno', $student->getKey());
                 })
+                ->orderByDesc('data_enturmacao')
                 ->get(['id'])
                 ->first();
 
