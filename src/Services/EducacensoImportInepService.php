@@ -22,8 +22,11 @@ class EducacensoImportInepService
 {
     private string $schoolName;
 
+    private string $dataBaseEducacenso;
+
     public function __construct(private EducacensoInepImport $educacensoInepImport, private array $data)
     {
+        $this->dataBaseEducacenso = config('educacenso.data_base.' . $this->educacensoInepImport->year);
     }
 
     public static function getDataBySchool(UploadedFile $file): Generator
@@ -117,9 +120,11 @@ class EducacensoImportInepService
         if ($schoolClassInep) {
             $enrollment = LegacyEnrollment::query()
                 ->where('ref_cod_turma', $schoolClassInep->cod_turma)
+                ->where('data_enturmacao', '<=', $this->dataBaseEducacenso)
                 ->whereHas('registration', function ($q) use ($student): void {
                     $q->where('ref_cod_aluno', $student->getKey());
                 })
+                ->orderByDesc('data_enturmacao')
                 ->get(['id'])
                 ->first();
 
