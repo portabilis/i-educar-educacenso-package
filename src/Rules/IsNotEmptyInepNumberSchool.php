@@ -40,7 +40,7 @@ class IsNotEmptyInepNumberSchool implements ValidationRule
             ]);
         }
 
-        if (empty($school->inep->number)) {
+        if (empty($school->inep?->number)) {
             $errorMessage->toString([
                 'message' => 'Dados para formular o registro 89 inválidos. A escola informada não possui um número INEP válido.',
                 'breadcrumb' => 'Escolas -> Cadastros -> Escolas -> Código INEP',
@@ -48,7 +48,7 @@ class IsNotEmptyInepNumberSchool implements ValidationRule
             ]);
         }
 
-        if (strlen($school->inep->number) != 8) {
+        if (strlen($school->inep?->number) != 8) {
             $errorMessage->toString([
                 'message' => 'Dados para formular o registro 89 inválidos. A escola informada não possui um número INEP com 8 digitos.',
                 'breadcrumb' => 'Escolas -> Cadastros -> Escolas -> Código INEP',
@@ -56,7 +56,7 @@ class IsNotEmptyInepNumberSchool implements ValidationRule
             ]);
         }
 
-        if (! is_numeric($school->inep->number)) {
+        if (! is_numeric($school->inep?->number)) {
             $errorMessage->toString([
                 'message' => 'Dados para formular o registro 89 inválidos. A escola informada não possui um número INEP válido.',
                 'breadcrumb' => 'Escolas -> Cadastros -> Escolas -> Código INEP',
