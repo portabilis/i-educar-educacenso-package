@@ -132,7 +132,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
             ])
             ->where('data_enturmacao', '<=', $dataBaseEducacenso)
             ->whereNotNull('data_exclusao')
-            ->where('data_exclusao', '<=', $dataBaseEducacenso)
+            ->where('data_exclusao', '<=', $dataBaseEducacenso . ' 23:59:59')
             ->where('remanejado', true)
             ->where('ativo', 0)
             ->whereHas('registration', function ($q) use ($year): void {
