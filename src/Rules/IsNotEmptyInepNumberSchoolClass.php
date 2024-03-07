@@ -22,6 +22,7 @@ class IsNotEmptyInepNumberSchoolClass implements ValidationRule, DataAwareRule
             ->active()
             ->whereSchool($shool_id)
             ->whereYearEq($year)
+            ->where('nao_informar_educacenso', '!=', 1)
             ->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO)
             ->get();
 
