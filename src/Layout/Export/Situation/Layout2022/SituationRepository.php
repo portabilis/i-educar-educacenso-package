@@ -52,28 +52,28 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
 
         $enrollments = $enrollments->map(function ($enrollment) {
             $situation = $enrollment->registration->situation?->cod_situacao;
-            if ($situation && in_array($situation [
-                    App_Model_MatriculaSituacao::ABANDONO,
-                    App_Model_MatriculaSituacao::TRANSFERIDO
-                ], true)) {
-                    $dataBaseEducacenso = config('educacenso.data_base.' . $enrollment->registration->ano);
 
-                    $otherRegistration = LegacyRegistration::query()
-                        ->whereStudent($enrollment->registration->student->getKey())
-                        ->active()
-                        ->whereSchool($enrollment->registration->ref_ref_cod_escola)
-                        ->whereCourse($enrollment->registration->ref_cod_curso)
-                        ->whereGrade($enrollment->registration->ref_ref_cod_serie)
-                        ->whereYearEq($enrollment->registration->ano)
-                        ->where('data_matricula', '>', $dataBaseEducacenso)
-                        ->where('data_matricula', '>', $enrollment->registration->data_matricula)
-                        ->where('cod_matricula', '<>', $enrollment->registration->getKey())
-                        ->first();
+            if ($situation && in_array($enrollment->registration->situation->cod_situacao, [
+                App_Model_MatriculaSituacao::ABANDONO,
+                App_Model_MatriculaSituacao::TRANSFERIDO
+            ], true)) {
+                $dataBaseEducacenso = config('educacenso.data_base.' . $enrollment->registration->ano);
 
-                    if ($otherRegistration) {
-                        $situation = $otherRegistration->situation->cod_situacao;
-                        $this->ignoreRegistrationsRecord90[] = $otherRegistration->getKey();
-                    }
+                $otherRegistration = LegacyRegistration::query()
+                    ->whereStudent($enrollment->registration->student->getKey())
+                    ->active()
+                    ->whereSchool($enrollment->registration->ref_ref_cod_escola)
+                    ->whereCourse($enrollment->registration->ref_cod_curso)
+                    ->whereGrade($enrollment->registration->ref_ref_cod_serie)
+                    ->whereYearEq($enrollment->registration->ano)
+                    ->where('data_matricula', '>', $dataBaseEducacenso)
+                    ->where('data_matricula', '>', $enrollment->registration->data_matricula)
+                    ->where('cod_matricula', '<>', $enrollment->registration->getKey())
+                    ->first();
+
+                if ($otherRegistration) {
+                    $situation = $otherRegistration->situation->cod_situacao;
+                    $this->ignoreRegistrationsRecord90[] = $otherRegistration->getKey();
                 }
             }
 
