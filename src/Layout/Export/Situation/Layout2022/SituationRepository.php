@@ -1,6 +1,6 @@
 <?php
 
-namespace iEducar\Packages\Educacenso\Layout\Export\Situation\Layout2023;
+namespace iEducar\Packages\Educacenso\Layout\Export\Situation\Layout2022;
 
 use App\Models\LegacyEnrollment;
 use App\Models\LegacyRegistration;
