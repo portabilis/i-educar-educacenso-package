@@ -52,8 +52,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
 
         $enrollments = $enrollments->map(function ($enrollment) {
             $situation = $enrollment->registration->situation?->cod_situacao;
-            if ($situation) {
-                if (in_array($enrollment->registration->situation->cod_situacao, [
+            if ($situation && in_array($situation [
                     App_Model_MatriculaSituacao::ABANDONO,
                     App_Model_MatriculaSituacao::TRANSFERIDO
                 ], true)) {
