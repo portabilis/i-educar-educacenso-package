@@ -52,29 +52,28 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
 
         $enrollments = $enrollments->map(function ($enrollment) {
             $situation = $enrollment->registration->situation?->cod_situacao;
-            if ($situation) {
-                if (in_array($enrollment->registration->situation->cod_situacao, [
-                    App_Model_MatriculaSituacao::ABANDONO,
-                    App_Model_MatriculaSituacao::TRANSFERIDO
-                ], true)) {
-                    $dataBaseEducacenso = config('educacenso.data_base.' . $enrollment->registration->ano);
 
-                    $otherRegistration = LegacyRegistration::query()
-                        ->whereStudent($enrollment->registration->student->getKey())
-                        ->active()
-                        ->whereSchool($enrollment->registration->ref_ref_cod_escola)
-                        ->whereCourse($enrollment->registration->ref_cod_curso)
-                        ->whereGrade($enrollment->registration->ref_ref_cod_serie)
-                        ->whereYearEq($enrollment->registration->ano)
-                        ->where('data_matricula', '>', $dataBaseEducacenso)
-                        ->where('data_matricula', '>', $enrollment->registration->data_matricula)
-                        ->where('cod_matricula', '<>', $enrollment->registration->getKey())
-                        ->first();
+            if ($situation && in_array($enrollment->registration->situation->cod_situacao, [
+                App_Model_MatriculaSituacao::ABANDONO,
+                App_Model_MatriculaSituacao::TRANSFERIDO
+            ], true)) {
+                $dataBaseEducacenso = config('educacenso.data_base.' . $enrollment->registration->ano);
 
-                    if ($otherRegistration) {
-                        $situation = $otherRegistration->situation->cod_situacao;
-                        $this->ignoreRegistrationsRecord90[] = $otherRegistration->getKey();
-                    }
+                $otherRegistration = LegacyRegistration::query()
+                    ->whereStudent($enrollment->registration->student->getKey())
+                    ->active()
+                    ->whereSchool($enrollment->registration->ref_ref_cod_escola)
+                    ->whereCourse($enrollment->registration->ref_cod_curso)
+                    ->whereGrade($enrollment->registration->ref_ref_cod_serie)
+                    ->whereYearEq($enrollment->registration->ano)
+                    ->where('data_matricula', '>', $dataBaseEducacenso)
+                    ->where('data_matricula', '>', $enrollment->registration->data_matricula)
+                    ->where('cod_matricula', '<>', $enrollment->registration->getKey())
+                    ->first();
+
+                if ($otherRegistration) {
+                    $situation = $otherRegistration->situation->cod_situacao;
+                    $this->ignoreRegistrationsRecord90[] = $otherRegistration->getKey();
                 }
             }
 
@@ -160,14 +159,17 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 'registration.student.inep:cod_aluno,cod_aluno_inep',
                 'registration.situation:cod_matricula,cod_situacao',
                 'inep:matricula_turma_id,matricula_inep',
-                'schoolClass' => function ($q): void {
+                'schoolClass' => function ($q) use ($schoolId): void {
                     $q->select([
                         'cod_turma',
                         'ref_ref_cod_escola',
                         'tipo_atendimento',
                         'etapa_educacenso',
                         'nm_turma',
+                        'nao_informar_educacenso'
                     ]);
+                    $q->where('ref_ref_cod_escola', $schoolId);
+                    $q->where('nao_informar_educacenso', '!=', 1);
                     $q->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO);
                 },
                 'schoolClass.school:cod_escola',
@@ -185,6 +187,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
             })
             ->whereHas('schoolClass', function ($q) use ($schoolId): void {
                 $q->where('ref_ref_cod_escola', $schoolId);
+                $q->where('nao_informar_educacenso', '!=', 1);
                 $q->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO);
                 $q->active();
             })
@@ -220,14 +223,17 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                 'registration.student.inep:cod_aluno,cod_aluno_inep',
                 'registration.situation:cod_matricula,cod_situacao',
                 'inep:matricula_turma_id,matricula_inep',
-                'schoolClass' => function ($q): void {
+                'schoolClass' => function ($q) use ($schoolId): void {
                     $q->select([
                         'cod_turma',
                         'ref_ref_cod_escola',
                         'tipo_atendimento',
                         'etapa_educacenso',
                         'nm_turma',
+                        'nao_informar_educacenso'
                     ]);
+                    $q->where('ref_ref_cod_escola', $schoolId);
+                    $q->where('nao_informar_educacenso', '!=', 1);
                     $q->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO);
                 },
                 'schoolClass.school:cod_escola',
@@ -244,6 +250,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
             })
             ->whereHas('schoolClass', function ($q) use ($schoolId): void {
                 $q->where('ref_ref_cod_escola', $schoolId);
+                $q->where('nao_informar_educacenso', '!=', 1);
                 $q->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO);
                 $q->active();
             })
