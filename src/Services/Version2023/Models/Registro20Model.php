@@ -7,6 +7,7 @@ use iEducar\Modules\Educacenso\Model\EstruturaCurricular;
 use iEducar\Modules\Educacenso\Model\FormaOrganizacaoTurma;
 use iEducar\Modules\Educacenso\Model\UnidadesCurriculares;
 use iEducar\Packages\Educacenso\Services\Version2019\Registro20Import;
+use Illuminate\Validation\ValidationException;
 
 class Registro20Model extends Registro20
 {
@@ -14,6 +15,12 @@ class Registro20Model extends Registro20
     {
         array_unshift($arrayColumns, null);
         unset($arrayColumns[0]);
+
+        if (is_null($arrayColumns[4]) || $arrayColumns[4] === '') {
+            throw ValidationException::withMessages([
+                'error' => 'Você está tentando importar um arquivo com turmas inválidas. o i-Educar aceita apenas arquivos oriundos do sistema do MEC.',
+            ]);
+        }
 
         $this->registro = $arrayColumns[1];
         $this->codigoEscolaInep = $arrayColumns[2];

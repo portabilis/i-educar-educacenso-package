@@ -5,6 +5,7 @@ namespace iEducar\Packages\Educacenso\Services\Version2023\Models;
 use App\Models\Educacenso\Registro00;
 use iEducar\Modules\Educacenso\Model\FormasContratacaoPoderPublico;
 use iEducar\Modules\Educacenso\Model\PoderPublicoConveniado;
+use Illuminate\Validation\ValidationException;
 
 class Registro00Model extends Registro00
 {
@@ -12,6 +13,12 @@ class Registro00Model extends Registro00
     {
         array_unshift($arrayColumns, null);
         unset($arrayColumns[0]);
+
+        if (is_null($arrayColumns[2]) || $arrayColumns[2] === '') {
+            throw ValidationException::withMessages([
+                'error' => 'Você está tentando importar um arquivo com escola(s) inválida(s). o i-Educar aceita apenas arquivos oriundos do sistema do MEC.',
+            ]);
+        }
 
         $this->registro = $arrayColumns[1];
         $this->codigoInep = $arrayColumns[2];
