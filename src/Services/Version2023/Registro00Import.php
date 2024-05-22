@@ -34,7 +34,7 @@ class Registro00Import extends Registro00Import2019
         $school = $schoolInep->school;
         $model = $this->model;
 
-        if (! $school->iddis) {
+        if (!$school->iddis) {
             if (strlen($model->codigoIbgeDistrito) > 7) {
                 $ibge_code = explode($model->codigoIbgeMunicipio, $model->codigoIbgeDistrito)[1];
             } else {
@@ -47,7 +47,9 @@ class Registro00Import extends Registro00Import2019
                 ->where('ibge_code', $ibge_code)
                 ->first();
 
-            $school->iddis = $district->getKey();
+            if ($district) {
+                $school->iddis = $district->getKey();
+            }
         }
 
         $school->poder_publico_parceria_convenio = transformDBArrayInString($model->poderPublicoConveniado) ?: null;
