@@ -55,12 +55,12 @@ jobs:
         with:
           repository: portabilis/i-educar
           token: ${{ secrets.ACTIONS_TOKEN }}
-          ref: 2.8
+          ref: 2.9
 
-      - name: Checkout i-Educar Reports
+      - name: Checkout i-Educar Educacenso
         uses: actions/checkout@v2
         with:
-          path: packages/portabilis/i-educar-educacenso
+          path: packages/portabilis/i-educar-educacenso-package
 
       - name: Install project
         run: composer install
@@ -78,4 +78,4 @@ jobs:
         run: php artisan migrate
 
       - name: Unit and integration tests
-        run: vendor/bin/pest -c packages/portabilis/i-educar-educacenso/phpunit.package.xml --test-directory=packages/portabilis/i-educar-educacenso/tests
+        run: vendor/bin/pest -c packages/portabilis/i-educar-educacenso-package/phpunit.package.xml --test-directory=packages/portabilis/i-educar-educacenso-package/tests
