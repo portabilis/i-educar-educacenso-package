@@ -87,8 +87,8 @@ class ExportTest extends TestCase
         $importFileService = new HandleFileService($yearImportService, $this->user);
 
         $importFileService->handleFile(new UploadedFile(
-            resource_path('../tests/Educacenso/importacao_educacenso_2022.txt'),
-            'importacao_educacenso_2022.txt'
+            path: __DIR__ . '/../Import/importacao_educacenso_2022.txt',
+            originalName: 'importacao_educacenso_2022.txt'
         ));
 
         $this->legacySchool = LegacySchool::first();

@@ -17,7 +17,7 @@ class SplitFileServiceTest extends TestCase
      */
     public function getService($fileName)
     {
-        $file = new UploadedFile(base_path('tests/assets/' . $fileName), $fileName);
+        $file = new UploadedFile(__DIR__ . '/../assets/' . $fileName, $fileName);
 
         return new SplitFileService($file);
     }

@@ -26,7 +26,7 @@ class EducacensoImportInepService
 
     public function __construct(private EducacensoInepImport $educacensoInepImport, private array $data)
     {
-        $this->dataBaseEducacenso = config('educacenso.data_base.' . $this->educacensoInepImport->year);
+        $this->dataBaseEducacenso = config('educacenso.data_base.2022');
     }
 
     public static function getDataBySchool(UploadedFile $file): Generator

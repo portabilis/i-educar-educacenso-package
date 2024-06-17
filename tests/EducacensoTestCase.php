@@ -1,5 +1,6 @@
 <?php
 
+namespace iEducar\Packages\Educacenso\Tests;
 
 use App\Models\Country;
 use App\Models\Employee;
@@ -30,10 +31,12 @@ use Database\Factories\CityFactory;
 use Database\Factories\DistrictFactory;
 use Database\Factories\LegacyUserFactory;
 use Database\Factories\StateFactory;
+use iEducar\Packages\Educacenso\Providers\EducacensoProvider;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Tests\TestCase;
 
-abstract class EducacensoTestCase extends \Tests\TestCase
+abstract class EducacensoTestCase extends TestCase
 {
     use DatabaseTransactions;
     use WithoutMiddleware;
@@ -356,7 +359,6 @@ abstract class EducacensoTestCase extends \Tests\TestCase
                     $this->assertNotNull($graduation->college_id);
                 }
             }
-
             $individual = $employee->individual;
             $this->assertNotNull($individual);
             $this->assertInstanceOf(LegacyIndividual::class, $individual);
@@ -364,7 +366,7 @@ abstract class EducacensoTestCase extends \Tests\TestCase
             $this->assertEquals(1, $individual->ativo);
             $this->assertEquals('I', $individual->operacao);
             $this->assertNotNull($individual->cpf);
-            $this->assertTrue(\Tests\validaCPF($individual->cpf));
+            $this->assertTrue(validaCPF($individual->cpf));
             $this->assertNotNull($individual->pais_residencia);
             $this->assertNotNull($individual->idmun_nascimento);
             $this->assertNotNull($individual->nacionalidade);
@@ -468,5 +470,12 @@ abstract class EducacensoTestCase extends \Tests\TestCase
             $this->assertEquals($this->year, $registration->ano);
             $this->assertEquals(1, $registration->ultima_matricula);
         }
+    }
+
+    protected function getPackageProviders($app): array
+    {
+        return [
+            EducacensoProvider::class,
+        ];
     }
 }
