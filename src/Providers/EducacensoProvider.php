@@ -22,6 +22,10 @@ class EducacensoProvider extends ServiceProvider
             $this->loadMigrationsFrom(
                 paths: __DIR__ . '/../../database/migrations'
             );
+
+            if (env('LEGACY_SEED_DATA', true)) {
+                $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations/data');
+            }
         }
 
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'educacenso');
