@@ -109,7 +109,6 @@ class ExportTest extends TestCase
     /** @test */
     public function validationExportCensoRegistro00(): void
     {
-        $this->markTestSkipped("Será reconstruído quando a exportação for desacoplada");
         $data00 = [
             'oper' => 'get',
             'resource' => 'registro-00',
@@ -137,8 +136,6 @@ class ExportTest extends TestCase
     /** @test */
     public function validationExportCensoRegistro10(): void
     {
-        $this->markTestSkipped("Será reconstruído quando a exportação for desacoplada");
-
         $data10 = [
             'oper' => 'get',
             'resource' => 'registro-10',
@@ -146,7 +143,7 @@ class ExportTest extends TestCase
             'ano' => $this->year,
         ];
         $response10 = $this->get('/module/Api/EducacensoAnalise?' . http_build_query($data10));
-
+        dd($response10);
         $response10->assertSuccessful()
             ->assertJsonCount(0, 'mensagens')
             ->assertJsonCount(0, 'msgs')
