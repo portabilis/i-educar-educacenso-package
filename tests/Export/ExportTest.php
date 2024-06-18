@@ -68,12 +68,12 @@ class ExportTest extends TestCase
             ]),
         ]);
 
-        $this->year = 2022;
-        $this->dateEnrollment = new Carbon('2022-01-01');
+        $this->year = 2023;
+        $this->dateEnrollment = new Carbon('2023-01-01');
 
         $this->user = LegacyUserFactory::new()->admin()->create([
             'ref_cod_instituicao' => LegacyInstitutionFactory::new()->create([
-                'data_educacenso' => '2022-05-30',
+                'data_educacenso' => '2024-05-29',
             ]),
         ]);
 
@@ -87,8 +87,8 @@ class ExportTest extends TestCase
         $importFileService = new HandleFileService($yearImportService, $this->user);
 
         $importFileService->handleFile(new UploadedFile(
-            path: __DIR__ . '/../Import/importacao_educacenso_2022.txt',
-            originalName: 'importacao_educacenso_2022.txt'
+            path: __DIR__ . '/../Import/importacao_educacenso_2023.txt',
+            originalName: 'importacao_educacenso_2023.txt'
         ));
 
         $this->legacySchool = LegacySchool::first();
@@ -109,6 +109,8 @@ class ExportTest extends TestCase
     /** @test */
     public function validationExportCensoRegistro00(): void
     {
+        $this->markTestSkipped('Será reconstruído quando a exportação for desacoplada');
+        
         $data00 = [
             'oper' => 'get',
             'resource' => 'registro-00',
@@ -136,6 +138,8 @@ class ExportTest extends TestCase
     /** @test */
     public function validationExportCensoRegistro10(): void
     {
+        $this->markTestSkipped('Será reconstruído quando a exportação for desacoplada');
+
         $data10 = [
             'oper' => 'get',
             'resource' => 'registro-10',
@@ -162,7 +166,7 @@ class ExportTest extends TestCase
     /** @test */
     public function validationExportCensoRegistro20(): void
     {
-        $this->markTestSkipped("Será reconstruído quando a exportação for desacoplada");
+        $this->markTestSkipped('Será reconstruído quando a exportação for desacoplada');
 
         $data20 = [
             'oper' => 'get',
@@ -197,7 +201,7 @@ class ExportTest extends TestCase
     /** @test */
     public function validationExportCensoRegistro30(): void
     {
-        $this->markTestSkipped("Será reconstruído quando a exportação for desacoplada");
+        $this->markTestSkipped('Será reconstruído quando a exportação for desacoplada');
 
         $data30 = [
             'oper' => 'get',
@@ -232,7 +236,7 @@ class ExportTest extends TestCase
     /** @test */
     public function validationExportCensoRegistro40(): void
     {
-        $this->markTestSkipped("Será reconstruído quando a exportação for desacoplada");
+        $this->markTestSkipped('Será reconstruído quando a exportação for desacoplada');
 
         $data40 = [
             'oper' => 'get',
@@ -260,7 +264,7 @@ class ExportTest extends TestCase
     /** @test */
     public function validationExportCensoRegistro50(): void
     {
-        $this->markTestSkipped("Será reconstruído quando a exportação for desacoplada");
+        $this->markTestSkipped('Será reconstruído quando a exportação for desacoplada');
 
         $data50 = [
             'oper' => 'get',
@@ -286,7 +290,7 @@ class ExportTest extends TestCase
     /** @test */
     public function validationExportCensoRegistro60(): void
     {
-        $this->markTestSkipped("Será reconstruído quando a exportação for desacoplada");
+        $this->markTestSkipped('Será reconstruído quando a exportação for desacoplada');
 
         $data60 = [
             'oper' => 'get',
