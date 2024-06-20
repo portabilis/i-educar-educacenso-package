@@ -59,10 +59,9 @@ abstract class EducacensoTestCase extends TestCase
         \Artisan::call('db:seed', ['--class' => 'DefaultModulesEducacensoOrgaoRegionalTableSeeder']);
 
         $country = Country::updateOrCreate([
-            'id' => 1,
+            'ibge_code' => '76',
         ], [
             'name' => 'Brasil',
-            'ibge_code' => '76',
         ]);
 
         DistrictFactory::new()->create([
