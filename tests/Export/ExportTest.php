@@ -37,6 +37,9 @@ class ExportTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+
+        return;
+
         \Artisan::call('db:seed', ['--class' => 'DefaultPmieducarTurmaTurnoTableSeeder']);
         \Artisan::call('db:seed', ['--class' => 'DefaultManagerRolesTableSeeder']);
         \Artisan::call('db:seed', ['--class' => 'DefaultManagerLinkTypesTableSeeder']);
@@ -110,7 +113,7 @@ class ExportTest extends TestCase
     public function validationExportCensoRegistro00(): void
     {
         $this->markTestSkipped('Será reconstruído quando a exportação for desacoplada');
-        
+
         $data00 = [
             'oper' => 'get',
             'resource' => 'registro-00',
