@@ -8,8 +8,8 @@ use App\Models\LegacySchoolClassTeacher;
 use Carbon\Carbon;
 use iEducar\Packages\Educacenso\Services\HandleFileService;
 use iEducar\Packages\Educacenso\Services\ImportServiceFactory;
+use iEducar\Packages\Educacenso\Tests\EducacensoTestCase;
 use Illuminate\Http\UploadedFile;
-use Tests\EducacensoTestCase;
 
 class Import2022Test extends EducacensoTestCase
 {
@@ -30,8 +30,8 @@ class Import2022Test extends EducacensoTestCase
         $importFileService = new HandleFileService($yearImportService, $this->user);
 
         $importFileService->handleFile(new UploadedFile(
-            resource_path('../tests/Educacenso/importacao_educacenso_2022.txt'),
-            'importacao_educacenso_2022.txt'
+            path: __DIR__ . '/importacao_educacenso_2022.txt',
+            originalName: 'importacao_educacenso_2022.txt'
         ));
     }
 

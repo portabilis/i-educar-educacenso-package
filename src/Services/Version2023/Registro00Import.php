@@ -34,7 +34,7 @@ class Registro00Import extends Registro00Import2019
         $school = $schoolInep->school;
         $model = $this->model;
 
-        if (!$school->iddis) {
+        if (! $school->iddis) {
             if (strlen($model->codigoIbgeDistrito) > 7) {
                 $ibge_code = explode($model->codigoIbgeMunicipio, $model->codigoIbgeDistrito)[1];
             } else {

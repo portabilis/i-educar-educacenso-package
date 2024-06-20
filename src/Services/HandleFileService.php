@@ -2,8 +2,6 @@
 
 namespace iEducar\Packages\Educacenso\Services;
 
-use App\Exceptions\Educacenso\InvalidFileDate;
-use App\Exceptions\Educacenso\InvalidFileYear;
 use App\Models\EducacensoImport;
 use App\User;
 use iEducar\Packages\Educacenso\Jobs\EducacensoImportJob;
@@ -14,24 +12,14 @@ use Illuminate\Support\Facades\DB;
 class HandleFileService
 {
     /**
-     * @var ImportService
-     */
-    private $yearImportService;
-
-    /**
-     * @var User
-     */
-    private $user;
-
-    /**
      * @var EducacensoImportJob[]
      */
     private $jobs;
 
-    public function __construct(ImportService $yearImportService, User $user)
-    {
-        $this->yearImportService = $yearImportService;
-        $this->user = $user;
+    public function __construct(
+        private ImportService $yearImportService,
+        private User $user
+    ) {
     }
 
     /**
@@ -54,7 +42,7 @@ class HandleFileService
     /**
      * Cria o processo de importação de uma escola
      *
-     * @param $year
+     * @param  $year
      */
     public function createImportProcess($school): void
     {

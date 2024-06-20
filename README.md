@@ -19,6 +19,29 @@ Instale o pacote:
 composer plug-and-play
 ```
 
+## Fluxo de trabalho
+
+Todo commit, push e criação de branch de melhorias deverão ocorrer dentro da pasta
+`packages/portabilis/i-educar-educacenso`, dessa forma você estará manipulando o 
+repositório do Educacenso e não o repositório principal do i-Educar.
+
+## Execução de testes
+
+Os comandos abaixo devem ser executados a partir da raiz do i-Educar.
+
+Adicionar as dependência do `orchestra/testbench` ao plug and play.
+
+```bash
+composer plug-and-play:add orchestra/testbench ^9
+composer plug-and-play:update
+```
+
+### Executar os testes:
+
+```bash
+vendor/bin/pest -c packages/portabilis/i-educar-educacenso/phpunit.package.xml --test-directory=packages/portabilis/i-educar-educacenso/tests
+``` 
+
 ## Perguntas frequentes (FAQ)
 
 Algumas perguntas aparecem recorrentemente. Olhe primeiro por aqui:

@@ -5,8 +5,8 @@ namespace iEducar\Packages\Educacenso\Tests\Import;
 use Carbon\Carbon;
 use iEducar\Packages\Educacenso\Services\HandleFileService;
 use iEducar\Packages\Educacenso\Services\ImportServiceFactory;
+use iEducar\Packages\Educacenso\Tests\EducacensoTestCase;
 use Illuminate\Http\UploadedFile;
-use Tests\EducacensoTestCase;
 
 class Import2021Test extends EducacensoTestCase
 {
@@ -25,8 +25,8 @@ class Import2021Test extends EducacensoTestCase
         $importFileService = new HandleFileService($yearImportService, $this->user);
 
         $importFileService->handleFile(new UploadedFile(
-            resource_path('../tests/Educacenso/importacao_educacenso_2021.txt'),
-            'importacao_educacenso_2021.txt'
+            path: __DIR__ . '/importacao_educacenso_2021.txt',
+            originalName: 'importacao_educacenso_2021.txt'
         ));
     }
 }
