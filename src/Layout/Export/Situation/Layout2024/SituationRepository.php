@@ -156,7 +156,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                     '11' => convertSituationIEducarToEducacenso(
                         situation: $enrollment->registration->situation->cod_situacao,
                         etapaTurma: $enrollment->schoolClass->etapa_educacenso,
-                        etapaSerie: $enrollment->registration->grade->etapa_educacenso
+                        etapaSerie: $enrollment->registration?->grade?->etapa_educacenso
                     ),
                 ];
             }
