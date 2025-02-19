@@ -21,7 +21,7 @@ class IsNotEmptyInepNumberStudent implements ValidationRule, DataAwareRule
         $year = $this->data['year'];
         $shool_id = $this->data['school_id'];
 
-        $repository = new (SituationRepositoryFactory::fromYear((int) $this->data['year']));
+        $repository = SituationRepositoryFactory::fromYear((int) $this->data['year']);
         $enrollments = $repository->getEnrollments90ToExport($year, $shool_id);
         foreach ($enrollments as $enrollment) {
             $this->validateEnrollment($enrollment, $fail);

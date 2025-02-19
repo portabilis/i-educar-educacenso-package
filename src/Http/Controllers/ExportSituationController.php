@@ -32,7 +32,7 @@ class ExportSituationController extends Controller
     public function store(ExportSituationRequest $request)
     {
         $year = (int) $request->get('year');
-        $repository = new (SituationRepositoryFactory::fromYear($year));
+        $repository = SituationRepositoryFactory::fromYear($year);
 
         $array = [
             'escola' => $repository->getDataRecord89($request->get('year'), $request->get('school_id')),
@@ -40,9 +40,9 @@ class ExportSituationController extends Controller
             'turma_matriculas' => $repository->getDataRecord91($request->get('year'), $request->get('school_id')),
         ];
 
-        $rulesRecord89 = new (SituationRecordFactory::record89FromYear($year));
-        $rulesRecord90 = new (SituationRecordFactory::record90FromYear($year))($array['matriculas']);
-        $rulesRecord91 = new (SituationRecordFactory::record91FromYear($year))($array['turma_matriculas']);
+        $rulesRecord89 = SituationRecordFactory::record89FromYear($year);
+        $rulesRecord90 = SituationRecordFactory::record90FromYear($year, $array['matriculas']);
+        $rulesRecord91 = SituationRecordFactory::record91FromYear($year, $array['turma_matriculas']);
 
         $rules = array_merge($rulesRecord89->rules(), $rulesRecord90->rules(), $rulesRecord91->rules());
         $messages = array_merge($rulesRecord89->messages(), $rulesRecord90->messages(), $rulesRecord91->messages());

@@ -22,7 +22,7 @@ class IsNotEmptyStage56EducacensoGrade implements DataAwareRule, ValidationRule
         $year = $this->data['year'];
         $shool_id = $this->data['school_id'];
 
-        $repository = new (SituationRepositoryFactory::fromYear((int) $this->data['year']));
+        $repository = SituationRepositoryFactory::fromYear((int) $this->data['year']);
         $enrollments90 = $repository->getEnrollments90ToExport($year, $shool_id);
         $enrollments91 = $repository->getEnrollments91ToExport($year, $shool_id);
 
