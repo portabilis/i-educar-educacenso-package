@@ -6,23 +6,23 @@ use App\Models\LegacyGrade;
 use App\Models\LegacyRegistration;
 use Closure;
 use iEducar\Packages\Educacenso\Helpers\ErrorMessage;
+use iEducar\Packages\Educacenso\Layout\Export\Situation\SituationRepositoryFactory;
 use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class IsNotEmptyStage56EducacensoGrade implements ValidationRule, DataAwareRule
+class IsNotEmptyStage56EducacensoGrade implements DataAwareRule, ValidationRule
 {
     protected $data = [];
 
     public function validate(
-        string  $attribute,
-        mixed   $value,
+        string $attribute,
+        mixed $value,
         Closure $fail
     ): void {
         $year = $this->data['year'];
         $shool_id = $this->data['school_id'];
 
-        $classRepository = 'iEducar\Packages\Educacenso\Layout\Export\Situation\Layout' . $this->data['year'] . '\SituationRepository';
-        $repository = new $classRepository();
+        $repository = new (SituationRepositoryFactory::fromYear((int) $this->data['year']));
         $enrollments90 = $repository->getEnrollments90ToExport($year, $shool_id);
         $enrollments91 = $repository->getEnrollments91ToExport($year, $shool_id);
 

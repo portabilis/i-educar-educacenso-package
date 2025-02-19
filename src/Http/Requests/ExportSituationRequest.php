@@ -42,11 +42,11 @@ class ExportSituationRequest extends FormRequest
                 'required',
                 'integer',
                 'exists:' . LegacySchool::class . ',cod_escola',
-                new IsNotEmptyInepNumberSchool(),
-                new IsNotEmptyInepNumberSchoolClass(),
-                new IsNotEmptyInepNumberStudent(),
-                new IsNotEmptyInepNumberEnrollment(),
-                new IsNotEmptyStage56EducacensoGrade(),
+                //new IsNotEmptyInepNumberSchool(),
+                //new IsNotEmptyInepNumberSchoolClass(),
+                //new IsNotEmptyInepNumberStudent(),
+                //new IsNotEmptyInepNumberEnrollment(),
+                //new IsNotEmptyStage56EducacensoGrade(),
             ]
         ];
     }
