@@ -264,6 +264,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                         'cod_matricula',
                         'ref_cod_aluno',
                         'ano',
+                        'ref_ref_cod_serie',
                     ]);
                     $q->whereNotIn('cod_matricula', $this->ignoreRegistrationsRecord90);
                 },
