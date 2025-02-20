@@ -5,6 +5,7 @@ namespace iEducar\Packages\Educacenso\Rules;
 use App\Models\LegacyEnrollment;
 use Closure;
 use iEducar\Packages\Educacenso\Helpers\ErrorMessage;
+use iEducar\Packages\Educacenso\Layout\Export\Situation\SituationRepositoryFactory;
 use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\ValidationRule;
 
@@ -20,8 +21,7 @@ class IsNotEmptyInepNumberStudent implements ValidationRule, DataAwareRule
         $year = $this->data['year'];
         $shool_id = $this->data['school_id'];
 
-        $classRepository = 'iEducar\Packages\Educacenso\Layout\Export\Situation\Layout' . $this->data['year'] . '\SituationRepository';
-        $repository = new $classRepository();
+        $repository = SituationRepositoryFactory::fromYear((int) $this->data['year']);
         $enrollments = $repository->getEnrollments90ToExport($year, $shool_id);
         foreach ($enrollments as $enrollment) {
             $this->validateEnrollment($enrollment, $fail);

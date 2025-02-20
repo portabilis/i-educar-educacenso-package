@@ -9,6 +9,7 @@ use iEducar\Packages\Educacenso\Rules\IsNotEmptyInepNumberEnrollment;
 use iEducar\Packages\Educacenso\Rules\IsNotEmptyInepNumberSchool;
 use iEducar\Packages\Educacenso\Rules\IsNotEmptyInepNumberSchoolClass;
 use iEducar\Packages\Educacenso\Rules\IsNotEmptyInepNumberStudent;
+use iEducar\Packages\Educacenso\Rules\IsNotEmptyStage56EducacensoGrade;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ExportSituationRequest extends FormRequest
@@ -45,6 +46,7 @@ class ExportSituationRequest extends FormRequest
                 new IsNotEmptyInepNumberSchoolClass(),
                 new IsNotEmptyInepNumberStudent(),
                 new IsNotEmptyInepNumberEnrollment(),
+                new IsNotEmptyStage56EducacensoGrade(),
             ]
         ];
     }
