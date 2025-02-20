@@ -39,6 +39,19 @@ class IsNotEmptyInepNumberStudent implements ValidationRule, DataAwareRule
 
     private function validateEnrollment(LegacyEnrollment $enrollment, Closure $fail, $record91 = false): void
     {
+        if (is_null($enrollment->registration->student)) {
+            (new ErrorMessage($fail, [
+                'key' => 'cod_matricula',
+                'value' => $enrollment->registration->getKey(),
+                'breadcrumb' => 'Escolas -> Cadastros -> Alunos -> Matrícula',
+                'url' => '/intranet/educar_matricula_det.php?cod_matricula=' . $enrollment->registration->getKey()
+            ]))->toString([
+                'message' => 'Dados para formular os registros inválidos. A matrícula ' . $enrollment->registration->getKey() . ' teve seu aluno removido indevidamente.',
+            ]);
+
+            return;
+        }
+
         $errorMessage = new ErrorMessage($fail, [
             'key' => 'cod_aluno',
             'value' => $enrollment->registration->student->getKey(),
