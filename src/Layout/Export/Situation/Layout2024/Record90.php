@@ -142,10 +142,35 @@ class Record90 extends Validation
                     }
                 },
             ],
-            'matriculas.*.8' => [
-                'required',
-                'integer',
-                'in:1,2,3,4,5,6,7',
+            'matriculas.*' => [
+                function ($attribute, $value, $fail): void {
+                    $schoolClassId = $value['3'];
+                    $studentId = $value['6'];
+                    $situacao = $value['8'];
+
+                    $errorMessage = new ErrorMessage($fail, [
+                        'key' => 'cod_aluno',
+                        'value' => $studentId,
+                        'breadcrumb' => 'Escolas -> Cadastros -> Alunos -> Matrícula',
+                        'url' => '/intranet/educar_aluno_det.php?cod_aluno=' . $studentId,
+                    ]);
+
+                    if (is_null($situacao) || $situacao == '') {
+                        $student = LegacyStudent::find($studentId);
+                        $schoolClass = LegacySchoolClass::find($schoolClassId);
+
+                        $errorMessage->toString([
+                            'message' => 'Dados para formular o registro 90 inválidos. A situação da Matrícula do(a) Aluno(a) ' . mb_strtoupper($student->name) . ' na Turma ' . $schoolClass->name . ' precisa ser definida.',
+                        ]);
+                    } elseif (in_array($situacao, [1, 2, 3, 4, 5, 6, 7], true) == false) {
+                        $student = LegacyStudent::find($studentId);
+                        $schoolClass = LegacySchoolClass::find($schoolClassId);
+
+                        $errorMessage->toString([
+                            'message' => 'Dados para formular o registro 90 inválidos. A situação da Matrícula do(a) Aluno(a) ' . mb_strtoupper($student->name) . ' na Turma ' . $schoolClass->name . ' é inválida.',
+                        ]);
+                    }
+                },
             ],
         ];
     }
