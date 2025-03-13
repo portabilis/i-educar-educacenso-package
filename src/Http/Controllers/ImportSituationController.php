@@ -11,12 +11,18 @@ use iEducar\Packages\Educacenso\Http\Requests\EducacensoImportSituationRequest;
 use iEducar\Packages\Educacenso\Jobs\EducacensoSituationImportJob;
 use iEducar\Packages\Educacenso\Models\EducacensoSituationImport;
 use iEducar\Packages\Educacenso\Services\EducacensoImportSituationService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ImportSituationController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        if (! $request->user()->isAdmin()) {
+            return redirect('intranet/educar_educacenso_index.php')
+                ->with('error', 'Você não tem permissão para acessar essa página.');
+        }
+
         $this->breadcrumb('Importação de Situações', [
             url('intranet/educar_educacenso_index.php') => 'Educacenso',
         ]);
@@ -32,6 +38,11 @@ class ImportSituationController extends Controller
 
     public function store(EducacensoImportSituationRequest $request)
     {
+        if (! $request->user()->isAdmin()) {
+            return redirect('intranet/educar_educacenso_index.php')
+                ->with('error', 'Você não tem permissão para acessar essa página.');
+        }
+
         $files = $request->file('arquivos');
         $jobs = [];
         $schoolCount = 0;
@@ -87,8 +98,13 @@ class ImportSituationController extends Controller
         return $schoolInep ? $schoolInep->school->name : '';
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        if(! $request->user()->isAdmin()) {
+            return redirect('intranet/educar_educacenso_index.php')
+                ->with('error', 'Você não tem permissão para acessar essa página.');
+        }
+
         $this->menu(Process::EDUCACENSO_IMPORT_SITUATION);
         $this->breadcrumb('Importação de Situações', [
             url('intranet/educar_educacenso_index.php') => 'Educacenso',
