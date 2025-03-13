@@ -65,7 +65,6 @@ class ImportSituationController extends Controller
                 EducacensoSituationImportJob::dispatch(...$job);
             }
         } catch (Exception $exception) {
-            dd($exception->getMessage());
             return redirect(route('educacenso.import.situation.create'))
                 ->with('error', $exception instanceof ImportSituationException ? $exception->getMessage() : 'Não foi possível realizar a importação!');
         }
