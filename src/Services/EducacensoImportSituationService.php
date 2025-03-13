@@ -102,14 +102,14 @@ class EducacensoImportSituationService
             \App_Model_MatriculaSituacao::ABANDONO,
             \App_Model_MatriculaSituacao::FALECIDO,
         ], true)) {
-            $data['data_cancel'] = now();
+            $data['data_cancel'] = $registration->data_matricula;
 
             $registration->lastEnrollment->update([
                 'ativo' => 0,
                 'transferido' => $situation === \App_Model_MatriculaSituacao::TRANSFERIDO,
                 'abandono' => $situation === \App_Model_MatriculaSituacao::ABANDONO,
                 'falecido' => $situation === \App_Model_MatriculaSituacao::FALECIDO,
-                'data_exclusao' => now(),
+                'data_exclusao' => $registration->data_matricula,
             ]);
         }
 
