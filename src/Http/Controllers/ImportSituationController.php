@@ -5,6 +5,7 @@ namespace iEducar\Packages\Educacenso\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\SchoolInep;
 use App\Process;
+use Carbon\Carbon;
 use Exception;
 use iEducar\Packages\Educacenso\Exception\ImportSituationException;
 use iEducar\Packages\Educacenso\Http\Requests\EducacensoImportSituationRequest;
@@ -12,6 +13,7 @@ use iEducar\Packages\Educacenso\Jobs\EducacensoSituationImportJob;
 use iEducar\Packages\Educacenso\Models\EducacensoSituationImport;
 use iEducar\Packages\Educacenso\Services\EducacensoImportSituationService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class ImportSituationController extends Controller
@@ -76,6 +78,8 @@ class ImportSituationController extends Controller
                 EducacensoSituationImportJob::dispatch(...$job);
             }
         } catch (Exception $exception) {
+            DB::rollBack();
+
             return redirect(route('educacenso.import.situation.create'))
                 ->with('error', $exception instanceof ImportSituationException ? $exception->getMessage() : 'Não foi possível realizar a importação!');
         }
@@ -85,7 +89,10 @@ class ImportSituationController extends Controller
 
     private function validateSchoolInep(int $inep): void
     {
-        $doesntExist = SchoolInep::query()->where('cod_escola_inep', $inep)->doesntExist();
+        $doesntExist = Cache::remember('educacenso_' . $inep . '_doesnt_exist ', Carbon::now()->addHours(12), function () use ($inep) {
+            return SchoolInep::query()->where('cod_escola_inep', $inep)->doesntExist();
+        });
+
         if ($doesntExist) {
             throw new ImportSituationException("Não foi possível encontrar a escola com o INEP {$inep}");
         }
@@ -93,14 +100,18 @@ class ImportSituationController extends Controller
 
     private function getNameSchoolInep(int $inep): string
     {
-        $schoolInep = SchoolInep::query()->where('cod_escola_inep', $inep)->first();
+        $return = Cache::remember('educacenso_' . $inep . '_name', Carbon::now()->addHours(12), function () use ($inep) {
+            $schoolInep = SchoolInep::query()->where('cod_escola_inep', $inep)->first();
 
-        return $schoolInep ? $schoolInep->school->name : '';
+            return $schoolInep ? $schoolInep->school->name : '';
+        });
+
+        return $return;
     }
 
     public function create(Request $request)
     {
-        if(! $request->user()->isAdmin()) {
+        if (! $request->user()->isAdmin()) {
             return redirect('intranet/educar_educacenso_index.php')
                 ->with('error', 'Você não tem permissão para acessar essa página.');
         }

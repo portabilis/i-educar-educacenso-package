@@ -44,7 +44,7 @@
         </table>
 
         <div style="text-align: center">
-            <button id="importButton" class="btn-green" type="submit">Importar Ineps</button>
+            <button id="importButton" class="btn-green" type="submit">Importar INEPs</button>
         </div>
     </form>
 @endsection

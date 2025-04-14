@@ -19,7 +19,7 @@ class EducacensoSituationImportJob implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public $timeout = 3600;
+    public $timeout = 1800;
 
     public function __construct(private EducacensoSituationImport $educacensoSituationImport, private array $data)
     {

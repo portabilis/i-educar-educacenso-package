@@ -47,6 +47,7 @@ class EducacensoImportSituationService
         while (($line = fgets($handle)) !== false) {
             yield $line;
         }
+        fclose($handle);
     }
 
     public function execute(): void
