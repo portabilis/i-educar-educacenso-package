@@ -77,11 +77,12 @@ class EducacensoImportSituationService
     {
         $schoolClassId = SchoolClassInep::query()->where('cod_turma_inep', $schoolClassInep)->value('cod_turma');
         $studentId = StudentInep::query()->where('cod_aluno_inep', $studentInep)->value('cod_aluno');
-        $situation = convertSituationEducacensoToIeducar($situation);
 
         $registration = LegacyRegistration::query()
             ->with([
                 'lastEnrollment',
+                'lastEnrollment.schoolClass',
+                'grade',
             ])
             ->join('matricula_turma', 'matricula_turma.ref_cod_matricula', '=', 'matricula.cod_matricula')
             ->where('ref_cod_aluno', $studentId)
@@ -91,6 +92,12 @@ class EducacensoImportSituationService
         if (is_null($registration)) {
             return;
         }
+
+        $situation = convertSituationEducacensoToIeducar(
+            situation: $situation,
+            etapaTurma: $registration->lastEnrollment->schoolClass->etapa_educacenso,
+            etapaSerie: $registration->grade?->etapa_educacenso,
+        );
 
         $data = [
             'aprovado' => $situation,

@@ -57,8 +57,18 @@ if (! function_exists('convertSituationIEducarToEducacenso')) {
 }
 
 if (! function_exists('convertSituationEducacensoToIeducar')) {
-    function convertSituationEducacensoToIeducar(int  $situation): int
+    function convertSituationEducacensoToIeducar(int  $situation, int $etapaTurma = 0, ?int $etapaSerie = null): int
     {
+        $etapasMultiEtapas = [56];
+        if (in_array($etapaTurma, $etapasMultiEtapas, true)) {
+            $etapaTurma = $etapaSerie;
+        }
+
+        $etapasEducacaoInfantil = [1, 2, 3];
+        if (in_array($etapaTurma, $etapasEducacaoInfantil, true)) {
+            return App_Model_MatriculaSituacao::APROVADO;
+        }
+
         return match ($situation) {
             1 => App_Model_MatriculaSituacao::TRANSFERIDO,
             2 => App_Model_MatriculaSituacao::ABANDONO,
