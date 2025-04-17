@@ -65,7 +65,7 @@ if (! function_exists('convertSituationEducacensoToIeducar')) {
         }
 
         $etapasEducacaoInfantil = [1, 2, 3];
-        if (in_array($etapaTurma, $etapasEducacaoInfantil, true)) {
+        if (in_array($etapaTurma, $etapasEducacaoInfantil, true) && $situation === 7) {
             return App_Model_MatriculaSituacao::APROVADO;
         }
 
