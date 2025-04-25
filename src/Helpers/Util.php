@@ -55,3 +55,27 @@ if (! function_exists('convertSituationIEducarToEducacenso')) {
         };
     }
 }
+
+if (! function_exists('convertSituationEducacensoToIeducar')) {
+    function convertSituationEducacensoToIeducar(int  $situation, int $etapaTurma = 0, ?int $etapaSerie = null): int
+    {
+        $etapasMultiEtapas = [56];
+        if (in_array($etapaTurma, $etapasMultiEtapas, true)) {
+            $etapaTurma = $etapaSerie;
+        }
+
+        $etapasEducacaoInfantil = [1, 2, 3];
+        if (in_array($etapaTurma, $etapasEducacaoInfantil, true) && $situation === 7) {
+            return App_Model_MatriculaSituacao::APROVADO;
+        }
+
+        return match ($situation) {
+            1 => App_Model_MatriculaSituacao::TRANSFERIDO,
+            2 => App_Model_MatriculaSituacao::ABANDONO,
+            3 => App_Model_MatriculaSituacao::FALECIDO,
+            4 => App_Model_MatriculaSituacao::REPROVADO,
+            5, 6 => App_Model_MatriculaSituacao::APROVADO,
+            default => App_Model_MatriculaSituacao::EM_ANDAMENTO,
+        };
+    }
+}
