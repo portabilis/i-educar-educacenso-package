@@ -12,7 +12,6 @@
         <tr>
             <td style="font-weight:bold;">Ano</td>
             <td style="font-weight:bold;">Escola</td>
-            <td style="font-weight:bold;">Data de entrada das matrículas</td>
             <td style="font-weight:bold;">Usuário</td>
             <td style="font-weight:bold;">Data</td>
             <td style="font-weight:bold;">Situação</td>
@@ -23,10 +22,7 @@
                     {{ $import->year }}
                 </td>
                 <td>
-                    {{ $import->school }}
-                </td>
-                <td>
-                    @if($import->registration_date) {{ $import->registration_date->format('d/m/Y') }} @endif
+                    {{ $import->school_name }}
                 </td>
                 <td>
                     {{ $import->user->realName }}
@@ -35,13 +31,21 @@
                     {{ $import->created_at->format('d/m/y H:i') }}
                 </td>
                 <td>
-                    {{ $import->finished ? 'Finalizada' : 'Processando' }}
+                    {{ $import->status }}
                 </td>
             </tr>
         @empty
             <tr>
-                <td colspan="6" align=center>Não há informação para ser apresentada</td>
+                <td colspan="5" align=center>Não há informação para ser apresentada</td>
             </tr>
         @endforelse
     </table>
+    <div class="separator"></div>
+    <div style="text-align: center">
+        {{ $imports->links() }}
+    </div>
+
+    <div style="text-align: center; margin-top: 30px; margin-bottom: 30px">
+        <a href="{{ route('educacenso.import.situation.create') }}" class="btn-green">Nova Importação</a>
+    </div>
 @endsection
