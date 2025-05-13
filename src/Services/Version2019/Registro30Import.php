@@ -483,7 +483,7 @@ class Registro30Import implements RegistroImportInterface
         }
 
         if ($this->model->recursoBraile) {
-            $arrayRecursos[] = RecursosRealizacaoProvas::MATERIAL_DIDATICO_E_PROVA_EM_BRAILLE;
+            $arrayRecursos[] = RecursosRealizacaoProvas::MATERIAL_DIDATICO_EM_BRAILLE;
         }
 
         if ($this->model->recursoNenhum) {
