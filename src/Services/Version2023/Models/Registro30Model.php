@@ -140,7 +140,7 @@ class Registro30Model extends Registro30
         $this->formacaoContinuadaEducacaoAmbiental = $arrayColumns[88];
         $this->formacaoContinuadaEducacaoDireitosHumanos = $arrayColumns[89];
         $this->formacaoContinuadaEducacaoBilingueSurdos = $arrayColumns[90];
-        $this->formacaoContinuadaEducacaoTecnologiaInformaçãoComunicacao = $arrayColumns[91];
+        $this->formacaoContinuadaEducacaoTecnologiaInformacaoComunicacao = $arrayColumns[91];
         $this->formacaoContinuadaGeneroDiversidadeSexual = $arrayColumns[92];
         $this->formacaoContinuadaDireitosCriancaAdolescente = $arrayColumns[93];
         $this->formacaoContinuadaEducacaoRelacoesEticoRaciais = $arrayColumns[94];

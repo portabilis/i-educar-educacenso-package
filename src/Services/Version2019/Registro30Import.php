@@ -665,7 +665,7 @@ class Registro30Import implements RegistroImportInterface
             $arrayCourses[] = FormacaoContinuada::EDUCACAO_BILINGUE_SURDOS;
         }
 
-        if ($this->model->formacaoContinuadaEducacaoTecnologiaInformaçãoComunicacao) {
+        if ($this->model->formacaoContinuadaEducacaoTecnologiaInformacaoComunicacao) {
             $arrayCourses[] = FormacaoContinuada::EDUCACAO_TIC;
         }
 
