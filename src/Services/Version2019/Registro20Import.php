@@ -886,7 +886,7 @@ class Registro20Import implements RegistroImportInterface
     private function getTipoAtendimento()
     {
         if ($this->model->tipoAtendimentoEscolarizacao) {
-            return TipoAtendimentoTurma::ESCOLARIZACAO;
+            return TipoAtendimentoTurma::CURRICULAR_ETAPA_ENSINO;
         }
 
         if ($this->model->tipoAtendimentoAtividadeComplementar) {

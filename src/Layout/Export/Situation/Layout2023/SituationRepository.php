@@ -139,7 +139,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
             })
             ->whereHas('schoolClass', function ($q) use ($schoolId): void {
                 $q->where('ref_ref_cod_escola', $schoolId);
-                $q->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO);
+                $q->where('tipo_atendimento', TipoAtendimentoTurma::CURRICULAR_ETAPA_ENSINO);
                 $q->active();
             })
             ->pluck('id');
@@ -170,7 +170,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                     ]);
                     $q->where('ref_ref_cod_escola', $schoolId);
                     $q->where('nao_informar_educacenso', '!=', 1);
-                    $q->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO);
+                    $q->where('tipo_atendimento', TipoAtendimentoTurma::CURRICULAR_ETAPA_ENSINO);
                 },
                 'schoolClass.school:cod_escola',
                 'schoolClass.school.inep:cod_escola,cod_escola_inep',
@@ -188,7 +188,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
             ->whereHas('schoolClass', function ($q) use ($schoolId): void {
                 $q->where('ref_ref_cod_escola', $schoolId);
                 $q->where('nao_informar_educacenso', '!=', 1);
-                $q->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO);
+                $q->where('tipo_atendimento', TipoAtendimentoTurma::CURRICULAR_ETAPA_ENSINO);
                 $q->active();
             })
             ->whereValid()
@@ -234,7 +234,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
                     ]);
                     $q->where('ref_ref_cod_escola', $schoolId);
                     $q->where('nao_informar_educacenso', '!=', 1);
-                    $q->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO);
+                    $q->where('tipo_atendimento', TipoAtendimentoTurma::CURRICULAR_ETAPA_ENSINO);
                 },
                 'schoolClass.school:cod_escola',
                 'schoolClass.school.inep:cod_escola,cod_escola_inep',
@@ -251,7 +251,7 @@ class SituationRepository extends \iEducar\Packages\Educacenso\Layout\Export\Con
             ->whereHas('schoolClass', function ($q) use ($schoolId): void {
                 $q->where('ref_ref_cod_escola', $schoolId);
                 $q->where('nao_informar_educacenso', '!=', 1);
-                $q->where('tipo_atendimento', TipoAtendimentoTurma::ESCOLARIZACAO);
+                $q->where('tipo_atendimento', TipoAtendimentoTurma::CURRICULAR_ETAPA_ENSINO);
                 $q->active();
             })
             ->whereValid()
