@@ -41,6 +41,22 @@ class Import2022Test extends EducacensoTestCase
         $legacySchool = LegacySchool::first();
         $this->assertEquals('{1}', $legacySchool->poder_publico_parceria_convenio);
 
+        foreach ($legacySchool->schoolClasses as $schoolClass) {
+            $this->assertNotNull($schoolClass->estrutura_curricular);
+            $this->assertEquals(1, $schoolClass->formas_organizacao_turma);
+
+            if (str_contains('2', $schoolClass->estrutura_curricular)) {
+                $this->assertEquals('{8}', $legacySchool->estrutura_curricular);
+            }
+        }
+
+        $schoollClassTeachers = LegacySchoolClassTeacher::all();
+
+        foreach ($schoollClassTeachers as $schoollClassTeacher) {
+            if (str_contains('2', $schoollClassTeacher->schoolClass->estrutura_curricular)) {
+                $this->assertEquals('{8}', $schoollClassTeacher->estrutura_curricular);
+            }
+        }
         $enrollments = LegacyEnrollment::all();
 
         foreach ($enrollments as $enrollment) {
