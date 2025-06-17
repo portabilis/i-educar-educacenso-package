@@ -24,7 +24,6 @@ class Registro20Import extends Registro20Import2022
 
         $schoolClass = LegacySchoolClass::find($schoolClassInep->cod_turma);
 
-        $schoolClass->estrutura_curricular = transformDBArrayInString($model->estruturaCurricular) ?: null;
         $schoolClass->formas_organizacao_turma = $model->formasOrganizacaoTurma ?: null;
         $schoolClass->unidade_curricular = transformDBArrayInString($model->unidadesCurriculares) ?: null;
         $schoolClass->outras_unidades_curriculares_obrigatorias = $model->outrasUnidadesCurricularesObrigatorias ?: null;
@@ -38,7 +37,7 @@ class Registro20Import extends Registro20Import2022
      */
     public static function getModel($arrayColumns)
     {
-        $registro = new Registro20Model();
+        $registro = new Registro20Model;
         $registro->hydrateModel($arrayColumns);
 
         return $registro;
@@ -47,7 +46,6 @@ class Registro20Import extends Registro20Import2022
     public static function getComponentes()
     {
         $componentes = parent::getComponentes();
-
 
         return $componentes;
     }
