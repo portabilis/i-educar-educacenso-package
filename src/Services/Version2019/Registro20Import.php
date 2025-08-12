@@ -881,23 +881,25 @@ class Registro20Import implements RegistroImportInterface
     }
 
     /**
-     * @return int|null
+     * @return string
      */
     private function getTipoAtendimento()
     {
+        $tipos = [];
+
         if ($this->model->tipoAtendimentoEscolarizacao) {
-            return TipoAtendimentoTurma::ESCOLARIZACAO;
+            $tipos[] = TipoAtendimentoTurma::CURRICULAR_ETAPA_ENSINO;
         }
 
         if ($this->model->tipoAtendimentoAtividadeComplementar) {
-            return TipoAtendimentoTurma::ATIVIDADE_COMPLEMENTAR;
+            $tipos[] = TipoAtendimentoTurma::ATIVIDADE_COMPLEMENTAR;
         }
 
         if ($this->model->tipoAtendimentoAee) {
-            return TipoAtendimentoTurma::AEE;
+            $tipos[] = TipoAtendimentoTurma::AEE;
         }
 
-        return;
+        return '{' . implode(',', $tipos) . '}';
     }
 
     /**
