@@ -6,6 +6,7 @@ use App\Process;
 use iEducar\Packages\Educacenso\Http\Controllers\ExportSituationController;
 use iEducar\Packages\Educacenso\Http\Controllers\ImportInepController;
 use iEducar\Packages\Educacenso\Http\Controllers\ImportRegistrationController;
+use iEducar\Packages\Educacenso\Http\Controllers\ImportSituationController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -49,6 +50,12 @@ class EducacensoProvider extends ServiceProvider
                 Route::get('create', [ImportInepController::class, 'create'])->name('educacenso.import.inep.create');
                 Route::post('/', [ImportInepController::class, 'store'])->name('educacenso.import.inep.store');
                 Route::get('/', [ImportInepController::class, 'index'])->name('educacenso.import.inep.index');
+            });
+
+            Route::prefix('educacenso/importacao/situacao')->middleware('can:modify:' . Process::EDUCACENSO_IMPORT_SITUATION)->group(function (): void {
+                Route::get('create', [ImportSituationController::class, 'create'])->name('educacenso.import.situation.create');
+                Route::post('/', [ImportSituationController::class, 'store'])->name('educacenso.import.situation.store');
+                Route::get('/', [ImportSituationController::class, 'index'])->name('educacenso.import.situation.index');
             });
         });
     }

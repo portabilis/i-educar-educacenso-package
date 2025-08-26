@@ -4,11 +4,14 @@ namespace iEducar\Packages\Educacenso\Layout\Export\Situation\Layout2024;
 
 use App\Models\LegacySchoolClass;
 use App\Models\LegacyStudent;
+use Closure;
 use iEducar\Packages\Educacenso\Helpers\ErrorMessage;
 use iEducar\Packages\Educacenso\Layout\Export\Contracts\Validation;
 
 class Record90 extends Validation
 {
+    private array $indexNull = [];
+
     public function __construct(
         public array $data
     ) {
@@ -17,6 +20,7 @@ class Record90 extends Validation
     public function rules()
     {
         $data = $this->data;
+
         return [
             'matriculas.*.1' => [
                 'required',
@@ -30,11 +34,11 @@ class Record90 extends Validation
             ],
             'matriculas.*.3' => [
                 'nullable',
-                'max:20'
+                'max:20',
             ],
             'matriculas.*.4' => [
-                function ($attribute, $value, $fail) use ($data): void {
-                    $index = array_search($value, array_column($data, '4'), true);
+                function ($attribute, $value, Closure $fail) use ($data): void {
+                    $index = $this->getIndexNullColumn4($value, $data);
 
                     $schoolClassId = $data[$index]['3'];
 
@@ -46,7 +50,7 @@ class Record90 extends Validation
                         'key' => 'cod_turma',
                         'breadcrumb' => 'Escolas -> Cadastros -> Turmas -> Dados Adicionais -> Código INEP',
                         'value' => $schoolClassId,
-                        'url' => 'intranet/educar_turma_cad.php?cod_turma=' . $schoolClassId
+                        'url' => 'intranet/educar_turma_cad.php?cod_turma=' . $schoolClassId,
                     ]);
 
                     if (is_null($value) || $value == '') {
@@ -65,10 +69,10 @@ class Record90 extends Validation
                             'message' => 'Dados para formular o registro 90 inválidos. O campo Código INEP da Turma ' . $schoolClass->name . ' deve conter apenas números.',
                         ]);
                     }
-                }
+                },
             ],
             'matriculas.*' => [
-                function ($attribute, $value, $fail) use ($data): void {
+                function ($attribute, $value, $fail): void {
                     $inep = $value['5'];
                     $studentId = $value['6'];
 
@@ -76,7 +80,7 @@ class Record90 extends Validation
                         'key' => 'cod_aluno',
                         'value' => $studentId,
                         'breadcrumb' => 'Escolas -> Cadastros -> Alunos -> Código INEP',
-                        'url' => '/module/Cadastro/aluno?id=' . $studentId
+                        'url' => '/module/Cadastro/aluno?id=' . $studentId,
                     ]);
 
                     if (is_null($inep) || $inep == '') {
@@ -138,10 +142,35 @@ class Record90 extends Validation
                     }
                 },
             ],
-            'matriculas.*.8' => [
-                'required',
-                'integer',
-                'in:1,2,3,4,5,6,7',
+            'matriculas.*' => [
+                function ($attribute, $value, $fail): void {
+                    $schoolClassId = $value['3'];
+                    $studentId = $value['6'];
+                    $situacao = $value['8'];
+
+                    $errorMessage = new ErrorMessage($fail, [
+                        'key' => 'cod_aluno',
+                        'value' => $studentId,
+                        'breadcrumb' => 'Escolas -> Cadastros -> Alunos -> Matrícula',
+                        'url' => '/intranet/educar_aluno_det.php?cod_aluno=' . $studentId,
+                    ]);
+
+                    if (is_null($situacao) || $situacao == '') {
+                        $student = LegacyStudent::find($studentId);
+                        $schoolClass = LegacySchoolClass::find($schoolClassId);
+
+                        $errorMessage->toString([
+                            'message' => 'Dados para formular o registro 90 inválidos. A situação da Matrícula do(a) Aluno(a) ' . mb_strtoupper($student->name) . ' na Turma ' . $schoolClass->name . ' precisa ser definida.',
+                        ]);
+                    } elseif (in_array($situacao, [1, 2, 3, 4, 5, 6, 7], true) == false) {
+                        $student = LegacyStudent::find($studentId);
+                        $schoolClass = LegacySchoolClass::find($schoolClassId);
+
+                        $errorMessage->toString([
+                            'message' => 'Dados para formular o registro 90 inválidos. A situação da Matrícula do(a) Aluno(a) ' . mb_strtoupper($student->name) . ' na Turma ' . $schoolClass->name . ' é inválida.',
+                        ]);
+                    }
+                },
             ],
         ];
     }
@@ -196,8 +225,24 @@ class Record90 extends Validation
         if (str_contains($schoolClassId, '-')) {
             $schoolClassId = explode('-', $schoolClassId)[0];
         }
-        $schoolClass = LegacySchoolClass::find($schoolClassId);
 
-        return $schoolClass;
+        return LegacySchoolClass::find($schoolClassId);
+    }
+
+    private function getIndexNullColumn4($value, $array): int
+    {
+        if (is_null($value)) {
+            foreach ($this->indexNull as $index) {
+                unset($array[$index]);
+            }
+        }
+
+        $index = array_search($value, array_column($array, '4'), true);
+
+        if (is_null($value)) {
+            $this->indexNull[] = $index;
+        }
+
+        return $index;
     }
 }

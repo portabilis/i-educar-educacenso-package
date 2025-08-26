@@ -95,7 +95,7 @@ class Registro20Import implements RegistroImportInterface
                 'ref_cod_curso' => $course->getKey(),
                 'ref_cod_turma_tipo' => $schoolClassType->getKey(),
                 'ref_usuario_cad' => $this->user->getKey(),
-                'nm_turma' => $model->nomeTurma,
+                'nm_turma' => str_replace('&#4294967295;', 'º', $model->nomeTurma),
                 'tipo_mediacao_didatico_pedagogico' => $model->tipoMediacaoDidaticoPedagogico,
                 'hora_inicial' => $horaInicial,
                 'hora_final' => $horaFinal,
@@ -881,23 +881,25 @@ class Registro20Import implements RegistroImportInterface
     }
 
     /**
-     * @return int|null
+     * @return string
      */
     private function getTipoAtendimento()
     {
+        $tipos = [];
+
         if ($this->model->tipoAtendimentoEscolarizacao) {
-            return TipoAtendimentoTurma::ESCOLARIZACAO;
+            $tipos[] = TipoAtendimentoTurma::CURRICULAR_ETAPA_ENSINO;
         }
 
         if ($this->model->tipoAtendimentoAtividadeComplementar) {
-            return TipoAtendimentoTurma::ATIVIDADE_COMPLEMENTAR;
+            $tipos[] = TipoAtendimentoTurma::ATIVIDADE_COMPLEMENTAR;
         }
 
         if ($this->model->tipoAtendimentoAee) {
-            return TipoAtendimentoTurma::AEE;
+            $tipos[] = TipoAtendimentoTurma::AEE;
         }
 
-        return;
+        return '{' . implode(',', $tipos) . '}';
     }
 
     /**
