@@ -55,7 +55,7 @@ jobs:
         with:
           repository: portabilis/i-educar
           token: ${{ secrets.ACTIONS_TOKEN }}
-          ref: 2.9
+          ref: 2.10
 
       - name: Checkout i-Educar Educacenso
         uses: actions/checkout@v2
