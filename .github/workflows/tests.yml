@@ -68,8 +68,8 @@ jobs:
       - name: Plug and play dependencies
         run: |
           composer config allow-plugins true
-          composer plug-and-play:add orchestra/testbench ^9.0
-          composer plug-and-play:add pestphp/pest ^2
+          composer plug-and-play:add orchestra/testbench ^10
+          composer plug-and-play:add pestphp/pest ^4
           composer plug-and-play
         env:
           COMPOSER_ALLOW_SUPERUSER: 1
