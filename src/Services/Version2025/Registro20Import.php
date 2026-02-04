@@ -27,9 +27,11 @@ class Registro20Import extends Registro20Import2023
         $schoolClass->etapa_agregada = $model->etapaAgregada;
         $schoolClass->classe_especial = $model->classeEspecial;
         $schoolClass->formacao_alternancia = $model->formacaoAlternancia;
-        $schoolClass->area_itinerario = $model->areaItinerario;
-        $schoolClass->tipo_curso_intinerario = $model->tipoCursoIntinerario;
-        $schoolClass->cod_curso_profissional_intinerario = $model->codCursoProfissionalIntinerario;
+        if (is_array($model->areaItinerario) && count($model->areaItinerario) > 0) {
+            $schoolClass->area_itinerario = $this->getPostgresIntegerArray($model->areaItinerario);
+        }
+        $schoolClass->tipo_curso_intinerario = $model->tipoCursoIntinerario ?: null;
+        $schoolClass->cod_curso_profissional_intinerario = $model->codCursoProfissionalIntinerario ?: null;
 
         $schoolClass->save();
     }

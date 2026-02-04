@@ -11,9 +11,6 @@ use iEducar\Modules\Educacenso\Model\RecursosAcessibilidade;
 use iEducar\Modules\Educacenso\Model\SalasAtividades;
 use iEducar\Packages\Educacenso\Services\Version2022\LegacySchool;
 use iEducar\Packages\Educacenso\Services\Version2024\Registro10Import as Registro10Import2024;
-
-use function iEducar\Packages\Educacenso\Services\Version2024\transformStringFromDBInArray;
-
 use iEducar\Packages\Educacenso\Services\Version2025\Models\Registro10Model;
 
 class Registro10Import extends Registro10Import2024
@@ -48,7 +45,7 @@ class Registro10Import extends Registro10Import2024
     protected function getArraySalasAtividades()
     {
         $salasAtividades = parent::getArraySalasAtividades();
-        $arraySalas = transformStringFromDBInArray($salasAtividades) ?: [];
+        $arraySalas = \transformStringFromDBInArray($salasAtividades) ?: [];
 
         if ($this->model->dependenciaSalaEstudioGravacaoEdicao) {
             $arraySalas[] = SalasAtividades::ESTUDIO_GRAVACAO_EDICAO;
@@ -61,7 +58,7 @@ class Registro10Import extends Registro10Import2024
     {
         $arrayAbastecimentoAgua = parent::getArrayAbastecimentoAgua();
 
-        $arrayAbastecimento = transformStringFromDBInArray($arrayAbastecimentoAgua) ?: [];
+        $arrayAbastecimento = \transformStringFromDBInArray($arrayAbastecimentoAgua) ?: [];
 
         if ($this->model->aguaCarroPipa) {
             $arrayAbastecimento[] = AbastecimentoAgua::CARRO_PIPA;
@@ -74,7 +71,7 @@ class Registro10Import extends Registro10Import2024
     {
         $arrayRecursosAcessibilidade = parent::getArrayRecursosAcessibilidade();
 
-        $arrayRecursos = transformStringFromDBInArray($arrayRecursosAcessibilidade) ?: [];
+        $arrayRecursos = \transformStringFromDBInArray($arrayRecursosAcessibilidade) ?: [];
 
         if ($this->model->recursoSinalizacaoLuminosa) {
             $arrayRecursos[] = RecursosAcessibilidade::SINALIZACAO_LUMINOSA;
@@ -86,7 +83,7 @@ class Registro10Import extends Registro10Import2024
     protected function getArrayInstrumentosPedagogicos()
     {
         $instrumentos = parent::getArrayInstrumentosPedagogicos();
-        $arrayInstrumentos = transformStringFromDBInArray($instrumentos) ?: [];
+        $arrayInstrumentos = \transformStringFromDBInArray($instrumentos) ?: [];
 
         if ($this->model->instrumentosPedagogicosAreaHorta) {
             $arrayInstrumentos[] = InstrumentosPedagogicos::MATERIAIS_AREA_HORTA;
@@ -138,7 +135,7 @@ class Registro10Import extends Registro10Import2024
     {
         $arrayAreasExternas = parent::getArrayRecursosAcessibilidade();
 
-        $arrayAreas = transformStringFromDBInArray($arrayAreasExternas) ?: [];
+        $arrayAreas = \transformStringFromDBInArray($arrayAreasExternas) ?: [];
 
         if ($this->model->dependenciaAreaHorta) {
             $arrayAreas[] = AreasExternas::HORTA;
