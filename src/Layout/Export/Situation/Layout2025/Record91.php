@@ -2,13 +2,15 @@
 
 namespace iEducar\Packages\Educacenso\Layout\Export\Situation\Layout2025;
 
-use App\Models\LegacySchoolClass;
 use App\Models\LegacyStudent;
 use iEducar\Packages\Educacenso\Helpers\ErrorMessage;
 use iEducar\Packages\Educacenso\Layout\Export\Contracts\Validation;
+use iEducar\Packages\Educacenso\Traits\GetSchoolClass;
 
 class Record91 extends Validation
 {
+    use GetSchoolClass;
+
     public function __construct(
         public array $data
     ) {
@@ -163,19 +165,5 @@ class Record91 extends Validation
                 'message' => 'Dados para formular o registro 91 inválidos. O campo "Código da Turma" deve conter no máximo 20 caracteres.',
             ]),
         ];
-    }
-
-    private function getSchoolClass($schoolClassId): LegacySchoolClass
-    {
-        /*
-         * Para turmas integrais com enturmações parciais e concateado o turno no código da turma
-         * Mas para busca da turma, é necessário remover o turno
-         */
-        if (str_contains($schoolClassId, '-')) {
-            $schoolClassId = explode('-', $schoolClassId)[0];
-        }
-        $schoolClass = LegacySchoolClass::find($schoolClassId);
-
-        return $schoolClass;
     }
 }

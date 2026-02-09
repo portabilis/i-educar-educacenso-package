@@ -7,9 +7,12 @@ use App\Models\LegacyStudent;
 use Closure;
 use iEducar\Packages\Educacenso\Helpers\ErrorMessage;
 use iEducar\Packages\Educacenso\Layout\Export\Contracts\Validation;
+use iEducar\Packages\Educacenso\Traits\GetSchoolClass;
 
 class Record90 extends Validation
 {
+    use GetSchoolClass;
+
     private array $indexNull = [];
 
     public function __construct(
@@ -214,19 +217,6 @@ class Record90 extends Validation
                 'message' => 'Dados para formular o registro 90 inválidos. O campo "Situação de matrícula" deve ser um dos seguintes valores: 1, 2, 3, 4, 5, 6 ou 7.',
             ]),
         ];
-    }
-
-    private function getSchoolClass($schoolClassId): LegacySchoolClass
-    {
-        /*
-         * Para turmas integrais com enturmações parciais e concateado o turno no código da turma
-         * Mas para busca da turma, é necessário remover o turno
-         */
-        if (str_contains($schoolClassId, '-')) {
-            $schoolClassId = explode('-', $schoolClassId)[0];
-        }
-
-        return LegacySchoolClass::find($schoolClassId);
     }
 
     private function getIndexNullColumn4($value, $array): int
