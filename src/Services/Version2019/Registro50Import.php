@@ -135,7 +135,7 @@ class Registro50Import implements RegistroImportInterface
         return LegacyEmployeeRole::where('ref_cod_servidor', $employee->id)
             ->whereHas('role', function ($query): void {
                 $query->ativo();
-                $query->professor();
+                $query->where('professor', 1);
             })->exists();
     }
 
