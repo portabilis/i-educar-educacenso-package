@@ -4,8 +4,6 @@ namespace iEducar\Packages\Educacenso\Services\Version2025;
 
 use iEducar\Packages\Educacenso\Services\Version2020\Registro40Import;
 use iEducar\Packages\Educacenso\Services\Version2022\ImportService as ImportServiceVersion2022;
-use iEducar\Packages\Educacenso\Services\Version2023\Registro50Import;
-use iEducar\Packages\Educacenso\Services\Version2023\Registro60Import;
 use iEducar\Packages\Educacenso\Services\Version2024\Registro00Import;
 
 class ImportService extends ImportServiceVersion2022
@@ -30,9 +28,9 @@ class ImportService extends ImportServiceVersion2022
             '10' => Registro10Import::class,
             '20' => Registro20Import::class,
             '30' => Registro30Import::class,
-            //'40' => Registro40Import::class,
-            //'50' => Registro50Import::class,
-            //'60' => Registro60Import::class,
+            '40' => Registro40Import::class,
+            '50' => Registro50Import::class,
+            '60' => Registro60Import::class,
         ];
 
         if (! isset($arrayRegistros[$lineId])) {
