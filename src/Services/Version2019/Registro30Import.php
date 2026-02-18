@@ -171,7 +171,7 @@ class Registro30Import implements RegistroImportInterface
             'nis_pis_pasep' => $this->model->nis ?: null,
             'pais_residencia' => (int) $this->model->paisResidencia,
             'zona_localizacao_censo' => (int) $this->model->localizacaoResidencia,
-            'povo_indigena_educacenso_id' => $this->model->povoIndigena,
+            'povo_indigena_educacenso_id' => $this->model->povoIndigena ?: null,
         ]);
 
         return $person;

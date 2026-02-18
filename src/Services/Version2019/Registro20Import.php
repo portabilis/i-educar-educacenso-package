@@ -875,7 +875,7 @@ class Registro20Import implements RegistroImportInterface
     /**
      * @return string
      */
-    private function getPostgresIntegerArray($array)
+    protected function getPostgresIntegerArray($array)
     {
         return '{' . implode(',', $array) . '}';
     }
