@@ -13,6 +13,7 @@ class SituationRepositoryFactory
             2022 => new Layout2022\SituationRepository(),
             2023 => new Layout2023\SituationRepository(),
             2024 => new Layout2024\SituationRepository(),
+            2025 => new Layout2025\SituationRepository(),
             default => throw new InvalidArgumentException("Year {$year} is not supported."),
         };
     }
