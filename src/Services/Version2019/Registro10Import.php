@@ -81,7 +81,7 @@ class Registro10Import implements RegistroImportInterface
         $school->codigo_inep_escola_compartilhada4 = $model->codigoInepEscolaCompartilhada4 ?: null;
         $school->codigo_inep_escola_compartilhada5 = $model->codigoInepEscolaCompartilhada5 ?: null;
         $school->codigo_inep_escola_compartilhada6 = $model->codigoInepEscolaCompartilhada6 ?: null;
-        $school->agua_potavel_consumo = $model->aguaPotavelConsumo;
+        $school->agua_potavel_consumo = $model->aguaPotavelConsumo ?: null;
         $school->abastecimento_agua = $this->getArrayAbastecimentoAgua();
         $school->abastecimento_energia = $this->getArrayAbastecimentoEnergia();
         $school->esgoto_sanitario = $this->getArrayEsgotamentoSanitario();
