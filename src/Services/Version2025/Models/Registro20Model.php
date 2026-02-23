@@ -108,6 +108,10 @@ class Registro20Model extends Registro20
 
     private function getHoraInicial($horario)
     {
+        if (empty($horario)) {
+            return;
+        }
+
         $hora = explode('-', $horario);
         $return = explode(':', $hora[0]);
 
@@ -116,6 +120,10 @@ class Registro20Model extends Registro20
 
     private function getMinutoInicial($horario)
     {
+        if (empty($horario)) {
+            return;
+        }
+
         $hora = explode('-', $horario);
         $return = explode(':', $hora[0]);
 
@@ -124,6 +132,10 @@ class Registro20Model extends Registro20
 
     private function getHoraFinal($horario)
     {
+        if (empty($horario)) {
+            return;
+        }
+
         $hora = explode('-', $horario);
         $return = explode(':', $hora[1]);
 
@@ -132,6 +144,10 @@ class Registro20Model extends Registro20
 
     private function getMinutoFinal($horario)
     {
+        if (empty($horario)) {
+            return;
+        }
+
         $hora = explode('-', $horario);
         $return = explode(':', $hora[1]);
 
