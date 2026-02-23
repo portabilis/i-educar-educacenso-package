@@ -24,7 +24,7 @@ class Registro20Import extends Registro20Import2023
 
         $schoolClass = LegacySchoolClass::find($schoolClassInep->cod_turma);
 
-        $schoolClass->etapa_agregada = $model->etapaAgregada;
+        $schoolClass->etapa_agregada = $model->etapaAgregada ?: null;
         $schoolClass->classe_especial = $model->classeEspecial;
         $schoolClass->formacao_alternancia = $model->formacaoAlternancia;
         if (is_array($model->areaItinerario) && count($model->areaItinerario) > 0) {
