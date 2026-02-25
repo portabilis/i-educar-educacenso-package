@@ -33,8 +33,7 @@ class Import2023Test extends EducacensoTestCase
         ));
     }
 
-    /** @test */
-    public function import2023Specific(): void
+    public function test_import2023Specific(): void
     {
         $legacySchool = LegacySchool::first();
         $this->assertEquals('{6}', $legacySchool->formas_contratacao_parceria_escola_secretaria_municipal);

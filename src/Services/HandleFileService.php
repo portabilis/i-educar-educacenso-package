@@ -4,6 +4,7 @@ namespace iEducar\Packages\Educacenso\Services;
 
 use App\Models\EducacensoImport;
 use App\User;
+use iEducar\Modules\Educacenso\Model\SituacaoFuncionamento;
 use iEducar\Packages\Educacenso\Jobs\EducacensoImportJob;
 use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Http\UploadedFile;
@@ -73,6 +74,10 @@ class HandleFileService
     {
         $serviceYear = $this->yearImportService->getYear();
         $line = explode($this->yearImportService::DELIMITER, $school[0]);
+
+        if (! empty($line[2]) && $line[2] != SituacaoFuncionamento::EM_ATIVIDADE) {
+            return;
+        }
 
         if (is_bool($line[3])) {
             throw new InvalidFileDate();

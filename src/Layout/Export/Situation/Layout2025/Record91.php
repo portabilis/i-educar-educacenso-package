@@ -1,6 +1,6 @@
 <?php
 
-namespace iEducar\Packages\Educacenso\Layout\Export\Situation\Layout2024;
+namespace iEducar\Packages\Educacenso\Layout\Export\Situation\Layout2025;
 
 use App\Models\LegacyStudent;
 use iEducar\Packages\Educacenso\Helpers\ErrorMessage;
@@ -116,13 +116,9 @@ class Record91 extends Validation
             ],
             'turma_matriculas.*.9' => [
                 'nullable',
-                'max:1'
-            ],
-            'turma_matriculas.*.10' => [
-                'nullable',
                 'max:2'
             ],
-            'turma_matriculas.*.11' => [
+            'turma_matriculas.*.10' => [
                 'required',
                 'integer',
                 'in:1,2,3,4,5,6,7',
@@ -167,15 +163,6 @@ class Record91 extends Validation
             ]),
             'turma_matriculas.*.6.max' => $errorMessage->toString([
                 'message' => 'Dados para formular o registro 91 inválidos. O campo "Código da Turma" deve conter no máximo 20 caracteres.',
-            ]),
-            'turma_matriculas.*.11.required' => $errorMessage->toString([
-                'message' => 'Dados para formular o registro 91 inválidos. O campo "Etapa de Ensino" é obrigatório.',
-            ]),
-            'turma_matriculas.*.11.integer' => $errorMessage->toString([
-                'message' => 'Dados para formular o registro 91 inválidos. O campo "Etapa de Ensino" deve ser de apenas números.',
-            ]),
-            'turma_matriculas.*.11.in' => $errorMessage->toString([
-                'message' => 'Dados para formular o registro 91 inválidos. O campo "Etapa de Ensino" deve ser um valor entre 1 e 7.',
             ]),
         ];
     }

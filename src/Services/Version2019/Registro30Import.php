@@ -26,6 +26,7 @@ use iEducar\Modules\Educacenso\Model\Escolaridade;
 use iEducar\Modules\Educacenso\Model\FormacaoContinuada;
 use iEducar\Modules\Educacenso\Model\Nacionalidade;
 use iEducar\Modules\Educacenso\Model\RecursosRealizacaoProvas;
+use iEducar\Modules\Educacenso\Model\Transtornos;
 use iEducar\Packages\Educacenso\Services\RegistroImportInterface;
 use iEducar\Packages\Educacenso\Services\Version2019\Models\Registro30Model;
 
@@ -170,6 +171,7 @@ class Registro30Import implements RegistroImportInterface
             'nis_pis_pasep' => $this->model->nis ?: null,
             'pais_residencia' => (int) $this->model->paisResidencia,
             'zona_localizacao_censo' => (int) $this->model->localizacaoResidencia,
+            'povo_indigena_educacenso_id' => $this->model->povoIndigena ?: null,
         ]);
 
         return $person;
@@ -347,6 +349,30 @@ class Registro30Import implements RegistroImportInterface
         if ($this->model->deficienciaVisaoMonocular) {
             $this->createDeficiency($person, Deficiencias::VISAO_MONOCULAR);
         }
+
+        if ($this->model->transtornoDiscalculia) {
+            $this->createDeficiency($person, Transtornos::DISCALCULIA);
+        }
+
+        if ($this->model->transtornoDisgrafia) {
+            $this->createDeficiency($person, Transtornos::DISGRAFIA);
+        }
+
+        if ($this->model->transtornoDislalia) {
+            $this->createDeficiency($person, Transtornos::DISLALIA);
+        }
+
+        if ($this->model->transtornoDislexia) {
+            $this->createDeficiency($person, Transtornos::DISLEXIA);
+        }
+
+        if ($this->model->transtornoTdah) {
+            $this->createDeficiency($person, Transtornos::TDAH);
+        }
+
+        if ($this->model->transtornoTpac) {
+            $this->createDeficiency($person, Transtornos::TPAC);
+        }
     }
 
     /**
@@ -484,6 +510,14 @@ class Registro30Import implements RegistroImportInterface
 
         if ($this->model->recursoBraile) {
             $arrayRecursos[] = RecursosRealizacaoProvas::MATERIAL_DIDATICO_EM_BRAILLE;
+        }
+
+        if ($this->model->provaBraile) {
+            $arrayRecursos[] = RecursosRealizacaoProvas::PROVA_EM_BRAILLE;
+        }
+
+        if ($this->model->recursoTempoAdicional) {
+            $arrayRecursos[] = RecursosRealizacaoProvas::TEMPO_ADICIONAL;
         }
 
         if ($this->model->recursoNenhum) {

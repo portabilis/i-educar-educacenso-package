@@ -12,12 +12,7 @@ if (! function_exists('clearInt')) {
 if (! function_exists('convertSituationIEducarToEducacenso')) {
     function convertSituationIEducarToEducacenso(int $situation, int $etapaTurma = 0, ?int $etapaSerie = null): int
     {
-        $etapasMultiEtapas = [56];
-        if (in_array($etapaTurma, $etapasMultiEtapas, true)) {
-            $etapaTurma = $etapaSerie;
-        }
-
-        $etapasConcluintes = [27, 28, 29, 32, 33, 34, 37, 38, 39, 40, 41, 67, 68, 70, 71, 73, 74];
+        $etapasConcluintes = [27, 28, 29, 37, 38, 39, 40, 41, 67, 68, 70, 71, 73, 74];
         $situacoesAprovado = [
             App_Model_MatriculaSituacao::APROVADO,
             App_Model_MatriculaSituacao::APROVADO_APOS_EXAME,
@@ -26,13 +21,24 @@ if (! function_exists('convertSituationIEducarToEducacenso')) {
             App_Model_MatriculaSituacao::APROVADO_PELO_CONSELHO,
         ];
 
+        $situacoesReprovado = [
+            App_Model_MatriculaSituacao::REPROVADO,
+            App_Model_MatriculaSituacao::REPROVADO_POR_FALTAS,
+        ];
+
         if (in_array($situation, $situacoesAprovado, true) && in_array($etapaTurma, $etapasConcluintes, true)) {
             return 6;
         }
 
         $etapasEducacaoInfantil = [1, 2, 3];
 
-        if (in_array($situation, $situacoesAprovado, true) && in_array($etapaTurma, $etapasEducacaoInfantil, true)) {
+        if (
+            (
+                in_array($situation, $situacoesAprovado, true) ||
+                in_array($situation, $situacoesReprovado, true)
+            ) &&
+            in_array($etapaTurma, $etapasEducacaoInfantil, true)
+        ) {
             return 7;
         }
 

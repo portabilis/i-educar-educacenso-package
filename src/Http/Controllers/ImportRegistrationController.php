@@ -26,6 +26,7 @@ class ImportRegistrationController extends Controller
 
         return view('educacenso::import.index', compact('imports'));
     }
+
     public function create()
     {
         $permission = new \clsPermissoes();

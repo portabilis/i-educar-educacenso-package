@@ -45,10 +45,11 @@ repositório do Educacenso e não o repositório principal do i-Educar.
 
 Os comandos abaixo devem ser executados a partir da raiz do i-Educar.
 
-Adicionar as dependência do `orchestra/testbench` ao plug and play.
+Adicionar as dependência ao plug and play.
 
 ```bash
-composer plug-and-play:add orchestra/testbench ^9
+composer plug-and-play:add orchestra/testbench ^10
+composer plug-and-play:add pestphp/pest ^4
 composer plug-and-play:update
 ```
 
