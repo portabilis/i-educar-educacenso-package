@@ -34,6 +34,7 @@ use Database\Factories\StateFactory;
 use iEducar\Packages\Educacenso\Providers\EducacensoProvider;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use PHPUnit\Framework\Attributes\Depends;
 use Tests\TestCase;
 
 abstract class EducacensoTestCase extends TestCase
@@ -84,8 +85,7 @@ abstract class EducacensoTestCase extends TestCase
         $this->actingAs($this->user);
     }
 
-    /** @test */
-    public function validationImportRegister00()
+    public function test_validationImportRegister00()
     {
         $count = LegacySchool::count();
         $legacySchool = LegacySchool::first();
@@ -171,9 +171,8 @@ abstract class EducacensoTestCase extends TestCase
 
     /**
      * @test
-     *
-     * @depends validationImportRegister00
      */
+    #[Depends('validationImportRegister00')]
     public function validationImportRegister10(LegacySchool $legacySchool): void
     {
         $this->assertEquals('{3}', $legacySchool->local_funcionamento);
@@ -187,8 +186,7 @@ abstract class EducacensoTestCase extends TestCase
         $this->assertEquals(0, $legacySchool->acesso_internet);
     }
 
-    /** @test */
-    public function validationImportRegister20(): void
+    public function test_validationImportRegister20(): void
     {
         $legacySchool = LegacySchool::first();
 
@@ -297,8 +295,7 @@ abstract class EducacensoTestCase extends TestCase
         }
     }
 
-    /** @test */
-    public function validationImportRegister30(): void
+    public function test_validationImportRegister30(): void
     {
         $students = LegacyStudent::all();
 
@@ -387,8 +384,7 @@ abstract class EducacensoTestCase extends TestCase
         }
     }
 
-    /** @test */
-    public function validationImportRegister40(): void
+    public function test_validationImportRegister40(): void
     {
         $schoolManager = SchoolManager::all();
 
@@ -406,8 +402,7 @@ abstract class EducacensoTestCase extends TestCase
         }
     }
 
-    /** @test */
-    public function validationImportRegister50(): void
+    public function test_validationImportRegister50(): void
     {
         $schoollClassTeachers = LegacySchoolClassTeacher::all();
         $this->assertNotNull($schoollClassTeachers);
@@ -423,8 +418,7 @@ abstract class EducacensoTestCase extends TestCase
         }
     }
 
-    /** @test */
-    public function validationImportRegister60(): void
+    public function test_validationImportRegister60(): void
     {
         $enrollments = LegacyEnrollment::all();
 

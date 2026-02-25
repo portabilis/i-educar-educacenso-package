@@ -1,14 +1,14 @@
 <?php
 
-namespace iEducar\Packages\Educacenso\Services\Version2022;
+namespace iEducar\Packages\Educacenso\Services\Version2025;
 
 use App\Models\Educacenso\Registro20;
 use App\Models\Educacenso\RegistroEducacenso;
 use App\Models\LegacySchoolClass;
-use iEducar\Packages\Educacenso\Services\Version2019\Registro20Import as Registro20Import2019;
-use iEducar\Packages\Educacenso\Services\Version2022\Models\Registro20Model;
+use iEducar\Packages\Educacenso\Services\Version2023\Registro20Import as Registro20Import2023;
+use iEducar\Packages\Educacenso\Services\Version2025\Models\Registro20Model;
 
-class Registro20Import extends Registro20Import2019
+class Registro20Import extends Registro20Import2023
 {
     public function import(RegistroEducacenso $model, $year, $user): void
     {
@@ -24,9 +24,14 @@ class Registro20Import extends Registro20Import2019
 
         $schoolClass = LegacySchoolClass::find($schoolClassInep->cod_turma);
 
-        $schoolClass->organizacao_curricular = transformDBArrayInString($model->estruturaCurricular) ?: null;
-        $schoolClass->formas_organizacao_turma = (is_array($model->formasOrganizacaoTurma) ? array_first($model->formasOrganizacaoTurma) : $model->formasOrganizacaoTurma) ?: null;
-        $schoolClass->unidade_curricular = transformDBArrayInString($model->unidadesCurriculares) ?: null;
+        $schoolClass->etapa_agregada = $model->etapaAgregada ?: null;
+        $schoolClass->classe_especial = $model->classeEspecial;
+        $schoolClass->formacao_alternancia = $model->formacaoAlternancia;
+        if (is_array($model->areaItinerario) && count($model->areaItinerario) > 0) {
+            $schoolClass->area_itinerario = $this->getPostgresIntegerArray($model->areaItinerario);
+        }
+        $schoolClass->tipo_curso_intinerario = $model->tipoCursoIntinerario ?: null;
+        $schoolClass->cod_curso_profissional_intinerario = $model->codCursoProfissionalIntinerario ?: null;
 
         $schoolClass->save();
     }
@@ -45,7 +50,7 @@ class Registro20Import extends Registro20Import2019
     public static function getComponentes()
     {
         $componentes = parent::getComponentes();
-        $componentes[33] = 'Projeto de vida';
+
 
         return $componentes;
     }

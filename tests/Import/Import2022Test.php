@@ -35,8 +35,7 @@ class Import2022Test extends EducacensoTestCase
         ));
     }
 
-    /** @test */
-    public function import2022Specific(): void
+    public function test_import2022Specific(): void
     {
         $legacySchool = LegacySchool::first();
         $this->assertEquals('{1}', $legacySchool->poder_publico_parceria_convenio);

@@ -109,8 +109,7 @@ class ExportTest extends TestCase
             ]);
     }
 
-    /** @test */
-    public function validationExportCensoRegistro00(): void
+    public function test_validationExportCensoRegistro00(): void
     {
         $this->markTestSkipped('Será reconstruído quando a exportação for desacoplada');
 
@@ -138,8 +137,7 @@ class ExportTest extends TestCase
             ->assertJsonCount(0, 'mensagens');
     }
 
-    /** @test */
-    public function validationExportCensoRegistro10(): void
+    public function test_validationExportCensoRegistro10(): void
     {
         $this->markTestSkipped('Será reconstruído quando a exportação for desacoplada');
 
@@ -166,8 +164,7 @@ class ExportTest extends TestCase
             );
     }
 
-    /** @test */
-    public function validationExportCensoRegistro20(): void
+    public function test_validationExportCensoRegistro20(): void
     {
         $this->markTestSkipped('Será reconstruído quando a exportação for desacoplada');
 
@@ -201,8 +198,7 @@ class ExportTest extends TestCase
             );
     }
 
-    /** @test */
-    public function validationExportCensoRegistro30(): void
+    public function test_validationExportCensoRegistro30(): void
     {
         $this->markTestSkipped('Será reconstruído quando a exportação for desacoplada');
 
@@ -236,8 +232,7 @@ class ExportTest extends TestCase
             );
     }
 
-    /** @test */
-    public function validationExportCensoRegistro40(): void
+    public function test_validationExportCensoRegistro40(): void
     {
         $this->markTestSkipped('Será reconstruído quando a exportação for desacoplada');
 
@@ -264,8 +259,7 @@ class ExportTest extends TestCase
             );
     }
 
-    /** @test */
-    public function validationExportCensoRegistro50(): void
+    public function test_validationExportCensoRegistro50(): void
     {
         $this->markTestSkipped('Será reconstruído quando a exportação for desacoplada');
 
@@ -290,8 +284,7 @@ class ExportTest extends TestCase
             );
     }
 
-    /** @test */
-    public function validationExportCensoRegistro60(): void
+    public function test_validationExportCensoRegistro60(): void
     {
         $this->markTestSkipped('Será reconstruído quando a exportação for desacoplada');
 
