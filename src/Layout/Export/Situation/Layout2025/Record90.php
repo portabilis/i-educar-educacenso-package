@@ -114,6 +114,10 @@ class Record90 extends Validation
                     $studentId = $value['6'];
                     $matricula = $value['7'];
 
+                    if (str_contains($schoolClassId, '-')) {
+                        $schoolClassId = explode('-', $schoolClassId)[0];
+                    }
+
                     $errorMessage = new ErrorMessage($fail, [
                         'key' => 'cod_aluno',
                         'value' => $studentId,
@@ -150,6 +154,10 @@ class Record90 extends Validation
                     $schoolClassId = $value['3'];
                     $studentId = $value['6'];
                     $situacao = $value['8'];
+
+                    if (str_contains($schoolClassId, '-')) {
+                        $schoolClassId = explode('-', $schoolClassId)[0];
+                    }
 
                     $errorMessage = new ErrorMessage($fail, [
                         'key' => 'cod_aluno',
