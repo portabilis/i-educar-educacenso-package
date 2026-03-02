@@ -114,6 +114,10 @@ class Record90 extends Validation
                     $studentId = $value['6'];
                     $matricula = $value['7'];
 
+                    if (str_contains($schoolClassId, '-')) {
+                        $schoolClassId = explode('-', $schoolClassId)[0];
+                    }
+
                     $errorMessage = new ErrorMessage($fail, [
                         'key' => 'cod_aluno',
                         'value' => $studentId,
@@ -151,6 +155,10 @@ class Record90 extends Validation
                     $studentId = $value['6'];
                     $situacao = $value['8'];
 
+                    if (str_contains($schoolClassId, '-')) {
+                        $schoolClassId = explode('-', $schoolClassId)[0];
+                    }
+
                     $errorMessage = new ErrorMessage($fail, [
                         'key' => 'cod_aluno',
                         'value' => $studentId,
@@ -165,7 +173,7 @@ class Record90 extends Validation
                         $errorMessage->toString([
                             'message' => 'Dados para formular o registro 90 inválidos. A situação da Matrícula do(a) Aluno(a) ' . mb_strtoupper($student->name) . ' na Turma ' . $schoolClass->name . ' precisa ser definida.',
                         ]);
-                    } elseif (in_array($situacao, [1, 2, 3, 4, 5, 6, 7], true) == false) {
+                    } elseif (in_array($situacao, [1, 2, 3, 4, 5, 6, 7, 8], true) == false) {
                         $student = LegacyStudent::find($studentId);
                         $schoolClass = LegacySchoolClass::find($schoolClassId);
 

@@ -121,7 +121,7 @@ class Record91 extends Validation
             'turma_matriculas.*.10' => [
                 'required',
                 'integer',
-                'in:1,2,3,4,5,6,7',
+                'in:1,2,3,4,5,6,7,8',
             ],
         ];
     }
