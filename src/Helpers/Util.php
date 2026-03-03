@@ -39,25 +39,25 @@ if (! function_exists('convertSituationIEducarToEducacenso')) {
             ) &&
             in_array($etapaTurma, $etapasEducacaoInfantil, true)
         ) {
-            return 7;
+            return 8;
         }
 
         return match ($situation) {
             App_Model_MatriculaSituacao::APROVADO => 5,
             App_Model_MatriculaSituacao::REPROVADO => 4,
-            App_Model_MatriculaSituacao::EM_ANDAMENTO => 7,
+            App_Model_MatriculaSituacao::EM_ANDAMENTO => 8,
             App_Model_MatriculaSituacao::TRANSFERIDO => 1,
-            App_Model_MatriculaSituacao::RECLASSIFICADO => 7,
+            App_Model_MatriculaSituacao::RECLASSIFICADO => 8,
             App_Model_MatriculaSituacao::ABANDONO => 2,
-            App_Model_MatriculaSituacao::EM_EXAME => 7,
+            App_Model_MatriculaSituacao::EM_EXAME => 8,
             App_Model_MatriculaSituacao::APROVADO_APOS_EXAME => 5,
             App_Model_MatriculaSituacao::APROVADO_SEM_EXAME => 5,
-            App_Model_MatriculaSituacao::PRE_MATRICULA => 7,
+            App_Model_MatriculaSituacao::PRE_MATRICULA => 8,
             App_Model_MatriculaSituacao::APROVADO_COM_DEPENDENCIA => 5,
             App_Model_MatriculaSituacao::APROVADO_PELO_CONSELHO => 5,
             App_Model_MatriculaSituacao::REPROVADO_POR_FALTAS => 4,
             App_Model_MatriculaSituacao::FALECIDO => 3,
-            default => 7,
+            default => 8,
         };
     }
 }
@@ -71,7 +71,7 @@ if (! function_exists('convertSituationEducacensoToIeducar')) {
         }
 
         $etapasEducacaoInfantil = [1, 2, 3];
-        if (in_array($etapaTurma, $etapasEducacaoInfantil, true) && $situation === 7) {
+        if (in_array($etapaTurma, $etapasEducacaoInfantil, true) && $situation === 8) {
             return App_Model_MatriculaSituacao::APROVADO;
         }
 
