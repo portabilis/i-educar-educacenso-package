@@ -442,7 +442,7 @@ class Registro30Import implements RegistroImportInterface
             return;
         }
 
-        return City::findByIbgeCode($cityIbge)?->getKey();
+        return City::where('ibge_code', $cityIbge)->value('id');
     }
 
     /**
