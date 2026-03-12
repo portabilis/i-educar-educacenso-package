@@ -10,7 +10,7 @@ use App\Models\EducacensoInstitution;
 use App\Models\Employee;
 use App\Models\EmployeeGraduation;
 use App\Models\EmployeeInep;
-use App\Models\LegacyCity;
+use App\Models\City;
 use App\Models\LegacyDeficiency;
 use App\Models\LegacyDocument;
 use App\Models\LegacyIndividual;
@@ -436,18 +436,13 @@ class Registro30Import implements RegistroImportInterface
         return $individual->person;
     }
 
-    /**
-     * @return LegacyCity|null
-     */
     private function getCity($cityIbge)
     {
         if (empty($cityIbge)) {
             return;
         }
 
-        $legacyCity = LegacyCity::where('cod_ibge', $cityIbge)->first();
-
-        return $legacyCity ? $legacyCity->getKey() : null;
+        return City::where('ibge_code', $cityIbge)->value('id');
     }
 
     /**
