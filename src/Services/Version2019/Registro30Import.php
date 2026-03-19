@@ -2,6 +2,7 @@
 
 namespace iEducar\Packages\Educacenso\Services\Version2019;
 
+use App\Models\City;
 use App\Models\Country;
 use App\Models\Educacenso\Registro30;
 use App\Models\Educacenso\RegistroEducacenso;
@@ -10,7 +11,6 @@ use App\Models\EducacensoInstitution;
 use App\Models\Employee;
 use App\Models\EmployeeGraduation;
 use App\Models\EmployeeInep;
-use App\Models\City;
 use App\Models\LegacyDeficiency;
 use App\Models\LegacyDocument;
 use App\Models\LegacyIndividual;
