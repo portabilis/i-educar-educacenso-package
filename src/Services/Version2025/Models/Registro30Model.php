@@ -160,7 +160,7 @@ class Registro30Model extends Registro30
         $this->formacaoContinuadaEducacaoNenhum = $arrayColumns[107];
         $this->email = $arrayColumns[108];
 
-        if (in_array($this->escolaridade, [Escolaridade::EDUCACAO_SUPERIOR, Escolaridade::ENSINO_MEDIO], true)) {
+        if (in_array((int) $this->escolaridade, [Escolaridade::EDUCACAO_SUPERIOR, Escolaridade::ENSINO_MEDIO], true)) {
             $this->tipos[self::TIPO_TEACHER] = true;
             $this->tipos[self::TIPO_MANAGER] = true;
         } else {
