@@ -85,7 +85,7 @@ class Registro30Import implements RegistroImportInterface
      */
     public static function getModel($arrayColumns)
     {
-        $registro = new Registro30Model;
+        $registro = new Registro30Model();
         $registro->hydrateModel($arrayColumns);
 
         return $registro;
@@ -293,7 +293,7 @@ class Registro30Import implements RegistroImportInterface
     {
         $race = LegacyRace::where('raca_educacenso', $this->model->raca)->first();
 
-        if (!empty($race)) {
+        if (! empty($race)) {
             return $race;
         }
 
