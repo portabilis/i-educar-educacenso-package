@@ -24,7 +24,8 @@
         }
     },
     "require": {
-        "maatwebsite/excel": "^4.0"
+        "maatwebsite/excel": "^4.0",
+        "phpoffice/phpspreadsheet": "^5.3"
     },
     "require-dev": {
         "laravel/pint": "^1.16",
