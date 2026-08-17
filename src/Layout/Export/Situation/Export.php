@@ -2,6 +2,7 @@
 
 namespace iEducar\Packages\Educacenso\Layout\Export\Situation;
 
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
 class Export implements FromCollection
@@ -11,7 +12,7 @@ class Export implements FromCollection
     ) {
     }
 
-    public function collection()
+    public function collection(): Collection
     {
         $collect = collect();
 
