@@ -3,6 +3,7 @@
 namespace iEducar\Packages\Educacenso\Services\Version2025\Models;
 
 use App\Models\Educacenso\Registro30;
+use iEducar\Modules\Educacenso\Model\Escolaridade;
 
 class Registro30Model extends Registro30
 {
@@ -159,7 +160,7 @@ class Registro30Model extends Registro30
         $this->formacaoContinuadaEducacaoNenhum = $arrayColumns[107];
         $this->email = $arrayColumns[108];
 
-        if ($this->escolaridade) {
+        if (in_array((int) $this->escolaridade, [Escolaridade::EDUCACAO_SUPERIOR, Escolaridade::ENSINO_MEDIO], true)) {
             $this->tipos[self::TIPO_TEACHER] = true;
             $this->tipos[self::TIPO_MANAGER] = true;
         } else {
