@@ -2,7 +2,9 @@
 
 namespace iEducar\Packages\Educacenso\Services\Version2019;
 
+use App\Models\City;
 use App\Models\Country;
+use App\Models\DeficiencyType;
 use App\Models\Educacenso\Registro30;
 use App\Models\Educacenso\RegistroEducacenso;
 use App\Models\EducacensoDegree;
@@ -10,7 +12,6 @@ use App\Models\EducacensoInstitution;
 use App\Models\Employee;
 use App\Models\EmployeeGraduation;
 use App\Models\EmployeeInep;
-use App\Models\LegacyCity;
 use App\Models\LegacyDeficiency;
 use App\Models\LegacyDocument;
 use App\Models\LegacyIndividual;
@@ -56,7 +57,6 @@ class Registro30Import implements RegistroImportInterface
      * Faz a importação dos dados a partir da linha do arquivo
      *
      * @param int                $year
-     * @return void
      */
     public function import(RegistroEducacenso $model, $year, $user): void
     {
@@ -379,22 +379,49 @@ class Registro30Import implements RegistroImportInterface
      * @param LegacyPerson $person
      * @param int          $educacendoDeficiency
      */
-    private function createDeficiency($person, $educacendoDeficiency): void
+    private function createDeficiency($person, $educacensoDeficiency): void
     {
-        $deficiency = LegacyDeficiency::where('deficiencia_educacenso', $educacendoDeficiency)->first();
-
-        if (empty($deficiency)) {
-            $deficiency = LegacyDeficiency::create([
-                'nm_deficiencia' => Deficiencias::getDescriptiveValues()[$educacendoDeficiency] ?? 'Deficiência',
-                'deficiencia_educacenso' => $educacendoDeficiency,
-            ]);
-        }
-
         $individual = $person->individual;
-        if ($individual->deficiency()
-            ->where('deficiencia_educacenso', $educacendoDeficiency)
-            ->exists()) {
-            return;
+
+        if (in_array((int) $educacensoDeficiency, [
+            Transtornos::DISCALCULIA,
+            Transtornos::DISGRAFIA,
+            Transtornos::DISLALIA,
+            Transtornos::DISLEXIA,
+            Transtornos::TDAH,
+            Transtornos::TPAC,
+        ], true)) {
+            $deficiency = LegacyDeficiency::where('transtorno_educacenso', $educacensoDeficiency)->first();
+
+            if (empty($deficiency)) {
+                $deficiency = LegacyDeficiency::create([
+                    'nm_deficiencia' => Transtornos::getDescriptiveValues()[$educacensoDeficiency] ?? 'Transtorno',
+                    'transtorno_educacenso' => $educacensoDeficiency,
+                    'deficiency_type_id' => DeficiencyType::DISORDER,
+                ]);
+            }
+
+            if ($individual->deficiency()
+                ->where('transtorno_educacenso', $educacensoDeficiency)
+                ->exists()) {
+                return;
+            }
+        } else {
+            $deficiency = LegacyDeficiency::where('deficiencia_educacenso', $educacensoDeficiency)->first();
+
+            if (empty($deficiency)) {
+                $deficiency = LegacyDeficiency::create([
+                    'nm_deficiencia' => Deficiencias::getDescriptiveValues()[$educacensoDeficiency] ?? 'Deficiência',
+                    'deficiencia_educacenso' => $educacensoDeficiency,
+                    'deficiency_type_id' => DeficiencyType::DEFICIENCY,
+                ]);
+            }
+
+            if ($individual->deficiency()
+                ->where('deficiencia_educacenso', $educacensoDeficiency)
+                ->exists()) {
+                return;
+            }
         }
 
         $individual->deficiency()->attach($deficiency);
@@ -436,18 +463,13 @@ class Registro30Import implements RegistroImportInterface
         return $individual->person;
     }
 
-    /**
-     * @return LegacyCity|null
-     */
     private function getCity($cityIbge)
     {
         if (empty($cityIbge)) {
             return;
         }
 
-        $legacyCity = LegacyCity::where('cod_ibge', $cityIbge)->first();
-
-        return $legacyCity ? $legacyCity->getKey() : null;
+        return City::where('ibge_code', $cityIbge)->value('id');
     }
 
     /**
