@@ -2,6 +2,8 @@
 
 namespace iEducar\Packages\Educacenso\Traits;
 
+use App\Models\LegacySchoolClass;
+
 trait GetSchoolClass
 {
     protected function getSchoolClass($schoolClassId): LegacySchoolClass

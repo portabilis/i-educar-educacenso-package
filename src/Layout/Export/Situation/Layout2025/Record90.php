@@ -2,7 +2,6 @@
 
 namespace iEducar\Packages\Educacenso\Layout\Export\Situation\Layout2025;
 
-use App\Models\LegacySchoolClass;
 use App\Models\LegacyStudent;
 use Closure;
 use iEducar\Packages\Educacenso\Helpers\ErrorMessage;
@@ -127,21 +126,21 @@ class Record90 extends Validation
 
                     if (is_null($matricula) || $matricula == '') {
                         $student = LegacyStudent::find($studentId);
-                        $schoolClass = LegacySchoolClass::find($schoolClassId);
+                        $schoolClass = $this->getSchoolClass($schoolClassId);
 
                         $errorMessage->toString([
                             'message' => 'Dados para formular o registro 90 inválidos. O campo Matrícula INEP do(a) Aluno(a) ' . mb_strtoupper($student->name) . ' na Turma ' . $schoolClass->name . ' é obrigatório.',
                         ]);
                     } elseif (strlen($matricula) > 12) {
                         $student = LegacyStudent::find($studentId);
-                        $schoolClass = LegacySchoolClass::find($schoolClassId);
+                        $schoolClass = $this->getSchoolClass($schoolClassId);
 
                         $errorMessage->toString([
                             'message' => 'Dados para formular o registro 90 inválidos. O campo Matrícula INEP do(a) Aluno(a) ' . mb_strtoupper($student->name) . ' na Turma ' . $schoolClass->name . ' não pode possuir mais de 12 caracteres.',
                         ]);
                     } elseif (is_numeric($matricula) == false) {
                         $student = LegacyStudent::find($studentId);
-                        $schoolClass = LegacySchoolClass::find($schoolClassId);
+                        $schoolClass = $this->getSchoolClass($schoolClassId);
 
                         $errorMessage->toString([
                             'message' => 'Dados para formular o registro 90 inválidos. O campo Matrícula INEP do(a) Aluno(a) ' . mb_strtoupper($student->name) . ' na Turma ' . $schoolClass->name . ' deve conter apenas números.',
@@ -168,14 +167,14 @@ class Record90 extends Validation
 
                     if (is_null($situacao) || $situacao == '') {
                         $student = LegacyStudent::find($studentId);
-                        $schoolClass = LegacySchoolClass::find($schoolClassId);
+                        $schoolClass = $this->getSchoolClass($schoolClassId);
 
                         $errorMessage->toString([
                             'message' => 'Dados para formular o registro 90 inválidos. A situação da Matrícula do(a) Aluno(a) ' . mb_strtoupper($student->name) . ' na Turma ' . $schoolClass->name . ' precisa ser definida.',
                         ]);
                     } elseif (in_array($situacao, [1, 2, 3, 4, 5, 6, 7, 8], true) == false) {
                         $student = LegacyStudent::find($studentId);
-                        $schoolClass = LegacySchoolClass::find($schoolClassId);
+                        $schoolClass = $this->getSchoolClass($schoolClassId);
 
                         $errorMessage->toString([
                             'message' => 'Dados para formular o registro 90 inválidos. A situação da Matrícula do(a) Aluno(a) ' . mb_strtoupper($student->name) . ' na Turma ' . $schoolClass->name . ' é inválida.',

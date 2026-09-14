@@ -222,7 +222,7 @@ class Registro60Import implements RegistroImportInterface
 
     private function storeStudentData(LegacyStudent $student): void
     {
-        $student->recebe_escolarizacao_em_outro_espaco = $this->model->recebeEscolarizacaoOutroEspacao;
+        $student->recebe_escolarizacao_em_outro_espaco = $this->model->recebeEscolarizacaoOutroEspacao ?: 0;
         $student->tipo_transporte = $this->model->poderPublicoResponsavelTransporte ?: 0;
         $student->veiculo_transporte_escolar = $this->getArrayVeiculoTransporte();
 
