@@ -48,17 +48,17 @@ jobs:
     steps:
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.4'
+          php-version: '8.5'
 
       - name: Checkout i-Educar
-        uses: actions/checkout@v2
+        uses: actions/checkout@v7
         with:
           repository: portabilis/i-educar
           token: ${{ secrets.ACTIONS_TOKEN }}
           ref: '2.12'
 
       - name: Checkout i-Educar Educacenso
-        uses: actions/checkout@v2
+        uses: actions/checkout@v7
         with:
           path: packages/portabilis/i-educar-educacenso-package
 
@@ -68,7 +68,7 @@ jobs:
       - name: Plug and play dependencies
         run: |
           composer config allow-plugins true
-          composer plug-and-play:add orchestra/testbench ^10
+          composer plug-and-play:add orchestra/testbench ^11
           composer plug-and-play:add pestphp/pest ^4
           composer plug-and-play
         env:
